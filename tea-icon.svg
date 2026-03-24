@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Background -->
+  <rect width="512" height="512" fill="#0a0a0a" rx="80"/>
+  
+  <!-- Orange accent bar top -->
+  <rect x="0" y="0" width="512" height="8" fill="#E8650A" rx="4"/>
+  
+  <!-- Excavator body -->
+  <rect x="180" y="200" width="200" height="120" fill="#E8650A" rx="8"/>
+  
+  <!-- Cab -->
+  <rect x="280" y="150" width="100" height="80" fill="#E8650A" rx="6"/>
+  <rect x="290" y="158" width="80" height="50" fill="#1a1a1a" rx="4" opacity="0.6"/>
+  
+  <!-- Boom arm -->
+  <line x1="280" y1="180" x2="160" y2="120" stroke="#E8650A" stroke-width="24" stroke-linecap="round"/>
+  
+  <!-- Stick -->
+  <line x1="160" y1="120" x2="110" y2="200" stroke="#E8650A" stroke-width="18" stroke-linecap="round"/>
+  
+  <!-- Bucket -->
+  <path d="M90 195 L130 195 L140 240 L80 240 Z" fill="#E8650A"/>
+  <path d="M80 240 Q110 265 140 240" stroke="#cc5500" stroke-width="6" fill="none"/>
+  <!-- Bucket teeth -->
+  <rect x="85" y="240" width="8" height="14" fill="#cc5500" rx="2"/>
+  <rect x="101" y="240" width="8" height="14" fill="#cc5500" rx="2"/>
+  <rect x="117" y="240" width="8" height="14" fill="#cc5500" rx="2"/>
+  <rect x="133" y="240" width="8" height="14" fill="#cc5500" rx="2"/>
+  
+  <!-- Tracks -->
+  <rect x="150" y="310" width="240" height="40" fill="#333" rx="20"/>
+  <rect x="160" y="315" width="220" height="30" fill="#444" rx="16"/>
+  <!-- Track wheels -->
+  <circle cx="185" cy="330" r="18" fill="#222" stroke="#555" stroke-width="3"/>
+  <circle cx="255" cy="330" r="18" fill="#222" stroke="#555" stroke-width="3"/>
+  <circle cx="325" cy="330" r="18" fill="#222" stroke="#555" stroke-width="3"/>
+  <circle cx="370" cy="330" r="14" fill="#222" stroke="#555" stroke-width="3"/>
+  <circle cx="155" cy="330" r="14" fill="#222" stroke="#555" stroke-width="3"/>
+  
+  <!-- TEA text -->
+  <text x="256" y="420" font-family="Arial Black, sans-serif" font-size="52" font-weight="900" fill="#E8650A" text-anchor="middle" letter-spacing="6">T.E.A.</text>
+  
+  <!-- Bottom label -->
+  <text x="256" y="460" font-family="Arial, sans-serif" font-size="22" fill="#666" text-anchor="middle" letter-spacing="3">HAUL TRACKER</text>
+</svg>

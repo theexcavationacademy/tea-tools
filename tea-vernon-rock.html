@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#E8650A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Vernon Rock">
+<title>Vernon Rock — Load Tracker</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap');
+:root{
+  --orange:#E8650A;--dark:#0a0a0a;--card:#141414;--card2:#1a1a1a;
+  --border:#2a2a2a;--text:#e0e0e0;--muted:#666;
+  --green:#27ae60;--red:#e74c3c;--yellow:#f39c12;--blue:#2980b9;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;background:var(--dark);color:var(--text);font-family:'Barlow',sans-serif;}
+body{padding-bottom:40px;overflow-x:hidden;}
+
+/* HEADER */
+.hdr{background:#111;border-bottom:3px solid var(--orange);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;}
+.hdr-logo{font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--orange);letter-spacing:2px;line-height:1.1;}
+.hdr-sub{font-family:'Barlow Condensed',sans-serif;font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;}
+.hdr-time{font-family:'Bebas Neue',sans-serif;font-size:18px;color:#fff;letter-spacing:1px;}
+
+/* SCREENS */
+.scr{display:none;padding:14px 14px;max-width:640px;margin:0 auto;}
+.scr.on{display:block;}
+
+/* TYPE */
+.pg-title{font-family:'Bebas Neue',sans-serif;font-size:36px;color:#fff;letter-spacing:2px;line-height:1;margin-bottom:2px;}
+.pg-sub{font-family:'Barlow Condensed',sans-serif;font-size:12px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:18px;}
+.sec-title{font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--orange);letter-spacing:2px;padding-bottom:8px;border-bottom:1px solid var(--border);margin-bottom:12px;}
+
+/* CARDS */
+.card{background:var(--card);border:1px solid var(--border);padding:14px;margin-bottom:10px;}
+
+/* JOB SELECTOR */
+.job-btn{width:100%;background:var(--card);border:1px solid var(--border);padding:16px;margin-bottom:10px;text-align:left;cursor:pointer;display:flex;align-items:center;justify-content:space-between;}
+.job-btn:active{border-color:var(--orange);}
+.job-btn.active-job{border-color:var(--orange);border-width:2px;}
+.jb-left{}
+.jb-name{font-family:'Bebas Neue',sans-serif;font-size:22px;color:#fff;letter-spacing:1px;line-height:1;}
+.jb-target{font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--muted);margin-top:2px;}
+.jb-right{text-align:right;}
+.jb-pct{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--orange);}
+.jb-pct.done{color:var(--green);}
+.jb-tonnes{font-family:'Barlow Condensed',sans-serif;font-size:12px;color:var(--muted);}
+
+/* PROGRESS HERO */
+.prog-hero{background:var(--card);border:1px solid var(--border);border-left:4px solid var(--orange);padding:14px;margin-bottom:10px;}
+.prog-job{font-family:'Bebas Neue',sans-serif;font-size:20px;color:#fff;letter-spacing:1px;margin-bottom:8px;line-height:1;}
+.dual-totals{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+.dual-item{background:var(--card2);padding:12px;text-align:center;}
+.dual-big{font-family:'Bebas Neue',sans-serif;font-size:48px;color:var(--orange);line-height:1;}
+.dual-unit{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--muted);line-height:1;}
+.dual-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:4px;}
+.dual-target{font-family:'Barlow Condensed',sans-serif;font-size:11px;color:var(--muted);margin-top:3px;}
+.pbar-wrap{background:#1a1a1a;height:10px;border:1px solid var(--border);margin-bottom:10px;}
+.pbar{height:100%;background:var(--orange);transition:width 0.3s;min-width:3px;}
+.pbar.done{background:var(--green);}
+.prog-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.pstat{background:var(--card2);padding:8px 4px;text-align:center;}
+.pstat-val{font-family:'Bebas Neue',sans-serif;font-size:18px;color:#fff;line-height:1;}
+.pstat-val.g{color:var(--green);}
+.pstat-val.w{color:var(--yellow);}
+.pstat-lbl{font-family:'Barlow Condensed',sans-serif;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:2px;}
+
+/* TRUCK CARDS */
+.truck-grid{display:flex;flex-direction:column;gap:10px;margin-bottom:12px;}
+.truck-card{background:var(--card);border:1px solid var(--border);padding:14px;position:relative;}
+.truck-card.on-site{border-color:var(--yellow);}
+.tc-top{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+.tc-thumb{width:50px;height:50px;object-fit:cover;border:1px solid var(--border);background:#1a1a1a;flex-shrink:0;border-radius:2px;}
+.tc-placeholder{width:50px;height:50px;background:#1a1a1a;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;}
+.tc-info{flex:1;min-width:0;}
+.tc-name{font-family:'Bebas Neue',sans-serif;font-size:20px;color:#fff;letter-spacing:1px;line-height:1;}
+.tc-detail{font-family:'Barlow Condensed',sans-serif;font-size:12px;color:var(--muted);margin-top:2px;}
+.tc-status{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;margin-top:4px;}
+.tc-status.loading{color:var(--yellow);}
+.tc-status.away{color:var(--muted);}
+.tc-counts{text-align:right;}
+.tc-loads{font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--orange);line-height:1;}
+.tc-loads-lbl{font-family:'Barlow Condensed',sans-serif;font-size:9px;color:var(--muted);text-transform:uppercase;}
+.tc-tonnes{font-family:'Barlow Condensed',sans-serif;font-size:12px;color:var(--muted);margin-top:2px;text-align:right;}
+
+/* BIG LOG BUTTON */
+.log-btn-wrap{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;}
+.big-log-btn{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;border:none;cursor:pointer;padding:14px 8px;width:100%;}
+.big-log-btn.depart{background:var(--orange);color:#fff;}
+.big-log-btn.depart:active{background:#d45a08;transform:scale(0.97);}
+.big-log-btn.photo{background:#2a2a2a;color:var(--text);border:1px solid var(--border);}
+.big-log-btn.photo:active{background:#333;}
+.big-log-btn.undo{background:transparent;color:var(--red);border:1px solid rgba(231,76,60,0.4);font-size:14px;}
+.big-log-btn.undo:active{background:rgba(231,76,60,0.1);}
+.tc-del{position:absolute;top:10px;right:10px;background:transparent;border:none;color:#2a2a2a;font-size:18px;cursor:pointer;padding:4px;}
+.tc-del:active{color:var(--red);}
+.tc-cycle{font-family:'Barlow Condensed',sans-serif;font-size:11px;color:var(--muted);margin-top:8px;padding-top:8px;border-top:1px solid var(--border);}
+.tc-cycle span{color:var(--text);}
+
+/* ADD TRUCK */
+.add-truck-card{background:var(--card);border:1px dashed var(--border);padding:14px;margin-bottom:12px;display:none;}
+.field{margin-bottom:12px;}
+.field label{display:block;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:5px;}
+input,select{width:100%;background:var(--card2);border:1px solid var(--border);color:#fff;font-family:'Barlow',sans-serif;font-size:16px;padding:11px 12px;outline:none;border-radius:0;-webkit-appearance:none;}
+input:focus,select:focus{border-color:var(--orange);}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+
+/* BUTTONS */
+.btn{width:100%;font-family:'Bebas Neue',sans-serif;letter-spacing:2px;border:none;cursor:pointer;padding:13px;font-size:18px;}
+.btn-o{background:var(--orange);color:#fff;}
+.btn-o:active{background:#d45a08;}
+.btn-s{background:transparent;color:var(--orange);border:2px solid var(--orange);font-size:16px;margin-top:8px;}
+.btn-d{background:transparent;color:var(--red);border:1px solid rgba(231,76,60,0.3);font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;margin-top:8px;padding:10px;}
+.btn-sm{font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:1px;border:none;cursor:pointer;padding:7px 14px;}
+
+/* LOG ENTRIES */
+.load-log{display:flex;flex-direction:column;gap:6px;}
+.log-entry{background:var(--card2);border:1px solid var(--border);padding:10px 12px;display:flex;align-items:center;gap:10px;}
+.log-entry img{width:38px;height:38px;object-fit:cover;border:1px solid var(--border);flex-shrink:0;}
+.log-img-ph{width:38px;height:38px;background:#1a1a1a;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.le-info{flex:1;min-width:0;}
+.le-truck{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:#fff;}
+.le-time{font-family:'Barlow Condensed',sans-serif;font-size:11px;color:var(--muted);}
+.le-vol{font-family:'Barlow Condensed',sans-serif;font-size:11px;color:var(--orange);}
+.le-num{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--orange);text-align:right;min-width:32px;}
+.le-del{background:transparent;border:none;color:#333;font-size:16px;cursor:pointer;padding:4px;}
+.le-del:active{color:var(--red);}
+
+/* REPORT */
+.report-card{background:var(--card);border:1px solid var(--border);padding:14px;margin-bottom:10px;}
+.rep-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #1e1e1e;font-family:'Barlow Condensed',sans-serif;font-size:14px;}
+.rep-row:last-child{border:none;}
+.rep-label{color:var(--muted);}
+.rep-val{color:#fff;font-weight:700;}
+.rep-val.good{color:var(--green);}
+
+/* FLASH */
+.flash-overlay{display:none;position:fixed;inset:0;background:rgba(232,101,10,0.15);z-index:300;pointer-events:none;}
+.flash-overlay.show{display:block;animation:flashAnim 0.4s ease forwards;}
+@keyframes flashAnim{0%{opacity:1;}100%{opacity:0;}}
+
+/* CAMERA */
+.cam-overlay{display:none;position:fixed;inset:0;background:#000;z-index:500;flex-direction:column;}
+.cam-overlay.show{display:flex;}
+.cam-video{flex:1;object-fit:cover;width:100%;}
+.cam-controls{background:#111;padding:16px;display:flex;align-items:center;justify-content:space-around;}
+.cam-snap{width:60px;height:60px;border-radius:50%;background:var(--orange);border:4px solid #fff;cursor:pointer;font-size:22px;display:flex;align-items:center;justify-content:center;}
+.cam-cancel{background:transparent;border:1px solid #555;color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;padding:9px 16px;cursor:pointer;text-transform:uppercase;}
+canvas#snapCanvas{display:none;}
+
+/* CTA */
+.cta-bar{background:linear-gradient(135deg,#1a0f00,#110a00);border:1px solid rgba(232,101,10,0.3);padding:14px;margin-top:8px;}
+.cta-txt{font-family:'Barlow Condensed',sans-serif;font-size:13px;color:#fff;font-weight:600;margin-bottom:8px;}
+.cta-txt span{color:var(--orange);}
+.cta-lnk{display:block;text-align:center;background:var(--orange);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:2px;padding:10px;text-decoration:none;}
+
+/* COMPLETE */
+.complete-banner{background:rgba(39,174,96,0.08);border:2px solid var(--green);padding:14px;text-align:center;margin-bottom:10px;display:none;}
+.complete-title{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--green);letter-spacing:2px;}
+.complete-sub{font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--muted);margin-top:4px;}
+
+/* DENSITY BADGE */
+.density-badge{display:inline-block;background:#1a1a1a;border:1px solid var(--border);font-family:'Barlow Condensed',sans-serif;font-size:11px;color:var(--muted);padding:3px 8px;letter-spacing:1px;margin-bottom:10px;}
+
+@media print{
+  .hdr,.btn,.btn-o,.btn-s,.btn-d,.big-log-btn,.cam-overlay,.cta-bar,
+  .add-truck-card,.tc-del,.le-del,#backBtn,.flash-overlay{display:none!important;}
+  body{background:#fff;color:#000;}
+  .card,.truck-card,.log-entry,.prog-hero,.dual-item,.pstat,.report-card{background:#fff!important;border-color:#ddd!important;}
+  .dual-big,.tc-loads,.le-num,.rep-val{color:#E8650A!important;}
+  .pbar{background:#E8650A!important;}
+}
+</style>
+</head>
+<body>
+
+<!-- FLASH -->
+<div class="flash-overlay" id="flashOverlay"></div>
+
+<!-- CAMERA -->
+<div class="cam-overlay" id="camOverlay">
+  <video class="cam-video" id="camVideo" autoplay playsinline muted></video>
+  <canvas id="snapCanvas"></canvas>
+  <div class="cam-controls">
+    <button class="cam-cancel" onclick="closeCamera()">CANCEL</button>
+    <button class="cam-snap" onclick="takePhoto()">📷</button>
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:12px;color:var(--muted);text-align:center;" id="camLbl">TRUCK PHOTO</div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div>
+    <div class="hdr-logo">KING HOE — VERNON ROCK</div>
+    <div class="hdr-sub">Site Load Departure Tracker</div>
+  </div>
+  <div class="hdr-time" id="hdrTime">—</div>
+</div>
+
+<!-- SCREEN: JOB SELECT -->
+<div class="scr on" id="scr-select">
+  <div class="pg-title">SELECT JOB</div>
+  <div class="pg-sub">Tap a job to start tracking loads</div>
+
+  <div id="jobBtns"></div>
+
+  <div class="card" style="margin-top:16px;">
+    <div class="sec-title">SITE SETTINGS</div>
+    <div class="field"><label>Material Density (t/m³)</label>
+      <select id="globalDensity" onchange="saveDensity()">
+        <option value="1.75" selected>1.75 t/m³ — 3" Blast Rock (default)</option>
+        <option value="1.60">1.60 t/m³ — Crushed Rock / Gravel</option>
+        <option value="1.80">1.80 t/m³ — Dense Blast Rock</option>
+        <option value="1.90">1.90 t/m³ — Heavy Rock / Granite</option>
+        <option value="custom">Custom density...</option>
+      </select>
+    </div>
+    <div class="field" id="customDensityField" style="display:none;">
+      <label>Custom Density (t/m³)</label>
+      <input type="number" id="customDensityVal" placeholder="e.g. 1.72" step="0.01" inputmode="decimal" onchange="saveDensity()">
+    </div>
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:12px;color:var(--muted);line-height:1.5;">
+      Density converts between m³ and tonnes automatically. Confirm with quarry ticket if available.
+    </div>
+  </div>
+
+  <div class="cta-bar" style="margin-top:16px;">
+    <div class="cta-txt">Powered by <span>The Excavation Academy</span> — free training for civil excavation crews</div>
+    <a class="cta-lnk" href="https://www.skool.com/the-excavation-academy-2540" target="_blank">JOIN FREE</a>
+  </div>
+</div>
+
+<!-- SCREEN: TRACKER -->
+<div class="scr" id="scr-tracker">
+
+  <!-- PROGRESS HERO -->
+  <div class="prog-hero">
+    <div class="prog-job" id="t_jobName">—</div>
+    <div class="density-badge" id="t_densityBadge">3" Blast Rock · 1.75 t/m³</div>
+    <div class="dual-totals">
+      <div class="dual-item">
+        <div class="dual-big" id="t_tonnes">0</div>
+        <div class="dual-unit">t</div>
+        <div class="dual-label">Tonnes Departed</div>
+        <div class="dual-target" id="t_tonnes_target">/ 0 t target</div>
+      </div>
+      <div class="dual-item">
+        <div class="dual-big" id="t_m3">0</div>
+        <div class="dual-unit">m³</div>
+        <div class="dual-label">Volume Departed</div>
+        <div class="dual-target" id="t_m3_target">/ 0 m³ target</div>
+      </div>
+    </div>
+    <div class="pbar-wrap"><div class="pbar" id="t_bar" style="width:0%"></div></div>
+    <div class="prog-stats">
+      <div class="pstat"><div class="pstat-val" id="t_loads">0</div><div class="pstat-lbl">Total Loads</div></div>
+      <div class="pstat"><div class="pstat-val" id="t_pct">0%</div><div class="pstat-lbl">Complete</div></div>
+      <div class="pstat"><div class="pstat-val" id="t_today">0</div><div class="pstat-lbl">Today</div></div>
+    </div>
+  </div>
+
+  <!-- COMPLETE BANNER -->
+  <div class="complete-banner" id="completeBanner">
+    <div class="complete-title">✓ JOB COMPLETE</div>
+    <div class="complete-sub" id="completeSub"></div>
+  </div>
+
+  <!-- TRUCKS -->
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+    <div class="sec-title" style="margin-bottom:0;border:none;padding:0;">TRUCKS ON SITE</div>
+    <button class="btn-sm" style="background:var(--orange);color:#fff;" onclick="toggleAddTruck()">+ ADD TRUCK</button>
+  </div>
+
+  <div class="add-truck-card" id="addTruckCard">
+    <div class="sec-title">ADD TRUCK</div>
+    <div class="grid2">
+      <div class="field"><label>Truck ID / Driver</label><input id="at_name" type="text" placeholder="e.g. Truck 4 / Mike" autocomplete="off"></div>
+      <div class="field"><label>Plate / Unit #</label><input id="at_plate" type="text" placeholder="e.g. ABC 1234" autocomplete="off"></div>
+    </div>
+    <div class="field"><label>Truck Type & Box Size</label>
+      <select id="at_type" onchange="updateBoxSize()">
+        <option value="10">Tandem — 10 m³</option>
+        <option value="14">Truck & Pup — 14 m³</option>
+        <option value="18">Truck & Tandem — 18 m³</option>
+        <option value="22">B-Train / Super B — 22 m³</option>
+        <option value="12">End Dump — 12 m³</option>
+        <option value="custom">Custom size...</option>
+      </select>
+    </div>
+    <div class="field" id="customBoxField" style="display:none;"><label>Custom Box Size (m³)</label><input type="number" id="at_custom_m3" placeholder="e.g. 16" inputmode="decimal"></div>
+    <div style="display:flex;gap:10px;">
+      <button class="btn btn-o" style="font-size:16px;padding:11px;" onclick="addTruck()">ADD TRUCK</button>
+      <button class="btn btn-s" style="font-size:14px;padding:11px;margin-top:0;" onclick="toggleAddTruck()">CANCEL</button>
+    </div>
+  </div>
+
+  <div class="truck-grid" id="truckGrid"></div>
+
+  <!-- TODAY'S LOG -->
+  <div class="card">
+    <div class="sec-title">TODAY'S DEPARTURE LOG</div>
+    <div class="load-log" id="loadLog">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--muted);text-align:center;padding:14px 0;">No departures logged yet today.</div>
+    </div>
+  </div>
+
+  <!-- DAILY SUMMARY -->
+  <div class="report-card">
+    <div class="sec-title">DAILY SUMMARY</div>
+    <div id="summaryContent"></div>
+    <button class="btn btn-o" style="margin-top:12px;font-size:16px;" onclick="shareReport()">📤 SHARE REPORT WITH OWNER</button>
+  </div>
+
+  <button class="btn btn-s" onclick="printReport()">PRINT / SAVE PDF</button>
+  <button class="btn btn-d" onclick="clearToday()">CLEAR TODAY'S LOGS</button>
+  <button class="btn btn-s" id="backBtn" onclick="goTo('scr-select')" style="margin-top:8px;">← SWITCH JOB</button>
+
+  <div class="cta-bar" style="margin-top:16px;">
+    <div class="cta-txt">Powered by <span>The Excavation Academy</span></div>
+    <a class="cta-lnk" href="https://www.skool.com/the-excavation-academy-2540" target="_blank">JOIN FREE</a>
+  </div>
+</div>
+
+<script>
+// ─── PRE-LOADED JOBS ──────────────────────────────────────────────────────────
+const PRESET_JOBS = [
+  { id:'brentwell', name:'Brentwell Contracting', targetTonnes:1000, company:'Brentwell Contracting', week:'This Week' },
+  { id:'silvercrest', name:'Silver Crest', targetTonnes:3000, company:'Silver Crest', week:'This Week' },
+  { id:'westmont', name:'Westmont', targetTonnes:5000, company:'Westmont', week:'Next Week' },
+];
+
+// ─── STORAGE ──────────────────────────────────────────────────────────────────
+const SK = 'tea_vernon_rock_v1';
+let state = { jobs:{}, density:1.75, densityLabel:'3" Blast Rock' };
+let curJobId = null;
+let camStream = null;
+let camTruckId = null;
+
+function loadState() {
+  try { const s=localStorage.getItem(SK); if(s){ const p=JSON.parse(s); state=Object.assign(state,p); } }
+  catch(e){}
+  // Ensure all preset jobs exist
+  PRESET_JOBS.forEach(pj=>{
+    if(!state.jobs[pj.id]){
+      state.jobs[pj.id]=Object.assign({trucks:[],logs:[]},pj);
+    }
+  });
+}
+function saveState(){ try{ localStorage.setItem(SK,JSON.stringify(state)); }catch(e){} }
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+function init(){
+  loadState();
+  setInterval(updateTime,1000); updateTime();
+  renderJobSelect();
+  document.getElementById('globalDensity').value = String(state.density) in {'1.75':1,'1.60':1,'1.80':1,'1.90':1} ? String(state.density) : 'custom';
+  if(document.getElementById('globalDensity').value==='custom'){
+    document.getElementById('customDensityField').style.display='block';
+    document.getElementById('customDensityVal').value=state.density;
+  }
+  document.getElementById('globalDensity').addEventListener('change',function(){
+    document.getElementById('customDensityField').style.display=this.value==='custom'?'block':'none';
+  });
+  document.getElementById('at_type').addEventListener('change',updateBoxSize);
+}
+
+function updateTime(){
+  const n=new Date();
+  document.getElementById('hdrTime').textContent=n.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+}
+
+function saveDensity(){
+  const sel=document.getElementById('globalDensity').value;
+  if(sel==='custom'){
+    const v=parseFloat(document.getElementById('customDensityVal').value);
+    if(!isNaN(v)&&v>0){ state.density=v; state.densityLabel='Custom'; }
+  } else {
+    state.density=parseFloat(sel);
+    const labels={'1.75':'3" Blast Rock','1.60':'Crushed Rock','1.80':'Dense Blast Rock','1.90':'Heavy Rock/Granite'};
+    state.densityLabel=labels[sel]||'Rock';
+  }
+  saveState();
+}
+
+// ─── JOB SELECT ───────────────────────────────────────────────────────────────
+function renderJobSelect(){
+  const wrap=document.getElementById('jobBtns');
+  wrap.innerHTML='';
+  PRESET_JOBS.forEach(pj=>{
+    const job=state.jobs[pj.id];
+    const totalLoads=job.logs.filter(l=>l.departed).length;
+    const totalTonnes=calcTonnes(job);
+    const pct=Math.min(100,Math.round(totalTonnes/pj.targetTonnes*100));
+    const done=totalTonnes>=pj.targetTonnes;
+    const el=document.createElement('button');
+    el.className='job-btn'+(curJobId===pj.id?' active-job':'');
+    el.onclick=()=>openJob(pj.id);
+    el.innerHTML=`
+      <div class="jb-left">
+        <div class="jb-name">${pj.name}</div>
+        <div class="jb-target">${pj.week} · Target: ${pj.targetTonnes.toLocaleString()}t</div>
+        <div class="jb-target">${totalLoads} loads · ${totalTonnes.toFixed(0)}t departed</div>
+      </div>
+      <div class="jb-right">
+        <div class="jb-pct ${done?'done':''}">${done?'✓':pct+'%'}</div>
+        <div class="jb-tonnes">${totalTonnes.toFixed(0)}t of ${pj.targetTonnes.toLocaleString()}t</div>
+      </div>
+    `;
+    wrap.appendChild(el);
+  });
+}
+
+// ─── OPEN JOB ─────────────────────────────────────────────────────────────────
+function openJob(id){
+  curJobId=id;
+  renderTracker();
+  goTo('scr-tracker');
+}
+
+function goTo(id){
+  document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  window.scrollTo(0,0);
+  if(id==='scr-select') renderJobSelect();
+}
+
+// ─── RENDER TRACKER ───────────────────────────────────────────────────────────
+function renderTracker(){
+  const job=state.jobs[curJobId];
+  if(!job) return;
+  const density=state.density;
+  const targetT=job.targetTonnes;
+  const targetM3=targetT/density;
+  const totalT=calcTonnes(job);
+  const totalM3=totalT/density;
+  const totalLoads=job.logs.filter(l=>l.departed).length;
+  const todayLoads=getTodayLogs(job).filter(l=>l.departed).length;
+  const pct=Math.min(100,Math.round(totalT/targetT*100));
+  const done=totalT>=targetT;
+
+  document.getElementById('t_jobName').textContent=job.name+' — King Hoe Excavating';
+  document.getElementById('t_densityBadge').textContent=state.densityLabel+' · '+density+' t/m³';
+  document.getElementById('t_tonnes').textContent=totalT.toFixed(0);
+  document.getElementById('t_m3').textContent=totalM3.toFixed(0);
+  document.getElementById('t_tonnes_target').textContent='/ '+targetT.toLocaleString()+'t target';
+  document.getElementById('t_m3_target').textContent='/ '+targetM3.toFixed(0)+' m³ target';
+  document.getElementById('t_loads').textContent=totalLoads;
+  document.getElementById('t_pct').textContent=pct+'%';
+  document.getElementById('t_today').textContent=todayLoads;
+
+  const bar=document.getElementById('t_bar');
+  bar.style.width=pct+'%';
+  bar.className='pbar'+(done?' done':'');
+
+  document.getElementById('completeBanner').style.display=done?'block':'none';
+  if(done){
+    document.getElementById('completeSub').textContent=`${totalT.toFixed(0)}t (${totalM3.toFixed(0)}m³) departed over ${[...new Set(job.logs.map(l=>l.dayKey))].length} days.`;
+  }
+
+  renderTrucks(job);
+  renderLoadLog(job);
+  renderSummary(job);
+}
+
+// ─── TRUCKS ───────────────────────────────────────────────────────────────────
+function renderTrucks(job){
+  const grid=document.getElementById('truckGrid');
+  if(!job.trucks||!job.trucks.length){
+    grid.innerHTML='<div style="background:var(--card);border:1px dashed var(--border);padding:16px;font-family:\'Barlow Condensed\',sans-serif;font-size:13px;color:var(--muted);text-align:center;">No trucks registered yet. Tap + ADD TRUCK above.</div>';
+    return;
+  }
+  grid.innerHTML='';
+  const dayKey=getDayKey();
+  const density=state.density;
+
+  job.trucks.forEach(t=>{
+    const truckLogs=job.logs.filter(l=>l.truckId===t.id&&l.dayKey===dayKey&&l.departed);
+    const todayLoads=truckLogs.length;
+    const totalTruckLoads=job.logs.filter(l=>l.truckId===t.id&&l.departed).length;
+    const todayTonnes=(todayLoads*t.m3*density).toFixed(1);
+    const totalTonnes=(totalTruckLoads*t.m3*density).toFixed(1);
+    // Check if truck is currently on site (arrived, not departed yet)
+    const openLog=job.logs.find(l=>l.truckId===t.id&&l.dayKey===dayKey&&!l.departed);
+    const onSite=!!openLog;
+    const avgCycle=calcAvgCycle(job.logs.filter(l=>l.truckId===t.id&&l.dayKey===dayKey&&l.arrived&&l.departed));
+
+    const card=document.createElement('div');
+    card.className='truck-card'+(onSite?' on-site':'');
+    const thumb=t.photo?`<img class="tc-thumb" src="${t.photo}" alt="">`:`<div class="tc-placeholder">🚛</div>`;
+
+    card.innerHTML=`
+      <button class="tc-del" onclick="deleteTruck('${t.id}')">×</button>
+      <div class="tc-top">
+        ${thumb}
+        <div class="tc-info">
+          <div class="tc-name">${esc(t.name)}</div>
+          <div class="tc-detail">${t.plate?esc(t.plate)+' · ':''} ${t.m3}m³ / ${(t.m3*density).toFixed(1)}t per load</div>
+          <div class="tc-status ${onSite?'loading':'away'}">${onSite?'● ON SITE — LOADING':'○ AWAY / IN TRANSIT'}</div>
+        </div>
+        <div class="tc-counts">
+          <div class="tc-loads">${todayLoads}</div>
+          <div class="tc-loads-lbl">today</div>
+          <div class="tc-tonnes">${todayTonnes}t · ${(todayLoads*t.m3).toFixed(0)}m³</div>
+          <div class="tc-tonnes" style="margin-top:4px;font-size:10px;">Total: ${totalTruckLoads} loads · ${totalTonnes}t</div>
+        </div>
+      </div>
+      <div class="log-btn-wrap">
+        <button class="big-log-btn depart" onclick="logDeparture('${t.id}')">
+          ${onSite?'✓ LOG LOAD OUT':'🟠 ARRIVED — START'}
+        </button>
+        <button class="big-log-btn photo" onclick="openCam('${t.id}')">📷 PHOTO</button>
+      </div>
+      ${todayLoads>0?`<button class="big-log-btn undo" onclick="undoLast('${t.id}')">↩ UNDO LAST LOAD</button>`:''}
+      ${avgCycle?`<div class="tc-cycle">Avg round time today: <span>${avgCycle} min</span></div>`:''}
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function updateBoxSize(){
+  const v=document.getElementById('at_type').value;
+  document.getElementById('customBoxField').style.display=v==='custom'?'block':'none';
+}
+
+function toggleAddTruck(){
+  const c=document.getElementById('addTruckCard');
+  c.style.display=c.style.display==='none'||c.style.display===''?'block':'none';
+  if(c.style.display==='block') document.getElementById('at_name').focus();
+}
+
+function addTruck(){
+  const name=document.getElementById('at_name').value.trim();
+  if(!name){alert('Enter a truck ID or driver name.');return;}
+  const plate=document.getElementById('at_plate').value.trim();
+  const typeVal=document.getElementById('at_type').value;
+  const m3=typeVal==='custom'?parseFloat(document.getElementById('at_custom_m3').value):parseFloat(typeVal);
+  if(!m3||m3<=0){alert('Enter truck box size.');return;}
+  const job=state.jobs[curJobId];
+  const id='t'+Date.now();
+  job.trucks.push({id,name,plate,m3,photo:null});
+  saveState();
+  document.getElementById('at_name').value='';
+  document.getElementById('at_plate').value='';
+  toggleAddTruck();
+  renderTracker();
+}
+
+function deleteTruck(tid){
+  if(!confirm('Remove this truck?')) return;
+  const job=state.jobs[curJobId];
+  job.trucks=job.trucks.filter(t=>t.id!==tid);
+  saveState(); renderTracker();
+}
+
+// ─── LOG DEPARTURE ────────────────────────────────────────────────────────────
+function logDeparture(tid){
+  const job=state.jobs[curJobId];
+  const truck=job.trucks.find(t=>t.id===tid);
+  if(!truck) return;
+  const dayKey=getDayKey();
+  const now=Date.now();
+  // Check if truck is currently on site (not departed)
+  const open=job.logs.find(l=>l.truckId===tid&&l.dayKey===dayKey&&!l.departed);
+  if(open){
+    // Log departure - complete the round
+    open.departed=now;
+    open.cycleMin=open.arrived?Math.round((now-open.arrived)/60000):null;
+  } else {
+    // Log arrival and immediate departure (single tap mode for simplicity)
+    job.logs.push({
+      id:'l'+now, truckId:tid, dayKey,
+      arrived:now-5*60000, // assume 5 min on site
+      departed:now,
+      m3:truck.m3,
+      photo:null
+    });
+  }
+  saveState();
+  flash();
+  haptic();
+  renderTracker();
+}
+
+function undoLast(tid){
+  if(!confirm('Undo last load for this truck?')) return;
+  const job=state.jobs[curJobId];
+  const dayKey=getDayKey();
+  const truckLogs=job.logs.filter(l=>l.truckId===tid&&l.dayKey===dayKey&&l.departed).sort((a,b)=>b.departed-a.departed);
+  if(!truckLogs.length) return;
+  job.logs=job.logs.filter(l=>l.id!==truckLogs[0].id);
+  saveState(); renderTracker();
+}
+
+// ─── LOAD LOG ─────────────────────────────────────────────────────────────────
+function renderLoadLog(job){
+  const log=document.getElementById('loadLog');
+  const today=getTodayLogs(job).filter(l=>l.departed).sort((a,b)=>b.departed-a.departed);
+  if(!today.length){
+    log.innerHTML='<div style="font-family:\'Barlow Condensed\',sans-serif;font-size:13px;color:var(--muted);text-align:center;padding:14px 0;">No departures logged yet today.</div>';
+    return;
+  }
+  log.innerHTML='';
+  const density=state.density;
+  today.forEach((l,i)=>{
+    const truck=job.trucks.find(t=>t.id===l.truckId);
+    const tName=truck?truck.name:'Unknown';
+    const m3=l.m3||(truck?truck.m3:10);
+    const tonnes=(m3*density).toFixed(1);
+    const el=document.createElement('div');
+    el.className='log-entry';
+    el.innerHTML=`
+      ${l.photo?`<img src="${l.photo}" alt="">`:`<div class="log-img-ph">🚛</div>`}
+      <div class="le-info">
+        <div class="le-truck">${esc(tName)}</div>
+        <div class="le-time">Out: ${fmtTime(l.departed)}${l.cycleMin?` · Round: ${l.cycleMin}min`:''}</div>
+        <div class="le-vol">${m3}m³ · ${tonnes}t</div>
+      </div>
+      <div class="le-num">#${today.length-i}</div>
+      <button class="le-del" onclick="deleteLog('${l.id}')">×</button>
+    `;
+    log.appendChild(el);
+  });
+}
+
+function deleteLog(lid){
+  if(!confirm('Remove this load entry?')) return;
+  const job=state.jobs[curJobId];
+  job.logs=job.logs.filter(l=>l.id!==lid);
+  saveState(); renderTracker();
+}
+
+// ─── SUMMARY ──────────────────────────────────────────────────────────────────
+function renderSummary(job){
+  const density=state.density;
+  const todayLogs=getTodayLogs(job).filter(l=>l.departed);
+  const todayT=(todayLogs.reduce((s,l)=>{const t=job.trucks.find(tr=>tr.id===l.truckId); return s+(t?t.m3:10);},0)*density).toFixed(1);
+  const todayM3=todayLogs.reduce((s,l)=>{const t=job.trucks.find(tr=>tr.id===l.truckId); return s+(t?t.m3:10);},0).toFixed(1);
+  const totalT=calcTonnes(job).toFixed(1);
+  const targetT=job.targetTonnes;
+  const remaining=Math.max(0,targetT-calcTonnes(job)).toFixed(0);
+  const days=[...new Set(job.logs.filter(l=>l.departed).map(l=>l.dayKey))].length||1;
+  const avgPerDay=days>0?(calcTonnes(job)/days).toFixed(0):0;
+
+  document.getElementById('summaryContent').innerHTML=`
+    <div class="rep-row"><span class="rep-label">Today's loads</span><span class="rep-val">${todayLogs.length} loads · ${todayT}t · ${todayM3}m³</span></div>
+    <div class="rep-row"><span class="rep-label">Job total to date</span><span class="rep-val">${totalT}t departed</span></div>
+    <div class="rep-row"><span class="rep-label">Target</span><span class="rep-val">${targetT.toLocaleString()}t</span></div>
+    <div class="rep-row"><span class="rep-label">Remaining</span><span class="rep-val ${parseFloat(remaining)===0?'good':''}">${remaining}t</span></div>
+    <div class="rep-row"><span class="rep-label">Avg per day</span><span class="rep-val">${avgPerDay}t/day</span></div>
+    ${parseFloat(remaining)>0&&parseFloat(avgPerDay)>0?`<div class="rep-row"><span class="rep-label">Days to finish at avg pace</span><span class="rep-val">${Math.ceil(parseFloat(remaining)/parseFloat(avgPerDay))} days</span></div>`:''}
+  `;
+}
+
+// ─── SHARE REPORT ─────────────────────────────────────────────────────────────
+function shareReport(){
+  const job=state.jobs[curJobId];
+  const density=state.density;
+  const todayLogs=getTodayLogs(job).filter(l=>l.departed);
+  const todayT=(todayLogs.reduce((s,l)=>{const t=job.trucks.find(tr=>tr.id===l.truckId); return s+(t?t.m3:10);},0)*density).toFixed(1);
+  const totalT=calcTonnes(job).toFixed(1);
+  const targetT=job.targetTonnes;
+  const pct=Math.min(100,Math.round(parseFloat(totalT)/targetT*100));
+
+  let truckLines='';
+  (job.trucks||[]).forEach(t=>{
+    const tl=todayLogs.filter(l=>l.truckId===t.id);
+    if(tl.length) truckLines+=`\n  ${t.name}: ${tl.length} loads · ${(tl.length*t.m3*density).toFixed(1)}t`;
+  });
+
+  const txt=`📊 LOAD DEPARTURE REPORT — King Hoe Excavating
+${job.name} — Vernon Rock
+${new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})}
+
+TODAY: ${todayLogs.length} loads · ${todayT}t departed
+JOB TOTAL: ${totalT}t of ${targetT.toLocaleString()}t (${pct}% complete)
+REMAINING: ${Math.max(0,targetT-parseFloat(totalT)).toFixed(0)}t
+
+TRUCKS TODAY:${truckLines||'\n  No trucks logged yet'}
+
+Material: ${state.densityLabel} @ ${density} t/m³
+
+Tracked with T.E.A. Site Haul Tracker
+theexcavationacademy.com`;
+
+  if(navigator.share){ navigator.share({title:'Load Report — '+job.name,text:txt}); }
+  else if(navigator.clipboard){ navigator.clipboard.writeText(txt).then(()=>alert('Report copied — paste into text or email to Travis.')); }
+  else { prompt('Copy this report:',txt); }
+}
+
+function printReport(){ window.print(); }
+
+function clearToday(){
+  if(!confirm("Clear all of today's departure logs for this job?")) return;
+  const job=state.jobs[curJobId];
+  const dayKey=getDayKey();
+  job.logs=job.logs.filter(l=>l.dayKey!==dayKey);
+  saveState(); renderTracker();
+}
+
+// ─── CAMERA ───────────────────────────────────────────────────────────────────
+function openCam(tid){
+  camTruckId=tid;
+  const truck=state.jobs[curJobId].trucks.find(t=>t.id===tid);
+  document.getElementById('camLbl').textContent=truck?truck.name.toUpperCase():'TRUCK';
+  document.getElementById('camOverlay').classList.add('show');
+  navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'},audio:false})
+    .then(s=>{ camStream=s; document.getElementById('camVideo').srcObject=s; })
+    .catch(()=>{ closeCamera(); alert('Camera not available — check permissions.'); });
+}
+function takePhoto(){
+  const v=document.getElementById('camVideo');
+  const c=document.getElementById('snapCanvas');
+  c.width=v.videoWidth; c.height=v.videoHeight;
+  c.getContext('2d').drawImage(v,0,0);
+  const data=c.toDataURL('image/jpeg',0.6);
+  closeCamera();
+  if(camTruckId){
+    const truck=state.jobs[curJobId].trucks.find(t=>t.id===camTruckId);
+    if(truck){ truck.photo=data; saveState(); renderTracker(); }
+  }
+}
+function closeCamera(){
+  if(camStream){ camStream.getTracks().forEach(t=>t.stop()); camStream=null; }
+  document.getElementById('camOverlay').classList.remove('show');
+  document.getElementById('camVideo').srcObject=null;
+  camTruckId=null;
+}
+
+// ─── HELPERS ──────────────────────────────────────────────────────────────────
+function calcTonnes(job){
+  const density=state.density;
+  return (job.logs||[]).filter(l=>l.departed).reduce((s,l)=>{
+    const t=job.trucks?job.trucks.find(tr=>tr.id===l.truckId):null;
+    return s+(t?t.m3:l.m3||10)*density;
+  },0);
+}
+function getTodayLogs(job){ const k=getDayKey(); return (job.logs||[]).filter(l=>l.dayKey===k); }
+function getDayKey(){ return new Date().toDateString(); }
+function fmtTime(ts){ return new Date(ts).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}); }
+function calcAvgCycle(logs){
+  const c=logs.filter(l=>l.arrived&&l.departed&&l.cycleMin);
+  if(!c.length) return null;
+  return Math.round(c.reduce((s,l)=>s+l.cycleMin,0)/c.length);
+}
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function flash(){
+  const el=document.getElementById('flashOverlay');
+  el.classList.remove('show');
+  void el.offsetWidth;
+  el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'),400);
+}
+function haptic(){ if(navigator.vibrate) navigator.vibrate(50); }
+
+if('serviceWorker' in navigator) navigator.serviceWorker.register('tea-sw.js').catch(()=>{});
+init();
+</script>
+</body>
+</html>

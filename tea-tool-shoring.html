@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trench Shoring Checker — The Excavation Academy</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap');
+:root { --orange:#E8650A; --dark:#0a0a0a; --card:#141414; --border:#2a2a2a; --text:#e0e0e0; --muted:#777; --green:#27ae60; --red:#e74c3c; --yellow:#f39c12; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--dark); color:var(--text); font-family:'Barlow',sans-serif; min-height:100vh; }
+.header { background:#111; border-bottom:3px solid var(--orange); padding:18px 24px; display:flex; align-items:center; justify-content:space-between; }
+.logo { font-family:'Bebas Neue',sans-serif; font-size:22px; color:var(--orange); letter-spacing:3px; }
+.header-sub { font-family:'Barlow Condensed',sans-serif; font-size:13px; letter-spacing:2px; color:var(--muted); text-transform:uppercase; }
+.container { max-width:860px; margin:0 auto; padding:32px 20px; }
+.tool-title { font-family:'Bebas Neue',sans-serif; font-size:48px; color:#fff; letter-spacing:2px; line-height:1; margin-bottom:6px; }
+.tool-sub { font-family:'Barlow Condensed',sans-serif; font-size:16px; color:var(--muted); letter-spacing:1px; margin-bottom:32px; text-transform:uppercase; }
+.card { background:var(--card); border:1px solid var(--border); padding:24px; margin-bottom:20px; }
+.card-title { font-family:'Bebas Neue',sans-serif; font-size:20px; color:var(--orange); letter-spacing:2px; margin-bottom:20px; border-bottom:1px solid var(--border); padding-bottom:10px; }
+.grid2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.field { margin-bottom:16px; }
+label { display:block; font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:700; letter-spacing:2px; color:var(--muted); text-transform:uppercase; margin-bottom:8px; }
+input, select { width:100%; background:#1a1a1a; border:1px solid var(--border); color:#fff; font-family:'Barlow',sans-serif; font-size:16px; padding:12px 14px; outline:none; transition:border-color 0.2s; }
+input:focus { border-color:var(--orange); }
+.btn { width:100%; background:var(--orange); color:#fff; font-family:'Bebas Neue',sans-serif; font-size:22px; letter-spacing:3px; padding:16px; border:none; cursor:pointer; }
+.btn:hover { background:#d45a08; }
+.result-box { background:#111; border:1px solid var(--border); padding:20px; margin-bottom:16px; display:none; }
+.result-box.show { display:block; }
+.result-box.danger { border-color:var(--red); background:rgba(231,76,60,0.05); }
+.result-box.warning { border-color:var(--yellow); background:rgba(243,156,18,0.05); }
+.result-box.safe { border-color:var(--green); background:rgba(39,174,96,0.05); }
+.req-title { font-family:'Bebas Neue',sans-serif; font-size:28px; letter-spacing:2px; margin-bottom:12px; }
+.req-title.danger { color:var(--red); }
+.req-title.warning { color:var(--yellow); }
+.req-title.safe { color:var(--green); }
+.req-list { list-style:none; }
+.req-list li { font-family:'Barlow Condensed',sans-serif; font-size:15px; color:var(--text); padding:8px 0; border-bottom:1px solid #1e1e1e; display:flex; gap:10px; }
+.req-list li:last-child { border-bottom:none; }
+.req-list li::before { content:'→'; color:var(--orange); font-weight:700; }
+.note { font-size:13px; color:var(--muted); line-height:1.6; padding-top:12px; border-top:1px solid var(--border); margin-top:12px; }
+.cta-bar { background:linear-gradient(135deg,#1a0f00,#110a00); border:1px solid rgba(232,101,10,0.3); padding:24px; margin-top:24px; display:flex; align-items:center; justify-content:space-between; gap:20px; }
+.cta-text { font-family:'Barlow Condensed',sans-serif; font-size:18px; color:#fff; font-weight:600; }
+.cta-text span { color:var(--orange); }
+.cta-link { background:var(--orange); color:#fff; font-family:'Bebas Neue',sans-serif; font-size:18px; letter-spacing:2px; padding:12px 28px; text-decoration:none; white-space:nowrap; }
+@media(max-width:640px){ .grid2{grid-template-columns:1fr;} .cta-bar{flex-direction:column;} }
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="logo">THE EXCAVATION ACADEMY</div>
+  <div class="header-sub">Field Tools Library</div>
+</div>
+<div class="container">
+  <div class="tool-title">TRENCH SHORING REQUIREMENT CHECKER</div>
+  <div class="tool-sub">Determine shoring requirements based on trench depth and soil type</div>
+
+  <div class="card">
+    <div class="card-title">TRENCH CONDITIONS</div>
+    <div class="grid2">
+      <div class="field"><label>Trench Depth (m)</label><input type="number" id="trenchDepth" placeholder="e.g. 2.4" step="0.1"></div>
+      <div class="field"><label>Trench Width (m)</label><input type="number" id="trenchWidth" placeholder="e.g. 1.2" step="0.1"></div>
+    </div>
+    <div class="grid2">
+      <div class="field"><label>Soil Classification</label>
+        <select id="soilClass">
+          <option value="A">Type A — Hard, compact clay (stable)</option>
+          <option value="B" selected>Type B — Medium clay, granular, fissured</option>
+          <option value="C">Type C — Loose sand, saturated, unstable</option>
+        </select>
+      </div>
+      <div class="field"><label>Surcharge / Nearby Traffic?</label>
+        <select id="surcharge">
+          <option value="no">No — Clear zone maintained</option>
+          <option value="yes">Yes — Equipment or traffic nearby</option>
+        </select>
+      </div>
+    </div>
+    <div class="field"><label>Water / Wet Conditions Present?</label>
+      <select id="water">
+        <option value="no">No</option>
+        <option value="yes">Yes — Water present or saturated soil</option>
+      </select>
+    </div>
+    <button class="btn" onclick="checkShoring()">CHECK SHORING REQUIREMENTS</button>
+  </div>
+
+  <div class="result-box" id="shoringResult">
+    <div class="req-title" id="s_title">—</div>
+    <ul class="req-list" id="s_list"></ul>
+    <div class="note" id="s_note">—</div>
+  </div>
+
+  <div class="cta-bar">
+    <div class="cta-text">Free tool from <span>The Excavation Academy</span> — excavation safety covered in full in Tier 1.</div>
+    <a class="cta-link" href="https://www.skool.com/the-excavation-academy-2540" target="_blank">JOIN FREE</a>
+  </div>
+</div>
+<script>
+function checkShoring(){
+  const depth=parseFloat(document.getElementById('trenchDepth').value);
+  const width=parseFloat(document.getElementById('trenchWidth').value);
+  const soil=document.getElementById('soilClass').value;
+  const surcharge=document.getElementById('surcharge').value;
+  const water=document.getElementById('water').value;
+  if(isNaN(depth)||isNaN(width)){alert('Enter trench depth and width.');return;}
+  const r=document.getElementById('shoringResult');
+  const title=document.getElementById('s_title');
+  const list=document.getElementById('s_list');
+  const note=document.getElementById('s_note');
+  r.className='result-box show';
+  list.innerHTML='';
+  let items=[];
+  let cls='safe';
+  let titleText='';
+  const addItem=(txt)=>{ const li=document.createElement('li'); li.textContent=txt; list.appendChild(li); };
+  if(depth<1.2 && soil==='A' && surcharge==='no' && water==='no'){
+    cls='safe'; titleText='LOW RISK — MONITOR CONDITIONS';
+    items=['Depth under 1.2m in Type A soil — lower risk zone','Maintain safe entry/exit at all times','Competent person must assess soil and conditions before entry','Do not allow worker to stand directly under spoil pile','Conditions can change — re-assess if soil or weather changes'];
+  } else if(depth>=1.2 && depth<1.5 && soil!=='C' && surcharge==='no' && water==='no'){
+    cls='warning'; titleText='CAUTION — PROTECTIVE MEASURES REQUIRED';
+    items=['Depth exceeds 1.2m — protective system required','Sloping, shoring, or trench box required before worker entry','Competent person must classify soil and approve system','Keep spoil pile minimum 0.6m from trench edge','Daily inspection required by competent person','No worker entry without approved protection in place'];
+  } else {
+    cls='danger'; titleText='DANGER — FULL SHORING REQUIRED';
+    items=[];
+    if(depth>=1.5) items.push('Depth exceeds 1.5m — full protection system mandatory');
+    if(soil==='C') items.push('Type C soil — highest risk, cave-in risk is immediate');
+    if(surcharge==='yes') items.push('Surcharge present — additional lateral pressure on trench walls');
+    if(water==='yes') items.push('Water present — saturates soil, dramatically increases cave-in risk');
+    items.push('Trench box, hydraulic shoring, or engineered sloping/benching required');
+    items.push('Competent person must approve and inspect system before any entry');
+    items.push('Continuous monitoring required — remove workers immediately if conditions change');
+    items.push('NO WORKER ENTRY until protective system is in place and inspected');
+  }
+  r.classList.add(cls);
+  title.className='req-title '+cls;
+  title.textContent=titleText;
+  items.forEach(addItem);
+  note.textContent='This tool provides a general guide based on OSHA 29 CFR 1926 Subpart P principles. Always have a qualified Competent Person assess actual site conditions. Local OHS/WCB regulations may have additional requirements. These results do not replace a site-specific hazard assessment.';
+}
+</script>
+</body>
+</html>

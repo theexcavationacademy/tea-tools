@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#E8650A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Haul Tracker">
+<link rel="manifest" href="tea-manifest.json">
+<link rel="apple-touch-icon" href="tea-icon.svg">
+<title>T.E.A. Haul Tracker</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap');
+:root{--orange:#E8650A;--dark:#0a0a0a;--card:#141414;--card2:#1a1a1a;--border:#2a2a2a;--text:#e0e0e0;--muted:#666;--green:#27ae60;--red:#e74c3c;--yellow:#f39c12;--blue:#2980b9;}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{min-height:100%;background:var(--dark);color:var(--text);font-family:'Barlow',sans-serif;}
+body{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 24px);}
+.hdr{background:#111;border-bottom:3px solid var(--orange);padding:13px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.hdr-logo{font-family:'Bebas Neue',sans-serif;font-size:17px;color:var(--orange);letter-spacing:2px;}
+.hdr-right{display:flex;align-items:center;gap:10px;}
+.offline-badge{display:none;background:#333;color:var(--yellow);font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:1px;padding:3px 7px;text-transform:uppercase;}
+.offline-badge.show{display:block;}
+.hdr-tag{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;}
+.install-bar{display:none;position:fixed;bottom:0;left:0;right:0;background:#111;border-top:2px solid var(--orange);padding:12px 16px;z-index:200;align-items:center;gap:10px;}
+.install-bar.show{display:flex;}
+.ibar-text{font-family:'Barlow Condensed',sans-serif;font-size:14px;color:#fff;flex:1;}
+.ibar-text span{color:var(--orange);}
+.ibtn{background:var(--orange);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:2px;border:none;padding:9px 16px;cursor:pointer;}
+.idismiss{background:transparent;border:none;color:var(--muted);font-size:22px;cursor:pointer;padding:2px 6px;line-height:1;}
+.ios-bar{display:none;position:fixed;bottom:0;left:0;right:0;background:#111;border-top:2px solid var(--orange);padding:14px 16px;z-index:200;text-align:center;}
+.ios-bar.show{display:block;}
+.ios-bar p{font-family:'Barlow Condensed',sans-serif;font-size:14px;color:#fff;line-height:1.5;}
+.ios-bar p span{color:var(--orange);font-weight:700;}
+.ios-close{margin-top:10px;background:transparent;border:1px solid var(--border);color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:2px;padding:7px 18px;cursor:pointer;text-transform:uppercase;}
+.scr{display:none;padding:18px 16px;max-width:600px;margin:0 auto;}
+.scr.on{display:block;}
+.pg-title{font-family:'Bebas Neue',sans-serif;font-size:38px;color:#fff;letter-spacing:2px;line-height:1;margin-bottom:3px;}
+.pg-sub{font-family:'Barlow Condensed',sans-serif;font-size:12px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:22px;}
+.card{background:var(--card);border:1px solid var(--border);padding:16px;margin-bottom:12px;}
+.card-ttl{font-family:'Bebas Neue',sans-serif;font-size:17px;color:var(--orange);letter-spacing:2px;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.f{margin-bottom:13px;}
+.f label{display:block;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:5px;}
+.f input,.f select,.f textarea{width:100%;background:var(--card2);border:1px solid var(--border);color:#fff;font-family:'Barlow',sans-serif;font-size:16px;padding:11px 13px;outline:none;border-radius:0;-webkit-appearance:none;}
+.f input:focus,.f select:focus,.f textarea:focus{border-color:var(--orange);}
+.f textarea{resize:none;height:54px;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.btn{width:100%;background:var(--orange);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:19px;letter-spacing:3px;padding:14px;border:none;cursor:pointer;}
+.btn:active{background:#d45a08;}
+.btn-outline{width:100%;background:transparent;color:var(--orange);border:2px solid var(--orange);font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;padding:12px;cursor:pointer;}
+.btn-outline:active{background:rgba(232,101,10,0.1);}
+.btn-sm-danger{width:100%;background:transparent;color:var(--red);border:1px solid rgba(231,76,60,0.25);font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:2px;padding:9px;cursor:pointer;text-transform:uppercase;}
+.mt8{margin-top:8px;} .mt12{margin-top:12px;}
+.job-list{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
+.job-item{background:var(--card);border:1px solid var(--border);padding:14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;}
+.job-item:active{border-color:var(--orange);}
+.ji-name{font-family:'Bebas Neue',sans-serif;font-size:19px;color:#fff;letter-spacing:1px;}
+.ji-meta{font-family:'Barlow Condensed',sans-serif;font-size:11px;color:var(--muted);margin-top:2px;}
+.ji-pct{font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--orange);}
+.ji-pct.done{color:var(--green);}
+.est-full{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px;}
+.est-item{background:var(--card2);border:1px solid var(--border);padding:12px;text-align:center;}
+.est-val{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--orange);line-height:1;}
+.est-lbl{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-top:3px;}
+.hero{background:var(--card);border:1px solid var(--border);border-left:4px solid var(--orange);padding:16px;margin-bottom:12px;}
+.hero-name{font-family:'Bebas Neue',sans-serif;font-size:22px;color:#fff;letter-spacing:1px;margin-bottom:6px;line-height:1.1;}
+.hero-nums{display:flex;align-items:baseline;gap:5px;margin-bottom:8px;}
+.h-done{font-family:'Bebas Neue',sans-serif;font-size:54px;color:var(--orange);line-height:1;}
+.h-total{font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--muted);line-height:1;}
+.h-unit{font-family:'Barlow Condensed',sans-serif;font-size:12px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;align-self:flex-end;margin-bottom:3px;}
+.pbar-wrap{background:#1a1a1a;height:12px;border:1px solid var(--border);margin-bottom:10px;}
+.pbar-fill{height:100%;background:var(--orange);transition:width 0.4s;min-width:3px;}
+.pbar-fill.done{background:var(--green);}
+.hero-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
+.hs{text-align:center;background:var(--card2);padding:8px 4px;}
+.hs-val{font-family:'Bebas Neue',sans-serif;font-size:18px;color:#fff;line-height:1;}
+.hs-val.good{color:var(--green);} .hs-val.warn{color:var(--yellow);} .hs-val.bad{color:var(--red);}
+.hs-lbl{font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-top:2px;}
+.sched-card{background:var(--card);border:1px solid var(--border);border-left:3px solid var(--blue);padding:14px;margin-bottom:12px;}
+.sched-ttl{font-family:'Bebas Neue',sans-serif;font-size:15px;color:var(--blue);letter-spacing:2px;margin-bottom:10px;}
+.sched-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #1e1e1e;font-family:'Barlow Condensed',sans-serif;font-size:13px;}
+.sched-row:last-child{border:none;font-weight:700;color:#fff;}
+.sched-lbl{color:var(--muted);}
+.sched-val{color:#fff;font-weight:700;}
+.sched-val.urgent{color:var(--red);} .sched-val.warn{color:var(--yellow);} .sched-val.ok{color:var(--green);}
+.today-card{background:var(--card);border:2px solid var(--orange);padding:16px;margin-bottom:12px;}
+.today-lbl{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;color:var(--orange);text-transform:uppercase;margin-bottom:3px;}
+.today-date{font-family:'Bebas Neue',sans-serif;font-size:19px;color:#fff;letter-spacing:1px;margin-bottom:12px;}
+.loads-row{display:flex;gap:8px;align-items:stretch;margin-bottom:8px;}
+.loads-row input{font-size:28px;font-weight:900;text-align:center;color:var(--orange);flex:1;padding:10px;background:var(--card2);border:1px solid var(--border);outline:none;}
+.loads-row input:focus{border-color:var(--orange);}
+.log-btn{background:var(--orange);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:1px;border:none;padding:0 16px;cursor:pointer;min-width:80px;}
+.log-btn:active{background:#d45a08;} .log-btn.saved{background:var(--green);}
+.complete{background:rgba(39,174,96,0.08);border:2px solid var(--green);padding:16px;text-align:center;margin-bottom:12px;}
+.complete-ttl{font-family:'Bebas Neue',sans-serif;font-size:30px;color:var(--green);letter-spacing:2px;}
+.complete-sub{font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--muted);margin-top:3px;}
+.share-bar{background:var(--card);border:1px solid var(--border);padding:14px;margin-bottom:12px;}
+.share-lbl{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:6px;}
+.share-note{font-family:'Barlow',sans-serif;font-size:12px;color:var(--muted);margin-bottom:8px;line-height:1.4;}
+.share-btn{width:100%;background:transparent;border:1px solid var(--border);color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:2px;padding:9px;cursor:pointer;text-transform:uppercase;}
+.share-btn:active{border-color:var(--orange);color:var(--orange);}
+.day-log{display:flex;flex-direction:column;gap:6px;}
+.day-entry{background:var(--card2);border:1px solid var(--border);padding:10px 12px;display:flex;align-items:center;gap:8px;}
+.day-entry.today{border-color:rgba(232,101,10,0.5);}
+.day-entry.ahead{border-left:3px solid var(--green);}
+.day-entry.behind{border-left:3px solid var(--red);}
+.day-left{flex:1;min-width:0;}
+.day-dt{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:#fff;}
+.day-today-tag{color:var(--orange);font-size:9px;letter-spacing:1px;margin-left:5px;}
+.day-pace{font-family:'Barlow Condensed',sans-serif;font-size:11px;margin-top:1px;}
+.day-note{font-family:'Barlow',sans-serif;font-size:11px;color:var(--muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.day-right{text-align:right;min-width:48px;}
+.day-loads-n{font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--orange);line-height:1;}
+.day-loads-l{font-family:'Barlow Condensed',sans-serif;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
+.day-del{background:transparent;border:none;color:#333;font-size:18px;cursor:pointer;padding:3px;line-height:1;}
+.day-del:active{color:var(--red);}
+.empty-log{font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--muted);text-align:center;padding:18px 0;}
+.cta{background:linear-gradient(135deg,#1a0f00,#110a00);border:1px solid rgba(232,101,10,0.3);padding:16px;margin-top:8px;}
+.cta p{font-family:'Barlow Condensed',sans-serif;font-size:14px;color:#fff;font-weight:600;margin-bottom:9px;}
+.cta p span{color:var(--orange);}
+.cta a{display:block;text-align:center;background:var(--orange);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;padding:11px;text-decoration:none;}
+@media print{.hdr,.today-card,.share-bar,.cta,.btn,.btn-outline,.btn-sm-danger,.install-bar,.ios-bar,#backBtn,.day-del{display:none!important;}body{background:#fff;color:#000;}.card,.hero,.day-entry,.sched-card{border-color:#ddd!important;background:#fff!important;}.pg-title,.hero-name,.h-done,.card-ttl{color:#000!important;}.h-done,.day-loads-n,.est-val{color:#E8650A!important;}}
+</style>
+</head>
+<body>
+<div class="install-bar" id="installBar">
+  <div class="ibar-text">Add <span>Haul Tracker</span> to home screen — works offline</div>
+  <button class="ibtn" onclick="installApp()">INSTALL</button>
+  <button class="idismiss" onclick="dismissInstall()">×</button>
+</div>
+<div class="ios-bar" id="iosBar">
+  <p>Install on iPhone: tap <span>Share ↑</span> then <span>"Add to Home Screen"</span></p>
+  <button class="ios-close" onclick="dismissIos()">GOT IT</button>
+</div>
+<div class="hdr">
+  <div class="hdr-logo">T.E.A. HAUL TRACKER</div>
+  <div class="hdr-right">
+    <div class="offline-badge" id="offlineBadge">OFFLINE</div>
+    <div class="hdr-tag">Field Tool</div>
+  </div>
+</div>
+
+<!-- SELECT -->
+<div class="scr on" id="scr-select">
+  <div class="pg-title">HAUL TRACKER</div>
+  <div class="pg-sub">Calculate · Track daily · Stay on schedule</div>
+  <div id="jobListSection" style="display:none;">
+    <div class="card"><div class="card-ttl">YOUR JOBS</div><div class="job-list" id="jobList"></div></div>
+  </div>
+  <button class="btn" onclick="showScr('scr-new')">+ START NEW JOB</button>
+  <div class="cta" style="margin-top:16px;"><p>Free tool from <span>The Excavation Academy</span></p><a href="https://www.skool.com/the-excavation-academy-2540" target="_blank">JOIN FREE ON SKOOL</a></div>
+</div>
+
+<!-- NEW JOB -->
+<div class="scr" id="scr-new">
+  <div class="pg-title">JOB SETUP</div>
+  <div class="pg-sub">Set up once — tracks until the job is done</div>
+  <div class="card">
+    <div class="card-ttl">JOB INFO</div>
+    <div class="f"><label>Job Name</label><input type="text" id="n_name" placeholder="e.g. Elm St Sewer — Haul Phase 1" autocomplete="off"></div>
+    <div class="f"><label>Target Completion Date</label><input type="date" id="n_target"></div>
+  </div>
+  <div class="card">
+    <div class="card-ttl">VOLUME AND TRUCKS</div>
+    <div class="f"><label>Total Volume to Haul (m³)</label><input type="number" id="n_vol" placeholder="e.g. 850" inputmode="decimal"></div>
+    <div class="f"><label>Truck Box Size (m³ per load)</label>
+      <select id="n_truck">
+        <option value="8">8 m³ — Small tandem</option>
+        <option value="10" selected>10 m³ — Standard tandem</option>
+        <option value="12">12 m³ — Large tandem</option>
+        <option value="14">14 m³ — Super B / tridem</option>
+        <option value="16">16 m³ — Super B large</option>
+        <option value="custom">Custom...</option>
+      </select>
+    </div>
+    <div class="f" id="customTruckWrap" style="display:none;"><label>Custom Truck Size (m³)</label><input type="number" id="n_truck_custom" placeholder="e.g. 11" inputmode="decimal"></div>
+    <div class="f"><label>Number of Trucks on Site</label><input type="number" id="n_trucks" value="3" inputmode="numeric"></div>
+  </div>
+  <div class="card">
+    <div class="card-ttl">CYCLE TIME</div>
+    <div class="grid2">
+      <div class="f"><label>Haul Distance One Way (km)</label><input type="number" id="n_dist" placeholder="e.g. 5" inputmode="decimal"></div>
+      <div class="f"><label>Average Speed (km/h)</label><input type="number" id="n_speed" value="50" inputmode="numeric"></div>
+    </div>
+    <div class="grid2">
+      <div class="f"><label>Load + Dump Time (min)</label><input type="number" id="n_loaddump" value="15" inputmode="numeric"></div>
+      <div class="f"><label>Working Hours Per Day</label><input type="number" id="n_hrs" value="8" inputmode="decimal"></div>
+    </div>
+  </div>
+  <div class="card" id="estPreview" style="display:none;">
+    <div class="card-ttl">JOB ESTIMATE</div>
+    <div class="est-full" id="estGrid"></div>
+    <div id="schedRows"></div>
+  </div>
+  <button class="btn-outline" onclick="calcEstimate()">CALCULATE ESTIMATE FIRST</button>
+  <button class="btn mt8" onclick="createJob()">CREATE JOB AND START TRACKING</button>
+  <button class="btn-outline mt8" onclick="showScr('scr-select')">CANCEL</button>
+</div>
+
+<!-- TRACKER -->
+<div class="scr" id="scr-tracker">
+  <div class="hero">
+    <div class="hero-name" id="t_name">—</div>
+    <div class="hero-nums">
+      <div class="h-done" id="t_done">0</div>
+      <div class="h-total" id="t_total">/ 0</div>
+      <div class="h-unit">loads</div>
+    </div>
+    <div class="pbar-wrap"><div class="pbar-fill" id="t_bar" style="width:0%"></div></div>
+    <div class="hero-stats">
+      <div class="hs"><div class="hs-val" id="t_pct">0%</div><div class="hs-lbl">Complete</div></div>
+      <div class="hs"><div class="hs-val" id="t_m3">0</div><div class="hs-lbl">m³ Hauled</div></div>
+      <div class="hs"><div class="hs-val" id="t_left">0</div><div class="hs-lbl">Loads Left</div></div>
+      <div class="hs"><div class="hs-val" id="t_daysLeft">—</div><div class="hs-lbl">Days to Target</div></div>
+    </div>
+  </div>
+  <div class="sched-card">
+    <div class="sched-ttl">SCHEDULE STATUS</div>
+    <div class="sched-row"><span class="sched-lbl">Cycle time per truck</span><span class="sched-val" id="s_cycle">—</span></div>
+    <div class="sched-row"><span class="sched-lbl">Loads per truck per day</span><span class="sched-val" id="s_lpd">—</span></div>
+    <div class="sched-row"><span class="sched-lbl">Total loads per day (all trucks)</span><span class="sched-val" id="s_tpd">—</span></div>
+    <div class="sched-row"><span class="sched-lbl">Loads needed TODAY to stay on schedule</span><span class="sched-val" id="s_today" style="font-size:18px;">—</span></div>
+    <div class="sched-row"><span class="sched-lbl">Projected finish date</span><span class="sched-val" id="s_finish">—</span></div>
+  </div>
+  <div class="complete" id="completeBanner" style="display:none;">
+    <div class="complete-ttl">✓ JOB COMPLETE</div>
+    <div class="complete-sub" id="completeSub">All loads hauled.</div>
+  </div>
+  <div class="today-card" id="todayCard">
+    <div class="today-lbl">Log Today's Loads</div>
+    <div class="today-date" id="t_todayDate">—</div>
+    <div class="loads-row">
+      <input type="number" id="t_loadsInput" placeholder="0" inputmode="numeric" min="0">
+      <button class="log-btn" id="logBtn" onclick="logToday()">LOG</button>
+    </div>
+    <div class="f"><textarea id="t_notes" placeholder="Notes — delays, material, weather, dump site..."></textarea></div>
+  </div>
+  <div class="share-bar">
+    <div class="share-lbl">Share Live Progress</div>
+    <div class="share-note">Send to your owner or foreman — they open the link and see the live tally.</div>
+    <button class="share-btn" onclick="shareJob()">📤 SHARE THIS JOB</button>
+  </div>
+  <div class="card">
+    <div class="card-ttl">DAY BY DAY LOG</div>
+    <div class="day-log" id="dayLog"></div>
+  </div>
+  <button class="btn-outline mt12" onclick="printReport()">PRINT / SAVE AS PDF</button>
+  <button class="btn-sm-danger mt8" onclick="resetJob()">CLEAR ALL ENTRIES</button>
+  <button class="btn-sm-danger mt8" onclick="deleteJob()">DELETE THIS JOB</button>
+  <button class="btn-outline mt8" id="backBtn" onclick="showScr('scr-select')">← ALL JOBS</button>
+  <div class="cta" style="margin-top:14px;"><p>Free from <span>The Excavation Academy</span> — 138 modules of civil excavation training.</p><a href="https://www.skool.com/the-excavation-academy-2540" target="_blank">JOIN FREE</a></div>
+</div>
+
+<script>
+const SK='tea_haul_v3';
+let S={jobs:{}};
+let CJ=null;
+let dP=null;
+
+function init(){
+  loadS();initInstall();initOffline();
+  document.getElementById('n_truck').addEventListener('change',function(){
+    document.getElementById('customTruckWrap').style.display=this.value==='custom'?'block':'none';
+  });
+  ['n_vol','n_truck','n_truck_custom','n_trucks','n_dist','n_speed','n_loaddump','n_hrs'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.addEventListener('input',debounce(calcEstimate,600));
+  });
+  const p=new URLSearchParams(window.location.search);
+  const jid=p.get('j');
+  if(jid&&S.jobs[jid]){openJob(jid);return;}
+  renderJobList();
+}
+
+function loadS(){try{const d=localStorage.getItem(SK);if(d)S=JSON.parse(d);if(!S.jobs)S.jobs={};}catch(e){S={jobs:{}};}}
+function saveS(){try{localStorage.setItem(SK,JSON.stringify(S));}catch(e){}}
+
+function showScr(id){
+  document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  window.scrollTo(0,0);
+  if(id==='scr-select')renderJobList();
+}
+
+function renderJobList(){
+  const jobs=Object.values(S.jobs);
+  const sec=document.getElementById('jobListSection');
+  const list=document.getElementById('jobList');
+  if(!jobs.length){sec.style.display='none';return;}
+  sec.style.display='block';list.innerHTML='';
+  jobs.sort((a,b)=>b.created-a.created).forEach(job=>{
+    const total=Math.ceil(job.vol/job.truck);
+    const done=job.days.reduce((s,d)=>s+d.loads,0);
+    const pct=Math.min(100,Math.round((done/total)*100));
+    const complete=done>=total;
+    const el=document.createElement('div');
+    el.className='job-item';el.onclick=()=>openJob(job.id);
+    el.innerHTML='<div><div class="ji-name">'+esc(job.name)+'</div><div class="ji-meta">'+done+'/'+total+' loads \xB7 '+job.truck+'m\xB3 trucks \xB7 '+job.numTrucks+' truck'+(job.numTrucks>1?'s':'')+'</div></div><div style="display:flex;align-items:center;gap:8px;"><div class="ji-pct '+(complete?'done':'')+'\">'+(complete?'\u2713':pct+'%')+'</div><div style="color:var(--muted)">\u2192</div></div>';
+    list.appendChild(el);
+  });
+}
+
+function getInputs(){
+  const ts=document.getElementById('n_truck').value;
+  return{
+    name:document.getElementById('n_name').value.trim(),
+    vol:parseFloat(document.getElementById('n_vol').value)||0,
+    truck:ts==='custom'?parseFloat(document.getElementById('n_truck_custom').value)||0:parseFloat(ts)||10,
+    numTrucks:parseInt(document.getElementById('n_trucks').value)||1,
+    dist:parseFloat(document.getElementById('n_dist').value)||0,
+    speed:parseFloat(document.getElementById('n_speed').value)||50,
+    loaddump:parseFloat(document.getElementById('n_loaddump').value)||15,
+    hrs:parseFloat(document.getElementById('n_hrs').value)||8,
+    target:document.getElementById('n_target').value||null
+  };
+}
+
+function calcEstimate(){
+  const d=getInputs();
+  if(!d.vol||!d.truck||!d.dist)return;
+  const totalLoads=Math.ceil(d.vol/d.truck);
+  const cycleMin=((d.dist/d.speed)*2*60)+d.loaddump;
+  const lpTD=Math.floor((d.hrs*60)/cycleMin);
+  const lpd=lpTD*d.numTrucks;
+  const daysNeeded=Math.ceil(totalLoads/lpd);
+  const preview=document.getElementById('estPreview');
+  preview.style.display='block';
+  document.getElementById('estGrid').innerHTML=
+    '<div class="est-item"><div class="est-val">'+totalLoads+'</div><div class="est-lbl">Total Loads</div></div>'+
+    '<div class="est-item"><div class="est-val">'+cycleMin.toFixed(0)+' min</div><div class="est-lbl">Cycle Time</div></div>'+
+    '<div class="est-item"><div class="est-val">'+lpTD+'</div><div class="est-lbl">Loads/Truck/Day</div></div>'+
+    '<div class="est-item"><div class="est-val">'+lpd+'</div><div class="est-lbl">Loads/Day Total</div></div>'+
+    '<div class="est-item"><div class="est-val">'+daysNeeded+'</div><div class="est-lbl">Days to Finish</div></div>'+
+    '<div class="est-item"><div class="est-val">'+d.numTrucks+'</div><div class="est-lbl">Trucks on Site</div></div>';
+  let sh='';
+  if(d.target){
+    const tD=new Date(d.target+'T12:00:00');
+    const da=Math.max(1,Math.ceil((tD-new Date())/(86400000)));
+    const lpdn=Math.ceil(totalLoads/da);
+    const tn=Math.ceil(lpdn/lpTD);
+    sh='<div class="sched-row"><span class="sched-lbl">Target date</span><span class="sched-val">'+tD.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})+'</span></div>'+
+       '<div class="sched-row"><span class="sched-lbl">Days available</span><span class="sched-val">'+da+'</span></div>'+
+       '<div class="sched-row"><span class="sched-lbl">Loads/day needed to hit target</span><span class="sched-val">'+lpdn+'</span></div>'+
+       '<div class="sched-row"><span class="sched-lbl">Trucks needed to hit target</span><span class="sched-val '+(tn>d.numTrucks?'urgent':'ok')+'">'+tn+' truck'+(tn!==1?'s':'')+' '+(tn>d.numTrucks?'\u26A0\uFE0F Need more trucks':'')+'</span></div>';
+  }
+  document.getElementById('schedRows').innerHTML=sh;
+}
+
+function createJob(){
+  const d=getInputs();
+  if(!d.name){alert('Enter a job name.');return;}
+  if(!d.vol||d.vol<=0){alert('Enter total volume.');return;}
+  if(!d.truck||d.truck<=0){alert('Enter truck size.');return;}
+  if(!d.dist||d.dist<=0){alert('Enter haul distance.');return;}
+  const id='j'+Date.now();
+  S.jobs[id]={id,name:d.name,vol:d.vol,truck:d.truck,numTrucks:d.numTrucks,dist:d.dist,speed:d.speed,loaddump:d.loaddump,hrs:d.hrs,target:d.target,created:Date.now(),days:[]};
+  saveS();
+  ['n_name','n_vol','n_target','n_truck_custom'].forEach(i=>{const el=document.getElementById(i);if(el)el.value='';});
+  document.getElementById('n_truck').value='10';document.getElementById('n_trucks').value='3';
+  document.getElementById('n_dist').value='';document.getElementById('n_speed').value='50';
+  document.getElementById('n_loaddump').value='15';document.getElementById('n_hrs').value='8';
+  document.getElementById('estPreview').style.display='none';
+  document.getElementById('customTruckWrap').style.display='none';
+  openJob(id);
+}
+
+function openJob(id){CJ=id;renderTracker();showScr('scr-tracker');}
+
+function renderTracker(){
+  const job=S.jobs[CJ];if(!job)return;
+  const totalLoads=Math.ceil(job.vol/job.truck);
+  const done=job.days.reduce((s,d)=>s+d.loads,0);
+  const left=Math.max(0,totalLoads-done);
+  const pct=Math.min(100,Math.round((done/totalLoads)*100));
+  const complete=done>=totalLoads;
+  const cycleMin=((job.dist/job.speed)*2*60)+job.loaddump;
+  const lpTD=Math.floor((job.hrs*60)/cycleMin);
+  const lpd=lpTD*job.numTrucks;
+  const daysToFinish=left>0?Math.ceil(left/lpd):0;
+  let daysLeft='—',loadsNeededToday=lpd,projFinish='—';
+  if(job.target){
+    const tD=new Date(job.target+'T12:00:00');
+    const tod=new Date();tod.setHours(0,0,0,0);
+    const dl=Math.ceil((tD-tod)/86400000);
+    daysLeft=dl>0?dl+'d':'PAST';
+    if(dl>0&&left>0)loadsNeededToday=Math.ceil(left/dl);
+  }
+  if(left>0){const f=new Date();f.setDate(f.getDate()+daysToFinish);projFinish=f.toLocaleDateString('en-US',{month:'short',day:'numeric'});}
+  else projFinish='Complete \u2713';
+  document.getElementById('t_name').textContent=job.name;
+  document.getElementById('t_done').textContent=done;
+  document.getElementById('t_total').textContent='/ '+totalLoads;
+  document.getElementById('t_pct').textContent=pct+'%';
+  document.getElementById('t_m3').textContent=(done*job.truck).toFixed(0);
+  const lEl=document.getElementById('t_left');lEl.textContent=left;
+  lEl.className='hs-val'+(left===0?' good':left<totalLoads*0.15?' warn':'');
+  const dlEl=document.getElementById('t_daysLeft');dlEl.textContent=daysLeft;
+  if(daysLeft!=='—'){const n=parseInt(daysLeft);dlEl.className='hs-val'+(n<=1?' bad':n<=3?' warn':' good');}
+  const bar=document.getElementById('t_bar');bar.style.width=pct+'%';
+  bar.className='pbar-fill'+(complete?' done':'');
+  document.getElementById('s_cycle').textContent=cycleMin.toFixed(0)+' min';
+  document.getElementById('s_lpd').textContent=lpTD+' loads';
+  document.getElementById('s_tpd').textContent=lpd+' loads ('+job.numTrucks+' truck'+(job.numTrucks>1?'s':'')+')';
+  const sTEl=document.getElementById('s_today');
+  sTEl.textContent=complete?'DONE \u2713':loadsNeededToday+' loads';
+  if(!complete)sTEl.className='sched-val'+(loadsNeededToday>lpd*1.2?' urgent':loadsNeededToday>lpd?' warn':' ok');
+  else sTEl.className='sched-val ok';
+  document.getElementById('s_finish').textContent=projFinish;
+  document.getElementById('completeBanner').style.display=complete?'block':'none';
+  document.getElementById('todayCard').style.display=complete?'none':'block';
+  if(complete)document.getElementById('completeSub').textContent=totalLoads+' loads \xB7 '+(totalLoads*job.truck).toFixed(0)+'m\xB3 hauled over '+job.days.length+' day'+(job.days.length!==1?'s':'')+'.';
+  const todayKey=getTK();
+  document.getElementById('t_todayDate').textContent=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+  const te=job.days.find(d=>d.k===todayKey);
+  document.getElementById('t_loadsInput').value=te?te.loads:'';
+  document.getElementById('t_notes').value=te?(te.notes||''):'';
+  renderDayLog(job,lpd);
+}
+
+function renderDayLog(job,lpd){
+  const log=document.getElementById('dayLog');
+  const todayKey=getTK();
+  if(!job.days.length){log.innerHTML='<div class="empty-log">No loads logged yet.</div>';return;}
+  log.innerHTML='';
+  [...job.days].sort((a,b)=>b.ts-a.ts).forEach(day=>{
+    const isToday=day.k===todayKey;
+    const ahead=day.loads>=lpd;
+    const behind=day.loads<lpd*0.8;
+    let pTxt='',pCol='var(--muted)';
+    if(day.loads>=lpd){pTxt='On schedule';pCol='var(--green)';}
+    else if(day.loads>=lpd*0.8){pTxt='Slightly behind';pCol='var(--yellow)';}
+    else{pTxt='Behind — target '+lpd+' loads/day';pCol='var(--red)';}
+    const el=document.createElement('div');
+    el.className='day-entry'+(isToday?' today':'')+(ahead&&!isToday?' ahead':behind&&!isToday?' behind':'');
+    el.innerHTML='<div class="day-left"><div class="day-dt">'+esc(day.label)+(isToday?'<span class="day-today-tag">TODAY</span>':'')+'</div><div class="day-pace" style="color:'+pCol+'">'+pTxt+'</div>'+(day.notes?'<div class="day-note">'+esc(day.notes)+'</div>':'')+'</div><div class="day-right"><div class="day-loads-n">'+day.loads+'</div><div class="day-loads-l">loads</div></div><button class="day-del" onclick="deleteDay(\''+day.k+'\')">×</button>';
+    log.appendChild(el);
+  });
+}
+
+function logToday(){
+  const loads=parseInt(document.getElementById('t_loadsInput').value);
+  const notes=document.getElementById('t_notes').value.trim();
+  if(isNaN(loads)||loads<0){alert('Enter loads completed today.');return;}
+  const job=S.jobs[CJ];const k=getTK();
+  const label=new Date().toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+  const idx=job.days.findIndex(d=>d.k===k);
+  if(idx>=0){job.days[idx].loads=loads;job.days[idx].notes=notes;}
+  else job.days.push({k,label,ts:Date.now(),loads,notes});
+  saveS();renderTracker();
+  const btn=document.getElementById('logBtn');btn.textContent='\u2713';btn.classList.add('saved');
+  setTimeout(()=>{btn.textContent='LOG';btn.classList.remove('saved');},1500);
+}
+
+function deleteDay(k){if(!confirm('Remove this day?'))return;S.jobs[CJ].days=S.jobs[CJ].days.filter(d=>d.k!==k);saveS();renderTracker();}
+function resetJob(){if(!confirm('Clear all entries for this job?'))return;S.jobs[CJ].days=[];saveS();renderTracker();}
+function deleteJob(){if(!confirm('Delete this job permanently?'))return;delete S.jobs[CJ];saveS();CJ=null;showScr('scr-select');}
+
+function shareJob(){
+  const url=window.location.href.split('?')[0]+'?j='+CJ;
+  const job=S.jobs[CJ];const total=Math.ceil(job.vol/job.truck);
+  const done=job.days.reduce((s,d)=>s+d.loads,0);
+  const pct=Math.min(100,Math.round((done/total)*100));
+  const text=job.name+' \u2014 '+done+'/'+total+' loads ('+pct+'% complete)\n'+url;
+  if(navigator.share)navigator.share({title:'Haul Progress',text,url});
+  else if(navigator.clipboard)navigator.clipboard.writeText(url).then(()=>alert('Link copied!'));
+  else prompt('Copy this link:',url);
+}
+function printReport(){window.print();}
+
+function initInstall(){
+  const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
+  const isStandalone=window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone;
+  if(isStandalone||localStorage.getItem('tea_dismissed'))return;
+  if(isIOS){setTimeout(()=>document.getElementById('iosBar').classList.add('show'),3000);return;}
+  window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();dP=e;setTimeout(()=>document.getElementById('installBar').classList.add('show'),2000);});
+}
+function installApp(){if(!dP)return;dP.prompt();dP.userChoice.then(()=>{dP=null;dismissInstall();});}
+function dismissInstall(){document.getElementById('installBar').classList.remove('show');localStorage.setItem('tea_dismissed','1');}
+function dismissIos(){document.getElementById('iosBar').classList.remove('show');}
+
+function initOffline(){
+  const b=document.getElementById('offlineBadge');
+  const u=()=>b.classList.toggle('show',!navigator.onLine);
+  u();window.addEventListener('online',u);window.addEventListener('offline',u);
+}
+function getTK(){return new Date().toDateString();}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function debounce(fn,ms){let t;return function(){clearTimeout(t);t=setTimeout(fn,ms);};}
+if('serviceWorker' in navigator){navigator.serviceWorker.register('tea-sw.js').catch(()=>{});}
+init();
+</script>
+</body>
+</html>
