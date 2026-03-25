@@ -1,26 +1,26 @@
 {
-  "name": "T.E.A. Haul Tracker",
-  "short_name": "Haul Tracker",
-  "description": "Multi-day truck load tracker for civil excavation crews — The Excavation Academy",
-  "start_url": "/tea-haul-tracker.html",
+  "name": "T.E.A. Vernon Rock Tracker",
+  "short_name": "Vernon Rock",
+  "description": "Site load departure tracker for King Hoe Excavating — Vernon Rock jobs",
+  "start_url": "/tea-tools/tea-vernon-rock.html",
+  "scope": "/tea-tools/",
   "display": "standalone",
   "background_color": "#0a0a0a",
   "theme_color": "#E8650A",
   "orientation": "portrait",
   "icons": [
     {
-      "src": "tea-icon-192.png",
+      "src": "/tea-tools/tea-icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "tea-icon-512.png",
+      "src": "/tea-tools/tea-icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
     }
   ],
-  "categories": ["utilities", "productivity"],
-  "screenshots": []
+  "categories": ["utilities", "productivity"]
 }
