@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stockpile Volume Estimator — The Excavation Academy</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap');
+:root{--orange:#E8650A;--bg:#f5f3ee;--header-bg:#fff;--card:#fff;--card-inner:#f0ede6;--border:#ddd9d0;--text:#1a1a1a;--muted:#6b6560;--input-bg:#f0ede6;}
+body.dark{--bg:#0a0a0a;--header-bg:#111;--card:#141414;--card-inner:#1a1a1a;--border:#2a2a2a;--text:#e0e0e0;--muted:#777;--input-bg:#1a1a1a;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;min-height:100vh;transition:background .2s,color .2s;}
+.header{background:var(--header-bg);border-bottom:3px solid var(--orange);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;}
+.header-left{display:flex;align-items:center;gap:20px;}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--orange);letter-spacing:3px;}
+.back-link{font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:2px;color:var(--muted);text-decoration:none;text-transform:uppercase;border:1px solid var(--border);padding:6px 12px;transition:color .2s,border-color .2s;}
+.back-link:hover{color:var(--orange);border-color:var(--orange);}
+.theme-btn{background:none;border:1px solid var(--border);color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:6px 12px;cursor:pointer;transition:border-color .2s,color .2s;}
+.theme-btn:hover{border-color:var(--orange);color:var(--orange);}
+.container{max-width:860px;margin:0 auto;padding:32px 20px;}
+.tool-title{font-family:'Bebas Neue',sans-serif;font-size:48px;color:var(--text);letter-spacing:2px;line-height:1;margin-bottom:6px;}
+.tool-sub{font-family:'Barlow Condensed',sans-serif;font-size:15px;color:var(--muted);letter-spacing:1px;margin-bottom:32px;text-transform:uppercase;}
+.card{background:var(--card);border:1px solid var(--border);padding:24px;margin-bottom:20px;}
+.card-title{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--orange);letter-spacing:2px;margin-bottom:20px;border-bottom:1px solid var(--border);padding-bottom:10px;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
+.field{margin-bottom:16px;}
+label{display:block;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:8px;}
+input,select{width:100%;background:var(--input-bg);border:1px solid var(--border);color:var(--text);font-family:'Barlow',sans-serif;font-size:15px;padding:11px 13px;outline:none;transition:border-color .2s;}
+input:focus,select:focus{border-color:var(--orange);}
+.btn{width:100%;background:var(--orange);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;padding:15px;border:none;cursor:pointer;margin-top:8px;}
+.btn:hover{background:#d45a08;}
+.shape-hint{font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--muted);margin-bottom:16px;padding:10px 14px;background:var(--card-inner);border:1px solid var(--border);}
+.results{display:none;}
+.results.show{display:block;}
+.result-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;}
+.result-item{text-align:center;padding:16px 8px;background:var(--card-inner);border:1px solid var(--border);}
+.result-value{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--orange);line-height:1;}
+.result-unit{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-top:4px;}
+.breakdown{background:var(--card-inner);border:1px solid var(--border);padding:16px;margin-top:12px;}
+.br-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-family:'Barlow Condensed',sans-serif;font-size:15px;}
+.br-row:last-child{border-bottom:none;font-weight:700;}
+.br-label{color:var(--muted);}
+.br-value{color:var(--orange);}
+.note{font-size:13px;color:var(--muted);line-height:1.6;padding-top:12px;border-top:1px solid var(--border);margin-top:12px;}
+.tool-actions{display:flex;gap:10px;margin-top:16px;}
+.act-btn{flex:1;padding:11px;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:2px;cursor:pointer;border:1px solid var(--border);background:var(--card);color:var(--text);transition:border-color .2s,color .2s;}
+.act-btn:hover{border-color:var(--orange);color:var(--orange);}
+.act-clear:hover{border-color:#c0392b;color:#c0392b;}
+.cta-bar{background:var(--card-inner);border:1px solid rgba(232,101,10,.25);padding:22px 24px;margin-top:24px;display:flex;align-items:center;justify-content:space-between;gap:20px;}
+.cta-text{font-family:'Barlow Condensed',sans-serif;font-size:17px;color:var(--text);font-weight:600;}
+.cta-text span{color:var(--orange);}
+.cta-link{background:var(--orange);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:2px;padding:11px 24px;text-decoration:none;white-space:nowrap;}
+.footer{background:var(--header-bg);border-top:1px solid var(--border);padding:16px 24px;text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:12px;color:var(--muted);letter-spacing:1px;}
+@media print{.header,.tool-actions,.cta-bar,.footer,.card:not(.results-card){display:none!important;}.results{display:block!important;}body{background:#fff!important;}}
+@media(max-width:640px){.grid2,.grid3,.result-grid{grid-template-columns:1fr 1fr;}.tool-actions{flex-direction:column;}.cta-bar{flex-direction:column;}}
+</style>
+</head>
+<body>
+<script>(function(){if(localStorage.getItem('tea-theme')==='dark')document.body.classList.add('dark');})()</script>
+<div class="header">
+  <div class="header-left">
+    <div class="logo">THE EXCAVATION ACADEMY</div>
+    <a class="back-link" href="tea-tools-hub.html">&#8592; All Tools</a>
+  </div>
+  <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">&#9790; DARK</button>
+</div>
+<div class="container">
+  <div class="tool-title">STOCKPILE VOLUME ESTIMATOR</div>
+  <div class="tool-sub">Estimate material volume in a cone or windrow stockpile from field measurements</div>
+
+  <div class="card">
+    <div class="card-title">PILE DIMENSIONS</div>
+    <div class="grid2">
+      <div class="field">
+        <label>Pile Shape</label>
+        <select id="shape" data-save onchange="updateShape()">
+          <option value="cone">Cone (free-standing)</option>
+          <option value="halfcone">Half-Cone (against a wall)</option>
+          <option value="windrow">Windrow (elongated pile)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Pile Height (ft)</label>
+        <input type="number" id="height" data-save placeholder="e.g. 12" step="0.5" min="0">
+      </div>
+    </div>
+    <div id="coneFields" class="grid2">
+      <div class="field">
+        <label>Base Diameter (ft)</label>
+        <input type="number" id="diameter" data-save placeholder="e.g. 40" step="0.5" min="0">
+      </div>
+    </div>
+    <div id="windrowFields" class="grid2" style="display:none">
+      <div class="field">
+        <label>Pile Width at Base (ft)</label>
+        <input type="number" id="pileWidth" data-save placeholder="e.g. 20" step="0.5" min="0">
+      </div>
+      <div class="field">
+        <label>Pile Length (ft)</label>
+        <input type="number" id="pileLength" data-save placeholder="e.g. 60" step="0.5" min="0">
+      </div>
+    </div>
+    <div class="shape-hint" id="shapeHint">Cone: measured from outer edge to outer edge at the base.</div>
+    <div class="grid3">
+      <div class="field">
+        <label>Material Type</label>
+        <select id="material" data-save>
+          <option value="1.35">Common Earth (1.35 t/LCY)</option>
+          <option value="1.45" selected>Sand / Gravel (1.45 t/LCY)</option>
+          <option value="1.50">Crusher Run / Road Base (1.50 t/LCY)</option>
+          <option value="0.90">Topsoil (0.90 t/LCY)</option>
+          <option value="1.25">Rock — Blasted (1.25 t/LCY)</option>
+          <option value="1.60">Concrete / Rubble (1.60 t/LCY)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Swell Factor</label>
+        <select id="swellFactor" data-save>
+          <option value="1.12">Sandy / Granular (1.12)</option>
+          <option value="1.25" selected>Common Earth (1.25)</option>
+          <option value="1.30">Clay (1.30)</option>
+          <option value="1.40">Hardpan (1.40)</option>
+          <option value="1.50">Rock (1.50)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Truck Capacity (CY)</label>
+        <input type="number" id="truckCap" data-save placeholder="e.g. 14" step="1" min="1" value="14">
+      </div>
+    </div>
+    <button class="btn" onclick="calcStockpile()">CALCULATE VOLUME</button>
+  </div>
+
+  <div class="results" id="results">
+    <div class="card results-card">
+      <div class="card-title">STOCKPILE RESULTS</div>
+      <div class="result-grid">
+        <div class="result-item"><div class="result-value" id="r_lcy">—</div><div class="result-unit">Loose CY</div></div>
+        <div class="result-item"><div class="result-value" id="r_bcy">—</div><div class="result-unit">Bank Equiv. CY</div></div>
+        <div class="result-item"><div class="result-value" id="r_tons">—</div><div class="result-unit">Est. Weight (tons)</div></div>
+        <div class="result-item"><div class="result-value" id="r_loads">—</div><div class="result-unit">Truck Loads</div></div>
+      </div>
+      <div class="breakdown">
+        <div class="br-row"><span class="br-label">Pile Shape</span><span class="br-value" id="b_shape">—</span></div>
+        <div class="br-row"><span class="br-label">Calculated Volume (ft&#179;)</span><span class="br-value" id="b_ft3">—</span></div>
+        <div class="br-row"><span class="br-label">Loose Volume</span><span class="br-value" id="b_lcy">—</span></div>
+        <div class="br-row"><span class="br-label">Bank Equivalent</span><span class="br-value" id="b_bcy">—</span></div>
+        <div class="br-row"><span class="br-label">Estimated Weight</span><span class="br-value" id="b_tons">—</span></div>
+        <div class="br-row"><span class="br-label">Truck Loads to Haul</span><span class="br-value" id="b_loads">—</span></div>
+      </div>
+      <div class="note">Stockpile volumes are geometric estimates. Actual volume varies with pile shape, settling, and material moisture. Use for planning and ordering only — survey or belt-scale for critical quantities.</div>
+    </div>
+    <div class="tool-actions">
+      <button class="act-btn" onclick="window.print()">&#8595; EXPORT PDF</button>
+      <button class="act-btn" id="shareBtn" onclick="shareLink()">&#9993; SHARE LINK</button>
+      <button class="act-btn act-clear" onclick="clearAll()">&#10005; CLEAR</button>
+    </div>
+  </div>
+
+  <div class="cta-bar">
+    <div class="cta-text">Free tool from <span>The Excavation Academy</span> — 138 modules of civil excavation training. Free to start.</div>
+    <a class="cta-link" href="https://www.skool.com/the-excavation-academy-2540" target="_blank">JOIN FREE</a>
+  </div>
+</div>
+<div class="footer">&#169; The Excavation Academy — All tools provided for field reference only. Always consult IFC drawings and local authority requirements.</div>
+
+<script>
+(function(){if(localStorage.getItem('tea-theme')==='dark')document.body.classList.add('dark');})();
+function toggleTheme(){document.body.classList.toggle('dark');localStorage.setItem('tea-theme',document.body.classList.contains('dark')?'dark':'light');document.getElementById('themeBtn').textContent=document.body.classList.contains('dark')?'\u2600 LIGHT':'\u263E DARK';}
+(function(){document.getElementById('themeBtn').textContent=document.body.classList.contains('dark')?'\u2600 LIGHT':'\u263E DARK';})();
+const TOOL_KEY='tea-stockpile';
+function saveInputs(){const d={};document.querySelectorAll('[data-save]').forEach(e=>d[e.id]=e.value);localStorage.setItem(TOOL_KEY,JSON.stringify(d));}
+function restoreInputs(){const p=new URLSearchParams(window.location.search);if([...p].length){p.forEach((v,k)=>{const e=document.getElementById(k);if(e)e.value=v;});updateShape();return;}try{const s=localStorage.getItem(TOOL_KEY);if(s){const d=JSON.parse(s);Object.entries(d).forEach(([k,v])=>{const e=document.getElementById(k);if(e)e.value=v;});updateShape();}}catch(e){}}
+document.addEventListener('input',saveInputs);document.addEventListener('change',saveInputs);
+window.addEventListener('load',restoreInputs);
+function shareLink(){const p=new URLSearchParams();document.querySelectorAll('[data-save]').forEach(e=>{if(e.value)p.set(e.id,e.value);});navigator.clipboard.writeText(location.origin+location.pathname+'?'+p.toString()).then(()=>{const b=document.getElementById('shareBtn');const o=b.textContent;b.textContent='\u2713 COPIED!';setTimeout(()=>b.textContent=o,2000);});}
+function clearAll(){localStorage.removeItem(TOOL_KEY);document.querySelectorAll('[data-save]').forEach(e=>{if(e.tagName==='SELECT')e.selectedIndex=0;else e.value='';});document.getElementById('results').classList.remove('show');updateShape();}
+const hints={cone:'Cone: measure base diameter from outer edge to outer edge.',halfcone:'Half-Cone: pile against a wall — measure the base diameter of the full cone shape.',windrow:'Windrow: elongated pile — measure the width at the widest point and the total length.'};
+function updateShape(){
+  const s=document.getElementById('shape').value;
+  document.getElementById('coneFields').style.display=(s==='cone'||s==='halfcone')?'grid':'none';
+  document.getElementById('windrowFields').style.display=s==='windrow'?'grid':'none';
+  document.getElementById('shapeHint').textContent=hints[s]||'';
+}
+function calcStockpile(){
+  const shape=document.getElementById('shape').value;
+  const h=parseFloat(document.getElementById('height').value);
+  const sf=parseFloat(document.getElementById('swellFactor').value);
+  const density=parseFloat(document.getElementById('material').value);
+  const truckCap=parseFloat(document.getElementById('truckCap').value)||14;
+  if(isNaN(h)||h<=0){alert('Enter pile height.');return;}
+  let vol_ft3=0,shapeLabel='';
+  if(shape==='cone'){
+    const d=parseFloat(document.getElementById('diameter').value);
+    if(isNaN(d)||d<=0){alert('Enter base diameter.');return;}
+    const r=d/2;vol_ft3=Math.PI*r*r*h/3;shapeLabel='Cone ('+d+' ft dia \xd7 '+h+' ft high)';
+  } else if(shape==='halfcone'){
+    const d=parseFloat(document.getElementById('diameter').value);
+    if(isNaN(d)||d<=0){alert('Enter base diameter.');return;}
+    const r=d/2;vol_ft3=Math.PI*r*r*h/6;shapeLabel='Half-Cone ('+d+' ft dia \xd7 '+h+' ft high)';
+  } else {
+    const w=parseFloat(document.getElementById('pileWidth').value);
+    const l=parseFloat(document.getElementById('pileLength').value);
+    if(isNaN(w)||isNaN(l)||w<=0||l<=0){alert('Enter pile width and length.');return;}
+    vol_ft3=0.4*w*h*l;shapeLabel='Windrow ('+w+' ft wide \xd7 '+h+' ft high \xd7 '+l+' ft long)';
+  }
+  const lcy=vol_ft3/27;
+  const bcy=lcy/sf;
+  const tons=lcy*density;
+  const loads=Math.ceil(lcy/truckCap);
+  document.getElementById('r_lcy').textContent=lcy.toFixed(1);
+  document.getElementById('r_bcy').textContent=bcy.toFixed(1);
+  document.getElementById('r_tons').textContent=tons.toFixed(0);
+  document.getElementById('r_loads').textContent=loads;
+  document.getElementById('b_shape').textContent=shapeLabel;
+  document.getElementById('b_ft3').textContent=vol_ft3.toFixed(0)+' ft\u00B3';
+  document.getElementById('b_lcy').textContent=lcy.toFixed(2)+' LCY';
+  document.getElementById('b_bcy').textContent=bcy.toFixed(2)+' BCY';
+  document.getElementById('b_tons').textContent=tons.toFixed(0)+' tons';
+  document.getElementById('b_loads').textContent=loads+' loads @ '+truckCap+' CY each';
+  document.getElementById('results').classList.add('show');
+}
+</script>
+</body>
+</html>

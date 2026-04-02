@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trench Volume &amp; Cost Per LF — The Excavation Academy</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap');
+:root{--orange:#E8650A;--bg:#f5f3ee;--header-bg:#fff;--card:#fff;--card-inner:#f0ede6;--border:#ddd9d0;--text:#1a1a1a;--muted:#6b6560;--input-bg:#f0ede6;}
+body.dark{--bg:#0a0a0a;--header-bg:#111;--card:#141414;--card-inner:#1a1a1a;--border:#2a2a2a;--text:#e0e0e0;--muted:#777;--input-bg:#1a1a1a;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;min-height:100vh;transition:background .2s,color .2s;}
+.header{background:var(--header-bg);border-bottom:3px solid var(--orange);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;}
+.header-left{display:flex;align-items:center;gap:20px;}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--orange);letter-spacing:3px;}
+.back-link{font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:2px;color:var(--muted);text-decoration:none;text-transform:uppercase;border:1px solid var(--border);padding:6px 12px;transition:color .2s,border-color .2s;}
+.back-link:hover{color:var(--orange);border-color:var(--orange);}
+.theme-btn{background:none;border:1px solid var(--border);color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:6px 12px;cursor:pointer;transition:border-color .2s,color .2s;}
+.theme-btn:hover{border-color:var(--orange);color:var(--orange);}
+.container{max-width:900px;margin:0 auto;padding:32px 20px;}
+.tool-title{font-family:'Bebas Neue',sans-serif;font-size:48px;color:var(--text);letter-spacing:2px;line-height:1;margin-bottom:6px;}
+.tool-sub{font-family:'Barlow Condensed',sans-serif;font-size:15px;color:var(--muted);letter-spacing:1px;margin-bottom:32px;text-transform:uppercase;}
+.card{background:var(--card);border:1px solid var(--border);padding:24px;margin-bottom:20px;}
+.card-title{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--orange);letter-spacing:2px;margin-bottom:20px;border-bottom:1px solid var(--border);padding-bottom:10px;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
+.field{margin-bottom:16px;}
+label{display:block;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:8px;}
+input,select{width:100%;background:var(--input-bg);border:1px solid var(--border);color:var(--text);font-family:'Barlow',sans-serif;font-size:15px;padding:11px 13px;outline:none;transition:border-color .2s;}
+input:focus,select:focus{border-color:var(--orange);}
+.optional-label{font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+.optional-label::after{content:'(optional — leave blank to skip cost calc)';font-size:11px;font-weight:400;letter-spacing:0;text-transform:none;}
+.btn{width:100%;background:var(--orange);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;padding:15px;border:none;cursor:pointer;margin-top:8px;}
+.btn:hover{background:#d45a08;}
+.results{display:none;}
+.results.show{display:block;}
+.result-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;}
+.result-item{text-align:center;padding:16px 8px;background:var(--card-inner);border:1px solid var(--border);}
+.result-value{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--orange);line-height:1;}
+.result-unit{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-top:4px;}
+.result-item.highlight{border-color:var(--orange);}
+.result-item.highlight .result-value{font-size:32px;}
+.breakdown{background:var(--card-inner);border:1px solid var(--border);padding:16px;margin-top:12px;}
+.br-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-family:'Barlow Condensed',sans-serif;font-size:15px;}
+.br-row:last-child{border-bottom:none;font-weight:700;}
+.br-label{color:var(--muted);}
+.br-value{color:var(--orange);}
+.br-section{font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:2px;color:var(--text);padding:10px 0 4px;grid-column:1/-1;border-top:1px solid var(--border);margin-top:6px;}
+.cost-section{display:none;}
+.cost-section.show{display:block;}
+.note{font-size:13px;color:var(--muted);line-height:1.6;padding-top:12px;border-top:1px solid var(--border);margin-top:12px;}
+.tool-actions{display:flex;gap:10px;margin-top:16px;}
+.act-btn{flex:1;padding:11px;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:2px;cursor:pointer;border:1px solid var(--border);background:var(--card);color:var(--text);transition:border-color .2s,color .2s;}
+.act-btn:hover{border-color:var(--orange);color:var(--orange);}
+.act-clear:hover{border-color:#c0392b;color:#c0392b;}
+.cta-bar{background:var(--card-inner);border:1px solid rgba(232,101,10,.25);padding:22px 24px;margin-top:24px;display:flex;align-items:center;justify-content:space-between;gap:20px;}
+.cta-text{font-family:'Barlow Condensed',sans-serif;font-size:17px;color:var(--text);font-weight:600;}
+.cta-text span{color:var(--orange);}
+.cta-link{background:var(--orange);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:2px;padding:11px 24px;text-decoration:none;white-space:nowrap;}
+.footer{background:var(--header-bg);border-top:1px solid var(--border);padding:16px 24px;text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:12px;color:var(--muted);letter-spacing:1px;}
+@media print{.header,.tool-actions,.cta-bar,.footer,.card:not(.results-card){display:none!important;}.results{display:block!important;}body{background:#fff!important;}}
+@media(max-width:640px){.grid2,.grid3,.result-grid{grid-template-columns:1fr 1fr;}.tool-actions{flex-direction:column;}.cta-bar{flex-direction:column;}}
+</style>
+</head>
+<body>
+<script>(function(){if(localStorage.getItem('tea-theme')==='dark')document.body.classList.add('dark');})()</script>
+<div class="header">
+  <div class="header-left">
+    <div class="logo">THE EXCAVATION ACADEMY</div>
+    <a class="back-link" href="tea-tools-hub.html">&#8592; All Tools</a>
+  </div>
+  <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">&#9790; DARK</button>
+</div>
+<div class="container">
+  <div class="tool-title">TRENCH VOLUME &amp; COST PER LF</div>
+  <div class="tool-sub">Excavation, bedding, backfill, and spoil haul — complete trench takeoff in one calculation</div>
+
+  <div class="card">
+    <div class="card-title">TRENCH DIMENSIONS</div>
+    <div class="grid3">
+      <div class="field"><label>Trench Length (ft)</label><input type="number" id="trenchLen" data-save placeholder="e.g. 300" step="1" min="0"></div>
+      <div class="field"><label>Trench Depth (ft)</label><input type="number" id="trenchDepth" data-save placeholder="e.g. 8" step="0.5" min="0"></div>
+      <div class="field"><label>Pipe O.D. (inches)</label><input type="number" id="pipeOD" data-save placeholder="e.g. 12" step="0.5" min="0"></div>
+    </div>
+    <div class="grid3">
+      <div class="field"><label>Trench Bottom Width (ft)</label><input type="number" id="botWidth" data-save placeholder="e.g. 3.0" step="0.5" min="0"></div>
+      <div class="field">
+        <label>Side Slopes</label>
+        <select id="sideSlope" data-save>
+          <option value="0">Vertical (shored)</option>
+          <option value="0.25">1/4 : 1</option>
+          <option value="0.5">1/2 : 1</option>
+          <option value="1.0">1 : 1</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Soil / Swell Factor</label>
+        <select id="soilSwell" data-save>
+          <option value="1.12">Sandy / Granular (1.12)</option>
+          <option value="1.25" selected>Common Earth (1.25)</option>
+          <option value="1.30">Clay (1.30)</option>
+          <option value="1.40">Hardpan / Till (1.40)</option>
+          <option value="1.50">Rock (1.50)</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">BEDDING &amp; HAUL</div>
+    <div class="grid3">
+      <div class="field"><label>Bedding Depth Below Pipe (in)</label><input type="number" id="beddingDepth" data-save placeholder="e.g. 6" step="1" min="0" value="6"></div>
+      <div class="field">
+        <label>Bedding Material</label>
+        <select id="beddingDensity" data-save>
+          <option value="1.45" selected>Granular / Crusher Run (1.45 t/CY)</option>
+          <option value="1.35">Sand (1.35 t/CY)</option>
+          <option value="1.35">Pea Gravel (1.35 t/CY)</option>
+          <option value="1.50">Road Base / 3/4" Clear (1.50 t/CY)</option>
+        </select>
+      </div>
+      <div class="field"><label>Truck Capacity (CY)</label><input type="number" id="truckCap" data-save placeholder="e.g. 14" step="1" min="1" value="14"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">OPTIONAL — COST RATES</div>
+    <div class="optional-label">Unit Rates</div>
+    <div class="grid3">
+      <div class="field"><label>Excavation ($/CY)</label><input type="number" id="rateExcav" data-save placeholder="e.g. 8.50" step="0.50" min="0"></div>
+      <div class="field"><label>Bedding Material ($/ton)</label><input type="number" id="rateBedding" data-save placeholder="e.g. 22.00" step="0.50" min="0"></div>
+      <div class="field"><label>Haul / Dispose ($/load)</label><input type="number" id="rateHaul" data-save placeholder="e.g. 120" step="5" min="0"></div>
+    </div>
+    <button class="btn" onclick="calcTrench()">CALCULATE TRENCH</button>
+  </div>
+
+  <div class="results" id="results">
+    <div class="card results-card">
+      <div class="card-title">TRENCH RESULTS</div>
+      <div class="result-grid">
+        <div class="result-item"><div class="result-value" id="r_excav">—</div><div class="result-unit">Gross Excav. CY</div></div>
+        <div class="result-item"><div class="result-value" id="r_bedding">—</div><div class="result-unit">Bedding (tons)</div></div>
+        <div class="result-item"><div class="result-value" id="r_spoil">—</div><div class="result-unit">Spoil to Haul LCY</div></div>
+        <div class="result-item"><div class="result-value" id="r_loads">—</div><div class="result-unit">Haul Loads</div></div>
+      </div>
+      <div class="breakdown">
+        <div class="br-row"><span class="br-label">Trench Bottom Width</span><span class="br-value" id="b_bot">—</span></div>
+        <div class="br-row"><span class="br-label">Trench Top Width (if sloped)</span><span class="br-value" id="b_top">—</span></div>
+        <div class="br-row"><span class="br-label">Average Trench Width</span><span class="br-value" id="b_avg">—</span></div>
+        <div class="br-row"><span class="br-label">Gross Excavation Volume</span><span class="br-value" id="b_excav">—</span></div>
+        <div class="br-row"><span class="br-label">Pipe Displacement</span><span class="br-value" id="b_pipe">—</span></div>
+        <div class="br-row"><span class="br-label">Bedding Volume</span><span class="br-value" id="b_beddingcy">—</span></div>
+        <div class="br-row"><span class="br-label">Bedding Weight</span><span class="br-value" id="b_beddingt">—</span></div>
+        <div class="br-row"><span class="br-label">Net Backfill Volume</span><span class="br-value" id="b_backfill">—</span></div>
+        <div class="br-row"><span class="br-label">Spoil to Haul (after swell)</span><span class="br-value" id="b_spoil">—</span></div>
+        <div class="br-row"><span class="br-label">Haul Loads</span><span class="br-value" id="b_loads">—</span></div>
+      </div>
+      <div class="cost-section breakdown" id="costSection" style="margin-top:12px;">
+        <div class="br-row"><span class="br-label">Excavation Cost</span><span class="br-value" id="c_excav">—</span></div>
+        <div class="br-row"><span class="br-label">Bedding Cost</span><span class="br-value" id="c_bedding">—</span></div>
+        <div class="br-row"><span class="br-label">Haul Cost</span><span class="br-value" id="c_haul">—</span></div>
+        <div class="br-row"><span class="br-label">Total Cost</span><span class="br-value" id="c_total">—</span></div>
+        <div class="br-row"><span class="br-label">Cost Per Linear Foot</span><span class="br-value" id="c_lf">—</span></div>
+      </div>
+      <div class="note">Trench volumes use Average End Area method for sloped cuts. Pipe displacement accounts for solid-wall pipe. Bedding is calculated at trench bottom width. All excavated material assumed hauled — adjust if native backfill is reused.</div>
+    </div>
+    <div class="tool-actions">
+      <button class="act-btn" onclick="window.print()">&#8595; EXPORT PDF</button>
+      <button class="act-btn" id="shareBtn" onclick="shareLink()">&#9993; SHARE LINK</button>
+      <button class="act-btn act-clear" onclick="clearAll()">&#10005; CLEAR</button>
+    </div>
+  </div>
+
+  <div class="cta-bar">
+    <div class="cta-text">Free tool from <span>The Excavation Academy</span> — 138 modules of civil excavation training. Free to start.</div>
+    <a class="cta-link" href="https://www.skool.com/the-excavation-academy-2540" target="_blank">JOIN FREE</a>
+  </div>
+</div>
+<div class="footer">&#169; The Excavation Academy — All tools provided for field reference only. Always consult IFC drawings and local authority requirements.</div>
+
+<script>
+(function(){if(localStorage.getItem('tea-theme')==='dark')document.body.classList.add('dark');})();
+function toggleTheme(){document.body.classList.toggle('dark');localStorage.setItem('tea-theme',document.body.classList.contains('dark')?'dark':'light');document.getElementById('themeBtn').textContent=document.body.classList.contains('dark')?'\u2600 LIGHT':'\u263E DARK';}
+(function(){document.getElementById('themeBtn').textContent=document.body.classList.contains('dark')?'\u2600 LIGHT':'\u263E DARK';})();
+const TOOL_KEY='tea-trench-volume';
+function saveInputs(){const d={};document.querySelectorAll('[data-save]').forEach(e=>d[e.id]=e.value);localStorage.setItem(TOOL_KEY,JSON.stringify(d));}
+function restoreInputs(){const p=new URLSearchParams(window.location.search);if([...p].length){p.forEach((v,k)=>{const e=document.getElementById(k);if(e)e.value=v;});return;}try{const s=localStorage.getItem(TOOL_KEY);if(s){const d=JSON.parse(s);Object.entries(d).forEach(([k,v])=>{const e=document.getElementById(k);if(e)e.value=v;});}}catch(e){}}
+document.addEventListener('input',saveInputs);document.addEventListener('change',saveInputs);
+window.addEventListener('load',restoreInputs);
+function shareLink(){const p=new URLSearchParams();document.querySelectorAll('[data-save]').forEach(e=>{if(e.value)p.set(e.id,e.value);});navigator.clipboard.writeText(location.origin+location.pathname+'?'+p.toString()).then(()=>{const b=document.getElementById('shareBtn');const o=b.textContent;b.textContent='\u2713 COPIED!';setTimeout(()=>b.textContent=o,2000);});}
+function clearAll(){localStorage.removeItem(TOOL_KEY);document.querySelectorAll('[data-save]').forEach(e=>{if(e.tagName==='SELECT')e.selectedIndex=0;else e.value='';});document.getElementById('results').classList.remove('show');}
+function fmt(n){return n.toLocaleString('en',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function calcTrench(){
+  const len=parseFloat(document.getElementById('trenchLen').value);
+  const depth=parseFloat(document.getElementById('trenchDepth').value);
+  const pipeOD=parseFloat(document.getElementById('pipeOD').value)||0;
+  const botW=parseFloat(document.getElementById('botWidth').value);
+  const slope=parseFloat(document.getElementById('sideSlope').value);
+  const swell=parseFloat(document.getElementById('soilSwell').value);
+  const beddingIn=parseFloat(document.getElementById('beddingDepth').value)||6;
+  const beddingDen=parseFloat(document.getElementById('beddingDensity').value);
+  const truckCap=parseFloat(document.getElementById('truckCap').value)||14;
+  if(isNaN(len)||isNaN(depth)||isNaN(botW)||len<=0||depth<=0||botW<=0){alert('Enter trench length, depth, and bottom width.');return;}
+  const topW=botW+2*depth*slope;
+  const avgW=(botW+topW)/2;
+  const grossFt3=avgW*depth*len;
+  const grossCY=grossFt3/27;
+  const pipeDiaFt=pipeOD/12;
+  const pipeCY=pipeOD>0?Math.PI*(pipeDiaFt/2)**2*len/27:0;
+  const beddFt=beddingIn/12;
+  const beddCY=botW*beddFt*len/27;
+  const beddTons=beddCY*beddingDen;
+  const netBackfill=grossCY-pipeCY-beddCY;
+  const spoilLCY=grossCY*swell;
+  const loads=Math.ceil(spoilLCY/truckCap);
+  document.getElementById('r_excav').textContent=grossCY.toFixed(1);
+  document.getElementById('r_bedding').textContent=beddTons.toFixed(1);
+  document.getElementById('r_spoil').textContent=spoilLCY.toFixed(1);
+  document.getElementById('r_loads').textContent=loads;
+  document.getElementById('b_bot').textContent=botW.toFixed(2)+' ft';
+  document.getElementById('b_top').textContent=slope>0?topW.toFixed(2)+' ft':'N/A (vertical)';
+  document.getElementById('b_avg').textContent=avgW.toFixed(2)+' ft';
+  document.getElementById('b_excav').textContent=fmt(grossCY)+' CY';
+  document.getElementById('b_pipe').textContent=pipeCY>0?fmt(pipeCY)+' CY':'—';
+  document.getElementById('b_beddingcy').textContent=fmt(beddCY)+' CY';
+  document.getElementById('b_beddingt').textContent=fmt(beddTons)+' tons';
+  document.getElementById('b_backfill').textContent=fmt(netBackfill)+' CY';
+  document.getElementById('b_spoil').textContent=fmt(spoilLCY)+' LCY';
+  document.getElementById('b_loads').textContent=loads+' loads @ '+truckCap+' CY';
+  const rE=parseFloat(document.getElementById('rateExcav').value)||0;
+  const rB=parseFloat(document.getElementById('rateBedding').value)||0;
+  const rH=parseFloat(document.getElementById('rateHaul').value)||0;
+  if(rE>0||rB>0||rH>0){
+    const cE=grossCY*rE,cB=beddTons*rB,cH=loads*rH,cT=cE+cB+cH;
+    document.getElementById('c_excav').textContent='$'+fmt(cE);
+    document.getElementById('c_bedding').textContent='$'+fmt(cB);
+    document.getElementById('c_haul').textContent='$'+fmt(cH);
+    document.getElementById('c_total').textContent='$'+fmt(cT);
+    document.getElementById('c_lf').textContent='$'+fmt(cT/len)+' / LF';
+    document.getElementById('costSection').style.display='block';
+  } else {
+    document.getElementById('costSection').style.display='none';
+  }
+  document.getElementById('results').classList.add('show');
+}
+</script>
+</body>
+</html>
