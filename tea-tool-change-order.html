@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Change Order Calculator — The Excavation Academy</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap');
+:root{--orange:#E8650A;--bg:#f5f3ee;--header-bg:#fff;--card:#fff;--card-inner:#f0ede6;--border:#ddd9d0;--text:#1a1a1a;--muted:#6b6560;--input-bg:#f0ede6;--blue:#2471a3;--red:#c0392b;}
+body.dark{--bg:#0a0a0a;--header-bg:#111;--card:#141414;--card-inner:#1a1a1a;--border:#2a2a2a;--text:#e0e0e0;--muted:#777;--input-bg:#1a1a1a;--blue:#3498db;--red:#e74c3c;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;min-height:100vh;transition:background .2s,color .2s;}
+.header{background:var(--header-bg);border-bottom:3px solid var(--orange);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;}
+.header-left{display:flex;align-items:center;gap:20px;}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--orange);letter-spacing:3px;}
+.back-link{font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:2px;color:var(--muted);text-decoration:none;text-transform:uppercase;border:1px solid var(--border);padding:6px 12px;transition:color .2s,border-color .2s;}
+.back-link:hover{color:var(--orange);border-color:var(--orange);}
+.theme-btn{background:none;border:1px solid var(--border);color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:6px 12px;cursor:pointer;transition:border-color .2s,color .2s;}
+.theme-btn:hover{border-color:var(--orange);color:var(--orange);}
+.pm-badge{display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:2px;background:rgba(36,113,163,.15);color:var(--blue);padding:4px 10px;margin-left:12px;vertical-align:middle;}
+.container{max-width:900px;margin:0 auto;padding:32px 20px;}
+.tool-title{font-family:'Bebas Neue',sans-serif;font-size:48px;color:var(--text);letter-spacing:2px;line-height:1;margin-bottom:6px;}
+.tool-sub{font-family:'Barlow Condensed',sans-serif;font-size:15px;color:var(--muted);letter-spacing:1px;margin-bottom:32px;text-transform:uppercase;}
+.card{background:var(--card);border:1px solid var(--border);padding:24px;margin-bottom:20px;}
+.card-title{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--orange);letter-spacing:2px;margin-bottom:20px;border-bottom:1px solid var(--border);padding-bottom:10px;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
+.field{margin-bottom:16px;}
+label{display:block;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:8px;}
+input,select,textarea{width:100%;background:var(--input-bg);border:1px solid var(--border);color:var(--text);font-family:'Barlow',sans-serif;font-size:15px;padding:11px 13px;outline:none;transition:border-color .2s;}
+textarea{resize:vertical;min-height:72px;font-size:14px;}
+input:focus,select:focus,textarea:focus{border-color:var(--orange);}
+.btn{width:100%;background:var(--orange);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;padding:15px;border:none;cursor:pointer;margin-top:8px;}
+.btn:hover{background:#d45a08;}
+.results{display:none;}
+.results.show{display:block;}
+.co-sheet{background:var(--card);border:2px solid var(--border);padding:28px;margin-bottom:16px;}
+.co-header-bar{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:3px solid var(--orange);padding-bottom:16px;margin-bottom:20px;}
+.co-title-block .co-title{font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--orange);letter-spacing:3px;}
+.co-title-block .co-number{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--text);letter-spacing:2px;margin-top:2px;}
+.co-meta{font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--muted);text-align:right;line-height:1.8;}
+.co-meta strong{color:var(--text);}
+.co-desc-block{background:var(--card-inner);border:1px solid var(--border);padding:14px 16px;margin-bottom:20px;font-family:'Barlow',sans-serif;font-size:14px;color:var(--text);line-height:1.6;}
+.co-desc-label{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:6px;}
+.co-table{width:100%;border-collapse:collapse;margin-bottom:0;}
+.co-table th{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;padding:9px 12px;text-align:left;border-bottom:2px solid var(--border);background:var(--card-inner);}
+.co-table td{padding:9px 12px;border-bottom:1px solid var(--border);font-family:'Barlow Condensed',sans-serif;font-size:14px;}
+.co-table td.amt{text-align:right;color:var(--orange);}
+.co-table tr.spacer td{padding:4px;background:var(--card-inner);}
+.co-table tr.total-row td{font-weight:700;font-size:16px;color:var(--text);border-top:2px solid var(--border);}
+.co-table tr.grand td{font-size:18px;color:#fff;background:var(--orange);}
+.co-table tr.grand td.amt{color:#fff;}
+.result-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
+.result-item{text-align:center;padding:16px 8px;background:var(--card-inner);border:1px solid var(--border);}
+.result-value{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--orange);line-height:1;}
+.result-unit{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-top:4px;}
+.tool-actions{display:flex;gap:10px;margin-top:16px;}
+.act-btn{flex:1;padding:11px;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:2px;cursor:pointer;border:1px solid var(--border);background:var(--card);color:var(--text);transition:border-color .2s,color .2s;}
+.act-btn:hover{border-color:var(--orange);color:var(--orange);}
+.act-clear:hover{border-color:var(--red);color:var(--red);}
+.cta-bar{background:var(--card-inner);border:1px solid rgba(232,101,10,.25);padding:22px 24px;margin-top:24px;display:flex;align-items:center;justify-content:space-between;gap:20px;}
+.cta-text{font-family:'Barlow Condensed',sans-serif;font-size:17px;color:var(--text);font-weight:600;}
+.cta-text span{color:var(--orange);}
+.cta-link{background:var(--orange);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:2px;padding:11px 24px;text-decoration:none;white-space:nowrap;}
+.footer{background:var(--header-bg);border-top:1px solid var(--border);padding:16px 24px;text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:12px;color:var(--muted);letter-spacing:1px;}
+@media print{.header,.tool-actions,.cta-bar,.footer,.card:not(.co-sheet){display:none!important;}.results{display:block!important;}body{background:#fff!important;}}
+@media(max-width:640px){.grid2,.grid3,.result-grid{grid-template-columns:1fr 1fr;}.tool-actions{flex-direction:column;}.cta-bar{flex-direction:column;}.co-header-bar{flex-direction:column;gap:12px;}.co-meta{text-align:left;}}
+</style>
+</head>
+<body>
+<script>(function(){if(localStorage.getItem('tea-theme')==='dark')document.body.classList.add('dark');})()</script>
+<div class="header">
+  <div class="header-left">
+    <div class="logo">THE EXCAVATION ACADEMY</div>
+    <a class="back-link" href="tea-tools-hub.html">&#8592; All Tools</a>
+  </div>
+  <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">&#9790; DARK</button>
+</div>
+<div class="container">
+  <div class="tool-title">CHANGE ORDER CALCULATOR <span class="pm-badge">PM TOOL</span></div>
+  <div class="tool-sub">Calculate CO costs, apply markup, and generate a clean summary to submit</div>
+
+  <div class="card">
+    <div class="card-title">CHANGE ORDER INFO</div>
+    <div class="grid3">
+      <div class="field"><label>CO Number</label><input type="text" id="coNum" data-save placeholder="e.g. CO-003"></div>
+      <div class="field"><label>Date</label><input type="date" id="coDate" data-save></div>
+      <div class="field"><label>Project Name</label><input type="text" id="projName" data-save placeholder="e.g. Main St. Watermain"></div>
+    </div>
+    <div class="field"><label>Description of Work</label><textarea id="coDesc" data-save placeholder="Describe the change in scope — what changed, why, and what work is required..."></textarea></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">LABOUR</div>
+    <div class="grid3">
+      <div class="field"><label>Hours</label><input type="number" id="labHrs" data-save placeholder="e.g. 24" step="0.5" min="0"></div>
+      <div class="field"><label>Rate ($/hr)</label><input type="number" id="labRate" data-save placeholder="e.g. 48" step="0.50" min="0"></div>
+      <div class="field"><label>Burden %</label><input type="number" id="labBurden" data-save placeholder="30" step="1" min="0" value="30"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">EQUIPMENT</div>
+    <div class="grid3">
+      <div class="field"><label>Hours</label><input type="number" id="eqHrs" data-save placeholder="e.g. 8" step="0.5" min="0"></div>
+      <div class="field"><label>Rate ($/hr)</label><input type="number" id="eqRate" data-save placeholder="e.g. 180" step="5" min="0"></div>
+      <div class="field"><label>Fuel &amp; Maint. %</label><input type="number" id="eqFuel" data-save placeholder="10" step="1" min="0" value="10"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">MATERIALS &amp; SUBCONTRACTORS</div>
+    <div class="grid2">
+      <div class="field"><label>Material Description</label><input type="text" id="matDesc" data-save placeholder="e.g. 300mm pipe, fittings, concrete"></div>
+      <div class="field"><label>Material Cost ($)</label><input type="number" id="matCost" data-save placeholder="e.g. 2400" step="50" min="0"></div>
+    </div>
+    <div class="grid2">
+      <div class="field"><label>Subcontractor Cost ($)</label><input type="number" id="subCost" data-save placeholder="e.g. 0" step="100" min="0" value="0"></div>
+      <div class="field"><label>Delay / Disruption Cost ($) <span style="font-weight:400;text-transform:none;font-size:11px;">(optional)</span></label><input type="number" id="delayCost" data-save placeholder="e.g. 0" step="100" min="0" value="0"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">MARKUP</div>
+    <div class="grid2">
+      <div class="field"><label>Overhead %</label><input type="number" id="overhead" data-save placeholder="e.g. 15" step="1" min="0" value="15"></div>
+      <div class="field"><label>Profit %</label><input type="number" id="profit" data-save placeholder="e.g. 10" step="1" min="0" value="10"></div>
+    </div>
+    <button class="btn" onclick="calcCO()">GENERATE CHANGE ORDER</button>
+  </div>
+
+  <div class="results" id="results">
+    <div class="result-grid">
+      <div class="result-item"><div class="result-value" id="r_lab">—</div><div class="result-unit">Labour Cost</div></div>
+      <div class="result-item"><div class="result-value" id="r_eq">—</div><div class="result-unit">Equipment Cost</div></div>
+      <div class="result-item"><div class="result-value" id="r_direct">—</div><div class="result-unit">Direct Cost</div></div>
+      <div class="result-item" style="border-color:var(--orange)"><div class="result-value" id="r_total" style="font-size:32px">—</div><div class="result-unit">CO TOTAL</div></div>
+    </div>
+    <div class="co-sheet results-card">
+      <div class="co-header-bar">
+        <div class="co-title-block">
+          <div class="co-title">CHANGE ORDER</div>
+          <div class="co-number" id="s_conum">—</div>
+        </div>
+        <div class="co-meta">
+          Project: <strong id="s_proj">—</strong><br>
+          Date: <strong id="s_date">—</strong><br>
+          Prepared by: <strong>The Excavation Academy Tools</strong>
+        </div>
+      </div>
+      <div class="co-desc-block">
+        <div class="co-desc-label">Description of Work</div>
+        <div id="s_desc">—</div>
+      </div>
+      <table class="co-table">
+        <thead><tr><th>Component</th><th>Detail</th><th class="amt">Amount</th></tr></thead>
+        <tbody id="coBody"></tbody>
+      </table>
+    </div>
+    <div class="tool-actions">
+      <button class="act-btn" onclick="window.print()">&#8595; EXPORT PDF</button>
+      <button class="act-btn" id="shareBtn" onclick="shareLink()">&#9993; SHARE LINK</button>
+      <button class="act-btn act-clear" onclick="clearAll()">&#10005; CLEAR</button>
+    </div>
+  </div>
+
+  <div class="cta-bar">
+    <div class="cta-text">Free tool from <span>The Excavation Academy</span> — 138 modules of civil excavation training. Free to start.</div>
+    <a class="cta-link" href="https://www.skool.com/the-excavation-academy-2540" target="_blank">JOIN FREE</a>
+  </div>
+</div>
+<div class="footer">&#169; The Excavation Academy — For estimating reference only. Always review change orders with your project manager before submission.</div>
+
+<script>
+(function(){if(localStorage.getItem('tea-theme')==='dark')document.body.classList.add('dark');})();
+function toggleTheme(){document.body.classList.toggle('dark');localStorage.setItem('tea-theme',document.body.classList.contains('dark')?'dark':'light');document.getElementById('themeBtn').textContent=document.body.classList.contains('dark')?'\u2600 LIGHT':'\u263E DARK';}
+(function(){document.getElementById('themeBtn').textContent=document.body.classList.contains('dark')?'\u2600 LIGHT':'\u263E DARK';})();
+const TOOL_KEY='tea-change-order';
+function saveInputs(){const d={};document.querySelectorAll('[data-save]').forEach(e=>d[e.id]=e.value);localStorage.setItem(TOOL_KEY,JSON.stringify(d));}
+function restoreInputs(){const p=new URLSearchParams(window.location.search);if([...p].length){p.forEach((v,k)=>{const e=document.getElementById(k);if(e)e.value=v;});return;}try{const s=localStorage.getItem(TOOL_KEY);if(s){const d=JSON.parse(s);Object.entries(d).forEach(([k,v])=>{const e=document.getElementById(k);if(e)e.value=v;});}}catch(e){}}
+document.addEventListener('input',saveInputs);document.addEventListener('change',saveInputs);
+window.addEventListener('load',restoreInputs);
+function shareLink(){const p=new URLSearchParams();document.querySelectorAll('[data-save]').forEach(e=>{if(e.value)p.set(e.id,e.value);});navigator.clipboard.writeText(location.origin+location.pathname+'?'+p.toString()).then(()=>{const b=document.getElementById('shareBtn');const o=b.textContent;b.textContent='\u2713 COPIED!';setTimeout(()=>b.textContent=o,2000);});}
+function clearAll(){localStorage.removeItem(TOOL_KEY);document.querySelectorAll('[data-save]').forEach(e=>{if(e.tagName==='SELECT')e.selectedIndex=0;else e.value='';});document.getElementById('results').classList.remove('show');}
+function fmt(n){return'$'+n.toLocaleString('en',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function calcCO(){
+  const labHrs=parseFloat(document.getElementById('labHrs').value)||0;
+  const labRate=parseFloat(document.getElementById('labRate').value)||0;
+  const labBurden=parseFloat(document.getElementById('labBurden').value)||0;
+  const eqHrs=parseFloat(document.getElementById('eqHrs').value)||0;
+  const eqRate=parseFloat(document.getElementById('eqRate').value)||0;
+  const eqFuel=parseFloat(document.getElementById('eqFuel').value)||0;
+  const matCost=parseFloat(document.getElementById('matCost').value)||0;
+  const subCost=parseFloat(document.getElementById('subCost').value)||0;
+  const delayCost=parseFloat(document.getElementById('delayCost').value)||0;
+  const oh=parseFloat(document.getElementById('overhead').value)||0;
+  const pr=parseFloat(document.getElementById('profit').value)||0;
+  const labTotal=labHrs*labRate*(1+labBurden/100);
+  const eqTotal=eqHrs*eqRate*(1+eqFuel/100);
+  const direct=labTotal+eqTotal+matCost+subCost+delayCost;
+  if(direct<=0){alert('Enter at least one cost.');return;}
+  const ohAmt=direct*(oh/100);
+  const withOH=direct+ohAmt;
+  const profAmt=withOH*(pr/100);
+  const total=withOH+profAmt;
+  document.getElementById('r_lab').textContent=fmt(labTotal);
+  document.getElementById('r_eq').textContent=fmt(eqTotal);
+  document.getElementById('r_direct').textContent=fmt(direct);
+  document.getElementById('r_total').textContent=fmt(total);
+  document.getElementById('s_conum').textContent=document.getElementById('coNum').value||'Change Order';
+  document.getElementById('s_proj').textContent=document.getElementById('projName').value||'—';
+  document.getElementById('s_date').textContent=document.getElementById('coDate').value||new Date().toLocaleDateString();
+  document.getElementById('s_desc').textContent=document.getElementById('coDesc').value||'No description provided.';
+  const tbody=document.getElementById('coBody');tbody.innerHTML='';
+  const addRow=(label,detail,val,cls)=>{const tr=document.createElement('tr');if(cls)tr.className=cls;tr.innerHTML='<td>'+label+'</td><td>'+detail+'</td><td class="amt">'+fmt(val)+'</td>';tbody.appendChild(tr);};
+  if(labTotal>0)addRow('Labour',''+labHrs+' hrs @ $'+labRate+'/hr + '+labBurden+'% burden',labTotal);
+  if(eqTotal>0)addRow('Equipment',''+eqHrs+' hrs @ $'+eqRate+'/hr + '+eqFuel+'% fuel/maint.',eqTotal);
+  if(matCost>0)addRow('Materials',document.getElementById('matDesc').value||'—',matCost);
+  if(subCost>0)addRow('Subcontractor','As quoted',subCost);
+  if(delayCost>0)addRow('Delay / Disruption','As assessed',delayCost);
+  const spacer=document.createElement('tr');spacer.className='spacer';spacer.innerHTML='<td colspan="3"></td>';tbody.appendChild(spacer);
+  addRow('Direct Cost Total','',direct,'total-row');
+  addRow('Overhead ('+oh+'%)','',ohAmt);
+  addRow('Subtotal with Overhead','',withOH,'total-row');
+  addRow('Profit ('+pr+'%)','',profAmt);
+  addRow('CHANGE ORDER TOTAL','',total,'grand');
+  document.getElementById('results').classList.add('show');
+}
+</script>
+</body>
+</html>

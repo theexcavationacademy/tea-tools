@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Basement Excavation Calculator — The Excavation Academy</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap');
+:root {
+  --orange:#E8650A; --bg:#f5f3ee; --header-bg:#ffffff; --card:#ffffff;
+  --card-inner:#f0ede6; --border:#ddd9d0; --text:#1a1a1a; --muted:#6b6560;
+  --input-bg:#f0ede6; --green:#1a8a3a; --red:#c0392b;
+}
+body.dark {
+  --bg:#0a0a0a; --header-bg:#111111; --card:#141414; --card-inner:#1a1a1a;
+  --border:#2a2a2a; --text:#e0e0e0; --muted:#777; --input-bg:#1a1a1a;
+  --green:#2ecc71; --red:#e74c3c;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;min-height:100vh;transition:background .2s,color .2s;}
+.header{background:var(--header-bg);border-bottom:3px solid var(--orange);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;}
+.header-left{display:flex;align-items:center;gap:20px;}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--orange);letter-spacing:3px;}
+.back-link{font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:2px;color:var(--muted);text-decoration:none;text-transform:uppercase;border:1px solid var(--border);padding:6px 12px;transition:color .2s,border-color .2s;}
+.back-link:hover{color:var(--orange);border-color:var(--orange);}
+.theme-btn{background:none;border:1px solid var(--border);color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:6px 12px;cursor:pointer;transition:border-color .2s,color .2s;}
+.theme-btn:hover{border-color:var(--orange);color:var(--orange);}
+.container{max-width:860px;margin:0 auto;padding:32px 20px;}
+.tool-title{font-family:'Bebas Neue',sans-serif;font-size:48px;color:var(--text);letter-spacing:2px;line-height:1;margin-bottom:6px;}
+.tool-sub{font-family:'Barlow Condensed',sans-serif;font-size:15px;color:var(--muted);letter-spacing:1px;margin-bottom:32px;text-transform:uppercase;}
+.card{background:var(--card);border:1px solid var(--border);padding:24px;margin-bottom:20px;}
+.card-title{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--orange);letter-spacing:2px;margin-bottom:20px;border-bottom:1px solid var(--border);padding-bottom:10px;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
+.grid4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:16px;}
+.field{margin-bottom:16px;}
+label{display:block;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:8px;}
+input,select{width:100%;background:var(--input-bg);border:1px solid var(--border);color:var(--text);font-family:'Barlow',sans-serif;font-size:15px;padding:11px 13px;outline:none;transition:border-color .2s;-webkit-appearance:none;}
+input:focus,select:focus{border-color:var(--orange);}
+.btn{width:100%;background:var(--orange);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;padding:15px;border:none;cursor:pointer;margin-top:8px;}
+.btn:hover{background:#d45a08;}
+.results{display:none;}
+.results.show{display:block;}
+.result-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;}
+.result-item{text-align:center;padding:16px 8px;background:var(--card-inner);border:1px solid var(--border);}
+.result-value{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--orange);line-height:1;}
+.result-unit{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-top:4px;}
+.breakdown{background:var(--card-inner);border:1px solid var(--border);padding:16px;margin-top:12px;}
+.br-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-family:'Barlow Condensed',sans-serif;font-size:15px;}
+.br-row:last-child{border-bottom:none;font-weight:700;color:var(--text);}
+.br-label{color:var(--muted);}
+.br-value{color:var(--orange);}
+.note{font-size:13px;color:var(--muted);line-height:1.6;padding-top:12px;border-top:1px solid var(--border);margin-top:12px;}
+.tool-actions{display:flex;gap:10px;margin-top:16px;}
+.act-btn{flex:1;padding:11px;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:2px;cursor:pointer;border:1px solid var(--border);background:var(--card);color:var(--muted);transition:border-color .2s,color .2s;}
+.act-btn:hover{border-color:var(--orange);color:var(--orange);}
+.act-clear:hover{border-color:var(--red)!important;color:var(--red)!important;}
+.cta-bar{background:var(--card-inner);border:1px solid rgba(232,101,10,.25);padding:22px 24px;margin-top:24px;display:flex;align-items:center;justify-content:space-between;gap:20px;}
+.cta-text{font-family:'Barlow Condensed',sans-serif;font-size:17px;color:var(--text);font-weight:600;}
+.cta-text span{color:var(--orange);}
+.cta-link{background:var(--orange);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:2px;padding:11px 24px;text-decoration:none;white-space:nowrap;}
+.footer{background:var(--header-bg);border-top:1px solid var(--border);padding:16px 24px;text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:12px;color:var(--muted);letter-spacing:1px;}
+@media print{.header,.tool-actions,.cta-bar,.footer{display:none!important;}.results{display:block!important;}body{background:#fff!important;color:#000!important;}}
+@media(max-width:640px){.grid2,.grid3,.grid4{grid-template-columns:1fr;}.result-grid{grid-template-columns:1fr 1fr;}.tool-actions{flex-direction:column;}.cta-bar{flex-direction:column;}}
+</style>
+</head>
+<body>
+<script>(function(){if(localStorage.getItem('tea-theme')==='dark')document.body.classList.add('dark');})()</script>
+<div class="header">
+  <div class="header-left">
+    <div class="logo">THE EXCAVATION ACADEMY</div>
+    <a class="back-link" href="tea-tools-hub.html">&#8592; All Tools</a>
+  </div>
+  <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">&#9790; DARK</button>
+</div>
+
+<div class="container">
+  <div class="tool-title">BASEMENT EXCAVATION CALCULATOR</div>
+  <div class="tool-sub">Pit dimensions, excavation volume, swell, and haul loads for foundation and basement digs</div>
+
+  <div class="card">
+    <div class="card-title">PIT DIMENSIONS</div>
+    <div class="grid2">
+      <div class="field">
+        <label for="buildL">Building Length (ft)</label>
+        <input type="number" id="buildL" data-save placeholder="e.g. 40" min="0" step="0.1">
+      </div>
+      <div class="field">
+        <label for="buildW">Building Width (ft)</label>
+        <input type="number" id="buildW" data-save placeholder="e.g. 30" min="0" step="0.1">
+      </div>
+    </div>
+    <div class="grid2">
+      <div class="field">
+        <label for="depth">Excavation Depth (ft)</label>
+        <input type="number" id="depth" data-save placeholder="e.g. 9" min="0" step="0.1">
+      </div>
+      <div class="field">
+        <label for="workRoom">Working Room Each Side (ft)</label>
+        <input type="number" id="workRoom" data-save value="2" min="0" step="0.5">
+      </div>
+    </div>
+    <div class="grid2">
+      <div class="field">
+        <label for="slopeType">Side Slopes</label>
+        <select id="slopeType" data-save>
+          <option value="0" selected>Vertical (Shored)</option>
+          <option value="0.25">4:1 Slope</option>
+          <option value="0.5">2:1 Slope</option>
+          <option value="1.0">1:1 Slope</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="soilType">Material / Swell Factor</label>
+        <select id="soilType" data-save>
+          <option value="1.12">Sandy/Granular (Swell 12%)</option>
+          <option value="1.25" selected>Common Earth (Swell 25%)</option>
+          <option value="1.30">Clay (Swell 30%)</option>
+          <option value="1.40">Hardpan/Till (Swell 40%)</option>
+          <option value="1.50">Rock (Swell 50%)</option>
+        </select>
+      </div>
+    </div>
+    <div class="grid2">
+      <div class="field">
+        <label for="truckCap">Truck Capacity (CY)</label>
+        <input type="number" id="truckCap" data-save value="14" min="1" step="1">
+      </div>
+    </div>
+    <button class="btn" onclick="calcBasement()">CALCULATE EXCAVATION</button>
+  </div>
+
+  <div class="card results" id="results">
+    <div class="card-title">EXCAVATION RESULTS</div>
+    <div class="result-grid">
+      <div class="result-item">
+        <div class="result-value" id="res-area">—</div>
+        <div class="result-unit">Pit Bottom Area (SF)</div>
+      </div>
+      <div class="result-item">
+        <div class="result-value" id="res-bcy">—</div>
+        <div class="result-unit">Bank Volume (BCY)</div>
+      </div>
+      <div class="result-item">
+        <div class="result-value" id="res-lcy">—</div>
+        <div class="result-unit">Loose Volume (LCY)</div>
+      </div>
+      <div class="result-item">
+        <div class="result-value" id="res-loads">—</div>
+        <div class="result-unit">Truck Loads</div>
+      </div>
+    </div>
+
+    <div class="breakdown" id="breakdown"></div>
+
+    <p class="note">Bank volume is in-ground material. Loose volume accounts for swell after excavation — use this for trucking and disposal. Working room provides space for forming, waterproofing, and inspection. Always verify shoring requirements with a competent person before excavating.</p>
+
+    <div class="tool-actions">
+      <button class="act-btn" onclick="window.print()">&#8595; EXPORT PDF</button>
+      <button class="act-btn" id="shareBtn" onclick="shareLink()">&#9993; SHARE LINK</button>
+      <button class="act-btn act-clear" onclick="clearAll()">&#10005; CLEAR</button>
+    </div>
+  </div>
+
+  <div class="cta-bar">
+    <div class="cta-text">Free tool from <span>The Excavation Academy</span> &#8212; 138 modules of civil excavation training. Free to start.</div>
+    <a class="cta-link" href="https://www.skool.com/the-excavation-academy-2540" target="_blank">JOIN FREE</a>
+  </div>
+</div>
+
+<div class="footer">&#169; The Excavation Academy &#8212; All tools provided for field reference only. Always consult IFC drawings and local authority requirements.</div>
+
+<script>
+(function(){if(localStorage.getItem('tea-theme')==='dark')document.body.classList.add('dark');})();
+function toggleTheme(){
+  document.body.classList.toggle('dark');
+  localStorage.setItem('tea-theme',document.body.classList.contains('dark')?'dark':'light');
+  document.getElementById('themeBtn').textContent=document.body.classList.contains('dark')?'\u2600 LIGHT':'\u263E DARK';
+}
+(function(){document.getElementById('themeBtn').textContent=document.body.classList.contains('dark')?'\u2600 LIGHT':'\u263E DARK';})();
+const TOOL_KEY='tea-basement-exc';
+function saveInputs(){const d={};document.querySelectorAll('[data-save]').forEach(e=>d[e.id]=e.value);localStorage.setItem(TOOL_KEY,JSON.stringify(d));}
+function restoreInputs(){
+  const p=new URLSearchParams(window.location.search);
+  if([...p].length){p.forEach((v,k)=>{const e=document.getElementById(k);if(e)e.value=v;});return;}
+  try{const s=localStorage.getItem(TOOL_KEY);if(s){const d=JSON.parse(s);Object.entries(d).forEach(([k,v])=>{const e=document.getElementById(k);if(e)e.value=v;});}}catch(e){}
+}
+document.addEventListener('input',saveInputs);
+document.addEventListener('change',saveInputs);
+window.addEventListener('load',restoreInputs);
+function shareLink(){
+  const p=new URLSearchParams();
+  document.querySelectorAll('[data-save]').forEach(e=>{if(e.value)p.set(e.id,e.value);});
+  navigator.clipboard.writeText(location.origin+location.pathname+'?'+p.toString()).then(()=>{
+    const b=document.getElementById('shareBtn');const o=b.textContent;b.textContent='\u2713 COPIED!';setTimeout(()=>b.textContent=o,2000);
+  });
+}
+function clearAll(){
+  localStorage.removeItem(TOOL_KEY);
+  document.querySelectorAll('[data-save]').forEach(e=>{if(e.tagName==='SELECT')e.selectedIndex=0;else e.value='';});
+  document.getElementById('results').classList.remove('show');
+}
+
+function calcBasement(){
+  const buildL=+document.getElementById('buildL').value;
+  const buildW=+document.getElementById('buildW').value;
+  const depth=+document.getElementById('depth').value;
+  const workRoom=+document.getElementById('workRoom').value||2;
+  const slopeH=+document.getElementById('slopeType').value;
+  const swell=+document.getElementById('soilType').value;
+  const truckCap=+document.getElementById('truckCap').value||14;
+
+  if(!buildL||!buildW||!depth){alert('Please enter building dimensions and depth.');return;}
+
+  const pitBotL=buildL+2*workRoom;
+  const pitBotW=buildW+2*workRoom;
+  const pitBotArea=pitBotL*pitBotW;
+
+  let vol_ft3;
+  let pitTopL=pitBotL, pitTopW=pitBotW;
+  if(slopeH===0||slopeH<0.01){
+    vol_ft3=pitBotL*pitBotW*depth;
+  } else {
+    pitTopL=pitBotL+2*depth*slopeH;
+    pitTopW=pitBotW+2*depth*slopeH;
+    const botArea=pitBotL*pitBotW;
+    const topArea=pitTopL*pitTopW;
+    vol_ft3=depth*(botArea+topArea)/2;
+  }
+  const vol_BCY=vol_ft3/27;
+  const vol_LCY=vol_BCY*swell;
+  const loads=Math.ceil(vol_LCY/truckCap);
+  const shoringArea=(slopeH<0.01)?2*(pitBotL+pitBotW)*depth:0;
+
+  document.getElementById('res-area').textContent=pitBotArea.toFixed(0);
+  document.getElementById('res-bcy').textContent=vol_BCY.toFixed(1);
+  document.getElementById('res-lcy').textContent=vol_LCY.toFixed(1);
+  document.getElementById('res-loads').textContent=loads;
+
+  let rows=[
+    ['Building Footprint', buildL+' x '+buildW+' ft'],
+    ['Pit Bottom (excavated)', pitBotL.toFixed(1)+' x '+pitBotW.toFixed(1)+' ft'],
+  ];
+  if(slopeH>=0.01){
+    rows.push(['Pit Top (at grade)', pitTopL.toFixed(1)+' x '+pitTopW.toFixed(1)+' ft']);
+  }
+  rows=rows.concat([
+    ['Excavation Depth', depth+' ft'],
+    ['Bank Volume (in-ground)', vol_BCY.toFixed(2)+' BCY'],
+    ['Swell Factor', swell+'x ('+((swell-1)*100).toFixed(0)+'% swell)'],
+    ['Loose Volume (for trucking)', vol_LCY.toFixed(2)+' LCY'],
+    ['Truck Capacity', truckCap+' CY per load'],
+    ['Truck Loads Required', loads+' loads'],
+  ]);
+  if(shoringArea>0){
+    rows.push(['Perimeter Shoring Area (ref)', shoringArea.toFixed(0)+' SF']);
+  }
+
+  const bd=document.getElementById('breakdown');
+  bd.innerHTML=rows.map((r,i)=>`<div class="br-row${i===rows.length-1?' last':''}"><span class="br-label">${r[0]}</span><span class="br-value">${r[1]}</span></div>`).join('');
+
+  document.getElementById('results').classList.add('show');
+}
+</script>
+</body>
+</html>
