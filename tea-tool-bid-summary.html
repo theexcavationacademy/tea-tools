@@ -3,66 +3,104 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bid Summary &amp; Markup — The Excavation Academy</title>
+<title>Bid Summary & Markup — The Excavation Academy</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap');
-:root{--orange:#E8650A;--bg:#f5f3ee;--header-bg:#fff;--card:#fff;--card-inner:#f0ede6;--border:#ddd9d0;--text:#1a1a1a;--muted:#6b6560;--input-bg:#f0ede6;--blue:#2471a3;--red:#c0392b;}
-body.dark{--bg:#0a0a0a;--header-bg:#111;--card:#141414;--card-inner:#1a1a1a;--border:#2a2a2a;--text:#e0e0e0;--muted:#777;--input-bg:#1a1a1a;--blue:#3498db;--red:#e74c3c;}
+:root{--orange:#E8650A;--bg:#f5f3ee;--header-bg:#fff;--card:#fff;--card-inner:#f0ede6;--border:#ddd9d0;--text:#1a1a1a;--muted:#6b6560;--input-bg:#f0ede6;--blue:#2471a3;--red:#c0392b;--green:#1a8a3a;}
+body.dark{--bg:#0a0a0a;--header-bg:#111;--card:#141414;--card-inner:#1a1a1a;--border:#2a2a2a;--text:#e0e0e0;--muted:#777;--input-bg:#1a1a1a;--blue:#3498db;--red:#e74c3c;--green:#2ecc71;}
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;min-height:100vh;transition:background .2s,color .2s;}
-.header{background:var(--header-bg);border-bottom:3px solid var(--orange);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;}
+.header{background:var(--header-bg);border-bottom:3px solid var(--orange);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
 .header-left{display:flex;align-items:center;gap:20px;}
 .logo{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--orange);letter-spacing:3px;}
-.back-link{font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:2px;color:var(--muted);text-decoration:none;text-transform:uppercase;border:1px solid var(--border);padding:6px 12px;transition:color .2s,border-color .2s;}
+.back-link{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:2px;color:var(--muted);text-decoration:none;text-transform:uppercase;border:1px solid var(--border);padding:5px 11px;}
 .back-link:hover{color:var(--orange);border-color:var(--orange);}
-.theme-btn{background:none;border:1px solid var(--border);color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:6px 12px;cursor:pointer;transition:border-color .2s,color .2s;}
+.pm-badge{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:2px;background:rgba(36,113,163,.15);color:var(--blue);padding:4px 10px;border:1px solid rgba(36,113,163,.3);}
+.theme-btn{background:none;border:1px solid var(--border);color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:5px 11px;cursor:pointer;}
 .theme-btn:hover{border-color:var(--orange);color:var(--orange);}
-.pm-badge{display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:2px;background:rgba(36,113,163,.15);color:var(--blue);padding:4px 10px;margin-left:12px;vertical-align:middle;}
-.container{max-width:960px;margin:0 auto;padding:32px 20px;}
-.tool-title{font-family:'Bebas Neue',sans-serif;font-size:48px;color:var(--text);letter-spacing:2px;line-height:1;margin-bottom:6px;}
-.tool-sub{font-family:'Barlow Condensed',sans-serif;font-size:15px;color:var(--muted);letter-spacing:1px;margin-bottom:32px;text-transform:uppercase;}
-.card{background:var(--card);border:1px solid var(--border);padding:24px;margin-bottom:20px;}
-.card-title{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--orange);letter-spacing:2px;margin-bottom:20px;border-bottom:1px solid var(--border);padding-bottom:10px;}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
-.grid4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:16px;}
-.field{margin-bottom:16px;}
-label{display:block;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:8px;}
-input,select{width:100%;background:var(--input-bg);border:1px solid var(--border);color:var(--text);font-family:'Barlow',sans-serif;font-size:14px;padding:10px 12px;outline:none;transition:border-color .2s;}
+.container{max-width:1100px;margin:0 auto;padding:28px 20px;}
+.tool-title{font-family:'Bebas Neue',sans-serif;font-size:46px;color:var(--text);letter-spacing:2px;line-height:1;margin-bottom:4px;}
+.tool-sub{font-family:'Barlow Condensed',sans-serif;font-size:14px;color:var(--muted);letter-spacing:1px;margin-bottom:28px;text-transform:uppercase;}
+.card{background:var(--card);border:1px solid var(--border);padding:22px;margin-bottom:18px;}
+.card-title{font-family:'Bebas Neue',sans-serif;font-size:17px;color:var(--orange);letter-spacing:2px;margin-bottom:18px;border-bottom:1px solid var(--border);padding-bottom:9px;display:flex;align-items:center;justify-content:space-between;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+.grid4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:14px;}
+.field{margin-bottom:14px;}
+label{display:block;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:6px;}
+input,select,textarea{width:100%;background:var(--input-bg);border:1px solid var(--border);color:var(--text);font-family:'Barlow',sans-serif;font-size:14px;padding:10px 12px;outline:none;transition:border-color .2s;}
 input:focus,select:focus{border-color:var(--orange);}
-.line-header{display:grid;grid-template-columns:2.5fr 1fr 1fr 1fr auto;gap:10px;margin-bottom:8px;}
-.line-header span{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;}
-.line-row{display:grid;grid-template-columns:2.5fr 1fr 1fr 1fr auto;gap:10px;align-items:center;margin-bottom:10px;}
-.line-ext{font-family:'Barlow Condensed',sans-serif;font-size:14px;color:var(--orange);padding:10px 12px;background:var(--card-inner);border:1px solid var(--border);text-align:right;}
-.del-btn{background:none;border:1px solid var(--border);color:var(--muted);font-size:16px;padding:8px 12px;cursor:pointer;line-height:1;}
+.sov-table{width:100%;border-collapse:collapse;}
+.sov-table thead th{background:var(--card-inner);font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;padding:9px 8px;text-align:left;border-bottom:2px solid var(--border);white-space:nowrap;}
+.sov-table tbody td{padding:5px 4px;border-bottom:1px solid var(--border);vertical-align:middle;}
+.sov-table input,.sov-table select{font-size:13px;padding:7px 8px;}
+.sov-table .num-col{width:50px;}
+.sov-table .item-col{width:240px;}
+.sov-table .div-col{width:160px;}
+.sov-table .qty-col{width:80px;}
+.sov-table .unit-col{width:80px;}
+.sov-table .up-col{width:100px;}
+.sov-table .ext-col{width:110px;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:var(--orange);text-align:right;padding-right:8px;}
+.sov-table .del-col{width:36px;}
+.del-btn{background:transparent;border:1px solid var(--border);color:var(--muted);font-size:16px;width:32px;height:32px;cursor:pointer;text-align:center;line-height:30px;transition:border-color .15s,color .15s;}
 .del-btn:hover{border-color:var(--red);color:var(--red);}
-.add-btn{background:none;border:1px solid var(--orange);color:var(--orange);font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:2px;padding:9px 20px;cursor:pointer;margin-top:4px;}
+.add-btn{background:transparent;border:1px dashed var(--orange);color:var(--orange);font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:9px 18px;cursor:pointer;margin-top:8px;}
 .add-btn:hover{background:rgba(232,101,10,.08);}
-.btn{width:100%;background:var(--orange);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;padding:15px;border:none;cursor:pointer;margin-top:16px;}
-.btn:hover{background:#d45a08;}
+.subtotal-row td{background:var(--card-inner);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:1px;text-transform:uppercase;color:var(--text);}
+.subtotal-row .ext-col{color:var(--orange);}
+.markup-stack{width:100%;}
+.markup-stack tr{border-bottom:1px solid var(--border);}
+.markup-stack td{padding:11px 12px;font-family:'Barlow Condensed',sans-serif;font-size:14px;}
+.markup-stack .lbl{color:var(--text);}
+.markup-stack .lbl small{display:block;font-size:11px;color:var(--muted);}
+.markup-stack .pct{width:110px;}
+.markup-stack .pct input{text-align:right;}
+.markup-stack .val{width:130px;text-align:right;font-weight:700;color:var(--orange);}
+.markup-stack .tot-row{background:var(--orange);}
+.markup-stack .tot-row td{color:#fff;font-size:16px;font-weight:700;letter-spacing:1px;}
+.calc-btn{width:100%;background:var(--orange);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;padding:15px;border:none;cursor:pointer;margin-top:6px;}
+.calc-btn:hover{background:#d45a08;}
 .results{display:none;}
 .results.show{display:block;}
-.bid-sheet{background:var(--card);border:2px solid var(--border);padding:28px;margin-bottom:16px;}
-.bid-project{font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--muted);margin-bottom:20px;}
-.bid-project strong{color:var(--text);}
-.bid-table{width:100%;border-collapse:collapse;margin-bottom:20px;}
-.bid-table th{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;padding:8px 10px;text-align:left;border-bottom:2px solid var(--border);}
-.bid-table td{padding:8px 10px;border-bottom:1px solid var(--border);font-family:'Barlow Condensed',sans-serif;font-size:14px;}
-.bid-table td.amt{text-align:right;color:var(--orange);}
-.bid-table tr.subtotal td{font-weight:700;color:var(--text);background:var(--card-inner);}
-.bid-total-box{background:var(--orange);color:#fff;padding:20px 24px;display:flex;justify-content:space-between;align-items:center;}
-.bid-total-label{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;}
-.bid-total-value{font-family:'Bebas Neue',sans-serif;font-size:42px;letter-spacing:2px;}
-.tool-actions{display:flex;gap:10px;margin-top:16px;}
-.act-btn{flex:1;padding:11px;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:2px;cursor:pointer;border:1px solid var(--border);background:var(--card);color:var(--text);transition:border-color .2s,color .2s;}
+.bid-total-bar{background:var(--orange);color:#fff;padding:22px 28px;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center;}
+.bid-total-label{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;}
+.bid-total-value{font-family:'Bebas Neue',sans-serif;font-size:52px;line-height:1;letter-spacing:2px;}
+.bid-sheet{background:var(--card);border:2px solid var(--border);padding:28px 32px;font-family:'Barlow Condensed',sans-serif;}
+.bid-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px;padding-bottom:18px;border-bottom:3px solid var(--orange);}
+.bid-co{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--orange);letter-spacing:3px;}
+.bid-info table{font-size:13px;border-collapse:collapse;}
+.bid-info td{padding:3px 12px 3px 0;color:var(--muted);}
+.bid-info td:nth-child(2){color:var(--text);font-weight:600;}
+.bid-sov-table{width:100%;border-collapse:collapse;margin-bottom:18px;font-size:13px;}
+.bid-sov-table th{background:var(--card-inner);padding:8px 10px;text-align:left;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);border-bottom:2px solid var(--border);}
+.bid-sov-table td{padding:8px 10px;border-bottom:1px solid var(--border);}
+.bid-sov-table .right{text-align:right;}
+.bid-sov-table .cat-hdr td{background:var(--card-inner);font-weight:700;color:var(--orange);font-size:12px;letter-spacing:1px;text-transform:uppercase;}
+.bid-sov-table .sub-row td{font-weight:700;border-top:1px solid var(--border);font-size:13px;}
+.bid-sov-table .grand-row td{background:var(--orange);color:#fff;font-weight:700;font-size:15px;}
+.bid-markup-table{width:100%;border-collapse:collapse;margin-bottom:16px;font-size:13px;}
+.bid-markup-table td{padding:8px 10px;border-bottom:1px solid var(--border);}
+.bid-markup-table .right{text-align:right;font-weight:700;color:var(--orange);}
+.bid-markup-table .total-row td{background:var(--orange);color:#fff;font-weight:700;font-size:16px;}
+.bid-sig{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:24px;padding-top:18px;border-top:2px solid var(--border);}
+.sig-block label{display:block;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:20px;}
+.sig-line{border-top:1px solid var(--text);padding-top:6px;font-size:12px;color:var(--muted);}
+.tool-actions{display:flex;gap:10px;margin-top:14px;}
+.act-btn{flex:1;padding:11px;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:2px;cursor:pointer;border:1px solid var(--border);background:var(--card);color:var(--text);}
 .act-btn:hover{border-color:var(--orange);color:var(--orange);}
-.act-clear:hover{border-color:var(--red);color:var(--red);}
-.cta-bar{background:var(--card-inner);border:1px solid rgba(232,101,10,.25);padding:22px 24px;margin-top:24px;display:flex;align-items:center;justify-content:space-between;gap:20px;}
-.cta-text{font-family:'Barlow Condensed',sans-serif;font-size:17px;color:var(--text);font-weight:600;}
+.act-clear:hover{border-color:var(--red)!important;color:var(--red)!important;}
+.cta-bar{background:var(--card-inner);border:1px solid rgba(232,101,10,.25);padding:20px 22px;margin-top:22px;display:flex;align-items:center;justify-content:space-between;gap:20px;}
+.cta-text{font-family:'Barlow Condensed',sans-serif;font-size:16px;color:var(--text);font-weight:600;}
 .cta-text span{color:var(--orange);}
-.cta-link{background:var(--orange);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:2px;padding:11px 24px;text-decoration:none;white-space:nowrap;}
-.footer{background:var(--header-bg);border-top:1px solid var(--border);padding:16px 24px;text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:12px;color:var(--muted);letter-spacing:1px;}
-@media print{.header,.tool-actions,.cta-bar,.footer,.card:not(.bid-sheet){display:none!important;}.results{display:block!important;}body{background:#fff!important;}}
-@media(max-width:700px){.line-header,.line-row{grid-template-columns:1fr 1fr;}.line-header span:nth-child(n+3),.line-row>*:nth-child(n+3){display:none;}.tool-actions{flex-direction:column;}.cta-bar{flex-direction:column;}.bid-total-value{font-size:32px;}}
+.cta-link{background:var(--orange);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;padding:10px 22px;text-decoration:none;}
+.footer{text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:12px;color:var(--muted);padding:20px;border-top:1px solid var(--border);margin-top:24px;}
+@media print{
+  .header,.tool-sub,.card:not(.results),.calc-btn,.tool-actions,.cta-bar,.footer,.add-btn{display:none!important;}
+  .results{display:block!important;}
+  body{background:#fff;color:#000;}
+  .bid-sheet{border:2px solid #000;}
+}
+@media(max-width:800px){.grid2,.grid3,.grid4{grid-template-columns:1fr;}.bid-header{flex-direction:column;gap:12px;}.bid-sig{grid-template-columns:1fr;}.cta-bar{flex-direction:column;}}
 </style>
 </head>
 <body>
@@ -70,149 +108,350 @@ input:focus,select:focus{border-color:var(--orange);}
 <div class="header">
   <div class="header-left">
     <div class="logo">THE EXCAVATION ACADEMY</div>
-    <a class="back-link" href="tea-tools-hub.html">&#8592; All Tools</a>
+    <a class="back-link" href="tea-tools-hub.html">&larr; All Tools</a>
   </div>
-  <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">&#9790; DARK</button>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <span class="pm-badge">PM TOOL</span>
+    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">&#9790; DARK</button>
+  </div>
 </div>
 <div class="container">
-  <div class="tool-title">BID SUMMARY &amp; MARKUP <span class="pm-badge">PM TOOL</span></div>
-  <div class="tool-sub">Compile bid line items, apply overhead, profit, and contingency — get your final number</div>
+<div class="tool-title">BID SUMMARY & MARKUP</div>
+<div class="tool-sub">Schedule of Values &mdash; Full bid sheet with markup stack &mdash; HeavyBid style</div>
 
-  <div class="card">
-    <div class="card-title">PROJECT INFO</div>
-    <div class="grid2">
-      <div class="field"><label>Project Name</label><input type="text" id="projName" data-save placeholder="e.g. Main St. Watermain Replacement"></div>
-      <div class="field"><label>Date</label><input type="date" id="projDate" data-save></div>
-    </div>
-    <div class="grid2">
-      <div class="field"><label>Prepared By</label><input type="text" id="prepBy" data-save placeholder="e.g. J. Smith"></div>
-      <div class="field"><label>Bid Number</label><input type="text" id="bidNum" data-save placeholder="e.g. BID-2025-014"></div>
+<div class="card">
+  <div class="card-title">PROJECT INFORMATION</div>
+  <div class="grid2">
+    <div class="field"><label>Project Name</label><input type="text" id="projName" data-save placeholder="e.g. Highway 12 Storm Sewer Rehabilitation"></div>
+    <div class="field"><label>Client / Owner</label><input type="text" id="client" data-save placeholder="e.g. Ministry of Transportation"></div>
+  </div>
+  <div class="grid3">
+    <div class="field"><label>Project Location</label><input type="text" id="location" data-save placeholder="e.g. Township of Oro-Medonte, ON"></div>
+    <div class="field"><label>Bid Number / Reference</label><input type="text" id="bidNum" data-save placeholder="e.g. BID-2025-041"></div>
+    <div class="field"><label>Contract Type</label>
+      <select id="contractType" data-save>
+        <option>Unit Price Contract</option>
+        <option>Lump Sum Contract</option>
+        <option>Cost Plus (T&amp;M)</option>
+        <option>Design-Build</option>
+        <option>GMAX / Construction Management</option>
+      </select>
     </div>
   </div>
-
-  <div class="card">
-    <div class="card-title">BID LINE ITEMS</div>
-    <div class="line-header">
-      <span>Description</span><span>Category</span><span>Qty &times; Unit Price</span><span>Extended</span><span></span>
-    </div>
-    <div id="lineRows">
-      <div class="line-row">
-        <input type="text" placeholder="e.g. Excavation &amp; Backfill">
-        <select><option value="Labour">Labour</option><option value="Equipment">Equipment</option><option value="Materials" selected>Materials</option><option value="Subcontract">Subcontract</option><option value="Other">Other</option></select>
-        <input type="number" placeholder="Total ($)" step="100" min="0">
-        <div class="line-ext" data-ext>$0.00</div>
-        <button class="del-btn" onclick="removeLine(this)">&#215;</button>
-      </div>
-    </div>
-    <button class="add-btn" onclick="addLine()">+ ADD LINE ITEM</button>
+  <div class="grid4">
+    <div class="field"><label>Bid Date</label><input type="date" id="bidDate" data-save></div>
+    <div class="field"><label>Bid Due Time</label><input type="time" id="bidTime" data-save></div>
+    <div class="field"><label>Prepared By</label><input type="text" id="preparedBy" data-save placeholder="Estimator name"></div>
+    <div class="field"><label>Company Name</label><input type="text" id="companyName" data-save placeholder="Your company"></div>
   </div>
-
-  <div class="card">
-    <div class="card-title">MARKUP</div>
-    <div class="grid4">
-      <div class="field"><label>Overhead %</label><input type="number" id="oh" data-save placeholder="e.g. 15" step="1" min="0" value="15"></div>
-      <div class="field"><label>Profit %</label><input type="number" id="profit" data-save placeholder="e.g. 10" step="1" min="0" value="10"></div>
-      <div class="field"><label>Contingency %</label><input type="number" id="contingency" data-save placeholder="e.g. 3" step="1" min="0" value="3"></div>
-      <div class="field"><label>Bonding % (optional)</label><input type="number" id="bonding" data-save placeholder="e.g. 1" step="0.1" min="0" value="0"></div>
-    </div>
-    <button class="btn" onclick="calcBid()">GENERATE BID SUMMARY</button>
-  </div>
-
-  <div class="results" id="results">
-    <div class="bid-sheet results-card">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;">
-        <div>
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--orange);letter-spacing:2px;">BID SUMMARY</div>
-          <div class="bid-project">Project: <strong id="s_proj">—</strong> &nbsp;|&nbsp; Date: <strong id="s_date">—</strong> &nbsp;|&nbsp; Ref: <strong id="s_ref">—</strong> &nbsp;|&nbsp; By: <strong id="s_by">—</strong></div>
-        </div>
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:3px;color:var(--muted);">THE EXCAVATION ACADEMY</div>
-      </div>
-      <table class="bid-table" id="bidTable">
-        <thead><tr><th>Description</th><th>Category</th><th class="amt">Amount</th></tr></thead>
-        <tbody id="bidBody"></tbody>
-      </table>
-      <div class="bid-total-box">
-        <div class="bid-total-label">TOTAL BID PRICE</div>
-        <div class="bid-total-value" id="s_total">$0</div>
-      </div>
-    </div>
-    <div class="tool-actions">
-      <button class="act-btn" onclick="window.print()">&#8595; EXPORT PDF</button>
-      <button class="act-btn" id="shareBtn" onclick="shareLink()">&#9993; SHARE LINK</button>
-      <button class="act-btn act-clear" onclick="clearAll()">&#10005; CLEAR</button>
-    </div>
-  </div>
-
-  <div class="cta-bar">
-    <div class="cta-text">Free tool from <span>The Excavation Academy</span> — 138 modules of civil excavation training. Free to start.</div>
-    <a class="cta-link" href="https://www.skool.com/the-excavation-academy-2540" target="_blank">JOIN FREE</a>
+  <div class="grid2">
+    <div class="field"><label>Scope Summary</label><input type="text" id="scope" data-save placeholder="e.g. Storm sewer install, road restoration, site grading"></div>
+    <div class="field"><label>Estimator Email / Phone</label><input type="text" id="estimatorContact" data-save placeholder="email@company.com | 555-555-5555"></div>
   </div>
 </div>
-<div class="footer">&#169; The Excavation Academy — Estimating tool for reference only. Always verify with a qualified estimator and your accountant before submitting bids.</div>
+
+<div class="card">
+  <div class="card-title">
+    <span>SCHEDULE OF VALUES</span>
+    <span id="sovTotal" style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:var(--orange);">Direct Total: $0.00</span>
+  </div>
+  <div style="overflow-x:auto;">
+  <table class="sov-table">
+    <thead>
+      <tr>
+        <th class="num-col">#</th>
+        <th class="item-col">Description / Pay Item</th>
+        <th class="div-col">Division</th>
+        <th class="qty-col">Qty</th>
+        <th class="unit-col">Unit</th>
+        <th class="up-col">Unit Price $</th>
+        <th class="ext-col">Extended $</th>
+        <th class="del-col"></th>
+      </tr>
+    </thead>
+    <tbody id="sovBody"></tbody>
+  </table>
+  </div>
+  <button class="add-btn" onclick="addSOVRow()">+ ADD LINE ITEM</button>
+  <button class="add-btn" style="margin-left:10px;" onclick="addDividerRow()">+ ADD SECTION HEADER</button>
+</div>
+
+<div class="card">
+  <div class="card-title">MARKUP STACK</div>
+  <table class="markup-stack">
+    <tbody>
+      <tr><td class="lbl">Mobilization / Demobilization<small>Added to direct cost before main markup</small></td><td class="pct"><input type="number" id="mkMob" data-save value="2" step="0.25" min="0" max="20"> <label>%</label></td><td class="val" id="mv_mob">$0.00</td></tr>
+      <tr><td class="lbl">Escalation / Price Contingency<small>Material &amp; labour cost inflation allowance</small></td><td class="pct"><input type="number" id="mkEsc" data-save value="2" step="0.25" min="0" max="20"> <label>%</label></td><td class="val" id="mv_esc">$0.00</td></tr>
+      <tr><td class="lbl">Company Overhead &amp; G&amp;A<small>Home office overhead allocation</small></td><td class="pct"><input type="number" id="mkOH" data-save value="12" step="0.5" min="0" max="30"> <label>%</label></td><td class="val" id="mv_oh">$0.00</td></tr>
+      <tr><td class="lbl">Profit Margin<small>Applied after overhead</small></td><td class="pct"><input type="number" id="mkProfit" data-save value="10" step="0.5" min="0" max="30"> <label>%</label></td><td class="val" id="mv_profit">$0.00</td></tr>
+      <tr><td class="lbl">Contingency<small>Risk allowance (weather, unknowns)</small></td><td class="pct"><input type="number" id="mkCont" data-save value="3" step="0.5" min="0" max="20"> <label>%</label></td><td class="val" id="mv_cont">$0.00</td></tr>
+      <tr><td class="lbl">Performance &amp; Payment Bond<small>Applied to bid total</small></td><td class="pct"><input type="number" id="mkBond" data-save value="1.5" step="0.25" min="0" max="5"> <label>%</label></td><td class="val" id="mv_bond">$0.00</td></tr>
+      <tr><td class="lbl">Insurance Premium Allowance<small>Project-specific insurance</small></td><td class="pct"><input type="number" id="mkIns" data-save value="0.5" step="0.25" min="0" max="5"> <label>%</label></td><td class="val" id="mv_ins">$0.00</td></tr>
+      <tr class="tot-row"><td>BID TOTAL</td><td></td><td class="val" id="mv_total" style="font-size:20px;">$0.00</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<button class="calc-btn" onclick="generateBid()">&#9654; GENERATE BID SHEET</button>
+
+<div class="results" id="results">
+<div class="card results">
+  <div class="bid-total-bar">
+    <div class="bid-total-label">TOTAL BID AMOUNT</div>
+    <div class="bid-total-value" id="bidTotalDisplay">$0.00</div>
+  </div>
+  <div class="bid-sheet" id="bidSheet">
+    <div class="bid-header">
+      <div>
+        <div class="bid-co">BID SUBMISSION</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:700;color:var(--text);margin-top:4px;" id="bs_projName"></div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:14px;color:var(--muted);margin-top:2px;" id="bs_scope"></div>
+      </div>
+      <div class="bid-info">
+        <table id="bs_infoTable"></table>
+      </div>
+    </div>
+    <div id="bs_sov"></div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--orange);margin:20px 0 10px;">MARKUP SUMMARY</div>
+    <table class="bid-markup-table" id="bs_markup"></table>
+    <div class="bid-sig">
+      <div class="sig-block"><label>Submitted By</label><div class="sig-line" id="bs_submittedBy"></div></div>
+      <div class="sig-block"><label>Authorized Signature</label><div class="sig-line">___________________________________</div></div>
+      <div class="sig-block"><label>Client / Owner Acknowledgment</label><div class="sig-line">___________________________________</div></div>
+      <div class="sig-block"><label>Date Received</label><div class="sig-line">___________________________________</div></div>
+    </div>
+  </div>
+  <div class="tool-actions">
+    <button class="act-btn" onclick="window.print()">&#8659; EXPORT PDF</button>
+    <button class="act-btn" id="shareBtn" onclick="shareLink()">&#9993; SHARE LINK</button>
+    <button class="act-btn act-clear" onclick="clearAll()">&#10005; CLEAR</button>
+  </div>
+</div>
+</div>
+
+<div class="cta-bar">
+  <div class="cta-text">Built by <span>The Excavation Academy</span> &mdash; Professional tools for civil contractors.</div>
+  <a class="cta-link" href="tea-tools-hub.html">All Tools &rarr;</a>
+</div>
+<div class="footer">&copy; The Excavation Academy &mdash; All bid amounts are estimates. Verify with your estimating team before submission.</div>
+</div>
 
 <script>
-(function(){if(localStorage.getItem('tea-theme')==='dark')document.body.classList.add('dark');})();
-function toggleTheme(){document.body.classList.toggle('dark');localStorage.setItem('tea-theme',document.body.classList.contains('dark')?'dark':'light');document.getElementById('themeBtn').textContent=document.body.classList.contains('dark')?'\u2600 LIGHT':'\u263E DARK';}
-(function(){document.getElementById('themeBtn').textContent=document.body.classList.contains('dark')?'\u2600 LIGHT':'\u263E DARK';})();
-const TOOL_KEY='tea-bid-summary';
+function toggleTheme(){document.body.classList.toggle('dark');const d=document.body.classList.contains('dark');localStorage.setItem('tea-theme',d?'dark':'light');document.getElementById('themeBtn').textContent=d?'☀ LIGHT':'☾ DARK';}
+(function(){const d=document.body.classList.contains('dark');document.getElementById('themeBtn').textContent=d?'☀ LIGHT':'☾ DARK';})();
+
+const TOOL_KEY='tea-bid-summary-v2';
 function saveInputs(){const d={};document.querySelectorAll('[data-save]').forEach(e=>d[e.id]=e.value);localStorage.setItem(TOOL_KEY,JSON.stringify(d));}
-function restoreInputs(){const p=new URLSearchParams(window.location.search);if([...p].length){p.forEach((v,k)=>{const e=document.getElementById(k);if(e)e.value=v;});return;}try{const s=localStorage.getItem(TOOL_KEY);if(s){const d=JSON.parse(s);Object.entries(d).forEach(([k,v])=>{const e=document.getElementById(k);if(e)e.value=v;});}}catch(e){}}
-document.addEventListener('input',saveInputs);document.addEventListener('change',saveInputs);
-window.addEventListener('load',restoreInputs);
-function shareLink(){const p=new URLSearchParams();document.querySelectorAll('[data-save]').forEach(e=>{if(e.value)p.set(e.id,e.value);});navigator.clipboard.writeText(location.origin+location.pathname+'?'+p.toString()).then(()=>{const b=document.getElementById('shareBtn');const o=b.textContent;b.textContent='\u2713 COPIED!';setTimeout(()=>b.textContent=o,2000);});}
-function clearAll(){localStorage.removeItem(TOOL_KEY);document.querySelectorAll('[data-save]').forEach(e=>{if(e.tagName==='SELECT')e.selectedIndex=0;else e.value='';});document.getElementById('results').classList.remove('show');}
-function addLine(){
-  const row=document.createElement('div');row.className='line-row';
-  row.innerHTML='<input type="text" placeholder="Item description"><select><option value="Labour">Labour</option><option value="Equipment">Equipment</option><option value="Materials" selected>Materials</option><option value="Subcontract">Subcontract</option><option value="Other">Other</option></select><input type="number" placeholder="Total ($)" step="100" min="0"><div class="line-ext" data-ext>$0.00</div><button class="del-btn" onclick="removeLine(this)">\u00D7</button>';
-  row.querySelector('input[type="number"]').addEventListener('input',function(){row.querySelector('[data-ext]').textContent='$'+((parseFloat(this.value)||0).toLocaleString('en',{minimumFractionDigits:2,maximumFractionDigits:2}));});
-  document.getElementById('lineRows').appendChild(row);
+document.addEventListener('input',()=>{saveInputs();updateMarkupLive();});
+document.addEventListener('change',()=>{saveInputs();updateMarkupLive();});
+
+window.addEventListener('load',function(){
+  try{const s=localStorage.getItem(TOOL_KEY);if(s){const d=JSON.parse(s);Object.entries(d).forEach(([k,v])=>{const e=document.getElementById(k);if(e)e.value=v;});}}catch(e){}
+  initDefaults();
+  updateMarkupLive();
+});
+
+function shareLink(){const p=new URLSearchParams();document.querySelectorAll('[data-save]').forEach(e=>{if(e.value)p.set(e.id,e.value);});navigator.clipboard.writeText(location.origin+location.pathname+'?'+p.toString()).then(()=>{const b=document.getElementById('shareBtn');const o=b.textContent;b.textContent='✓ COPIED!';setTimeout(()=>b.textContent=o,2000);});}
+
+function clearAll(){if(!confirm('Clear all data?'))return;localStorage.removeItem(TOOL_KEY);document.querySelectorAll('[data-save]').forEach(e=>{if(e.tagName==='SELECT')e.selectedIndex=0;else e.value='';});document.getElementById('sovBody').innerHTML='';document.getElementById('results').classList.remove('show');initDefaults();updateMarkupLive();}
+
+const DIVISIONS=[
+  'Select Division...','02 — Site Clearing','02 — Earthwork & Grading','02 — Excavation & Backfill',
+  '02 — Underground Utilities','02 — Storm Drainage','02 — Sanitary Sewer','02 — Watermain',
+  '02 — Road Restoration','02 — Landscaping','03 — Concrete','31 — Shoring',
+  '32 — Asphalt Paving','33 — Utilities','Allowance','Other'
+];
+const UNITS=['LF','LM','CY','m³','SF','m²','TON','Tonne','EA','LS','HR','Day','Allow.'];
+
+let sovIdx=0;
+
+function addSOVRow(vals){
+  const i=sovIdx++;
+  const tr=document.createElement('tr');
+  tr.className='sov-row dynamic-row';
+  tr.dataset.rowIdx=i;
+  tr.innerHTML=`
+    <td class="num-col"><input type="text" data-field="num" value="${vals&&vals.num?vals.num:(sovIdx)}" placeholder="${sovIdx}"></td>
+    <td class="item-col"><input type="text" data-field="desc" value="${vals&&vals.desc?vals.desc:''}" placeholder="Pay item description"></td>
+    <td class="div-col"><select data-field="div">${DIVISIONS.map(d=>`<option${vals&&vals.div===d?' selected':''}>${d}</option>`).join('')}</select></td>
+    <td class="qty-col"><input type="number" data-field="qty" value="${vals&&vals.qty?vals.qty:''}" min="0" step="1" placeholder="Qty"></td>
+    <td class="unit-col"><select data-field="unit">${UNITS.map(u=>`<option${vals&&vals.unit===u?' selected':''}>${u}</option>`).join('')}</select></td>
+    <td class="up-col"><input type="number" data-field="up" value="${vals&&vals.up?vals.up:''}" min="0" step="0.01" placeholder="0.00"></td>
+    <td class="ext-col" data-ext="1">$0.00</td>
+    <td class="del-col"><button class="del-btn" onclick="this.closest('tr').remove();updateSOVTotals();">&times;</button></td>`;
+  tr.querySelectorAll('input,select').forEach(el=>el.addEventListener('input',updateSOVTotals));
+  document.getElementById('sovBody').appendChild(tr);
+  updateSOVTotals();
 }
-function removeLine(btn){btn.closest('.line-row').remove();}
-document.querySelectorAll('.line-row input[type="number"]').forEach(inp=>{inp.addEventListener('input',function(){this.closest('.line-row').querySelector('[data-ext]').textContent='$'+((parseFloat(this.value)||0).toLocaleString('en',{minimumFractionDigits:2,maximumFractionDigits:2}));});});
-function fmt(n){return'$'+n.toLocaleString('en',{minimumFractionDigits:2,maximumFractionDigits:2});}
-function calcBid(){
-  const rows=document.querySelectorAll('#lineRows .line-row');
-  const cats={Labour:0,Equipment:0,Materials:0,Subcontract:0,Other:0};
-  const lineItems=[];
-  rows.forEach(row=>{
-    const inputs=row.querySelectorAll('input');
-    const sel=row.querySelector('select');
-    const desc=inputs[0].value||'Item';
-    const cat=sel?sel.value:'Other';
-    const amt=parseFloat(inputs[1]?inputs[1].value:0)||0;
-    if(amt>0){cats[cat]=(cats[cat]||0)+amt;lineItems.push({desc,cat,amt});}
+
+function addDividerRow(label){
+  const lbl=label||'NEW SECTION';
+  const tr=document.createElement('tr');
+  tr.className='dynamic-row divider-row';
+  tr.innerHTML=`<td colspan="6" style="padding:6px 8px;"><input type="text" value="${lbl}" placeholder="Section header..." style="font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:2px;text-transform:uppercase;font-size:13px;color:var(--orange);background:var(--card-inner);border:1px dashed var(--border);"></td><td></td><td><button class="del-btn" onclick="this.closest('tr').remove();updateSOVTotals();">&times;</button></td>`;
+  document.getElementById('sovBody').appendChild(tr);
+}
+
+function updateSOVTotals(){
+  let total=0;
+  document.querySelectorAll('#sovBody .sov-row').forEach(row=>{
+    const qty=parseFloat(row.querySelector('[data-field="qty"]').value)||0;
+    const up=parseFloat(row.querySelector('[data-field="up"]').value)||0;
+    const ext=qty*up;
+    total+=ext;
+    row.querySelector('[data-ext]').textContent='$'+ext.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
   });
-  let direct=Object.values(cats).reduce((a,b)=>a+b,0);
-  if(direct<=0){alert('Enter at least one line item with an amount.');return;}
-  const oh=parseFloat(document.getElementById('oh').value)||0;
-  const pr=parseFloat(document.getElementById('profit').value)||0;
-  const cont=parseFloat(document.getElementById('contingency').value)||0;
-  const bond=parseFloat(document.getElementById('bonding').value)||0;
-  const ohAmt=direct*(oh/100);
-  const withOH=direct+ohAmt;
-  const profAmt=withOH*(pr/100);
-  const withProfit=withOH+profAmt;
-  const contAmt=withProfit*(cont/100);
-  const withCont=withProfit+contAmt;
-  const bondAmt=withCont*(bond/100);
-  const total=withCont+bondAmt;
-  document.getElementById('s_proj').textContent=document.getElementById('projName').value||'—';
-  document.getElementById('s_date').textContent=document.getElementById('projDate').value||new Date().toLocaleDateString();
-  document.getElementById('s_ref').textContent=document.getElementById('bidNum').value||'—';
-  document.getElementById('s_by').textContent=document.getElementById('prepBy').value||'—';
-  const tbody=document.getElementById('bidBody');tbody.innerHTML='';
-  lineItems.forEach(item=>{const tr=document.createElement('tr');tr.innerHTML='<td>'+item.desc+'</td><td>'+item.cat+'</td><td class="amt">'+fmt(item.amt)+'</td>';tbody.appendChild(tr);});
-  const addRow=(label,cls,val)=>{const tr=document.createElement('tr');if(cls)tr.className=cls;tr.innerHTML='<td colspan="2">'+label+'</td><td class="amt">'+fmt(val)+'</td>';tbody.appendChild(tr);};
-  addRow('Direct Cost Total','subtotal',direct);
-  addRow('Overhead ('+oh+'%)',null,ohAmt);
-  addRow('Subtotal with Overhead','subtotal',withOH);
-  addRow('Profit ('+pr+'%)',null,profAmt);
-  addRow('Subtotal with Profit','subtotal',withProfit);
-  if(cont>0){addRow('Contingency ('+cont+'%)',null,contAmt);}
-  if(bond>0){addRow('Bonding ('+bond+'%)',null,bondAmt);}
-  document.getElementById('s_total').textContent=fmt(total);
-  document.getElementById('results').classList.add('show');
+  document.getElementById('sovTotal').textContent='Direct Total: $'+total.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+  updateMarkupLive();
+  saveInputs();
 }
+
+function getDirectTotal(){
+  let total=0;
+  document.querySelectorAll('#sovBody .sov-row').forEach(row=>{
+    const qty=parseFloat(row.querySelector('[data-field="qty"]').value)||0;
+    const up=parseFloat(row.querySelector('[data-field="up"]').value)||0;
+    total+=qty*up;
+  });
+  return total;
+}
+function getNum(id){return parseFloat(document.getElementById(id).value)||0;}
+function fmt(n){return '$'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+
+function updateMarkupLive(){
+  const direct=getDirectTotal();
+  const mob=direct*(getNum('mkMob')/100);
+  const afterMob=direct+mob;
+  const esc=afterMob*(getNum('mkEsc')/100);
+  const afterEsc=afterMob+esc;
+  const oh=afterEsc*(getNum('mkOH')/100);
+  const afterOH=afterEsc+oh;
+  const profit=afterOH*(getNum('mkProfit')/100);
+  const afterProfit=afterOH+profit;
+  const cont=afterProfit*(getNum('mkCont')/100);
+  const afterCont=afterProfit+cont;
+  const bond=afterCont*(getNum('mkBond')/100);
+  const ins=afterCont*(getNum('mkIns')/100);
+  const total=afterCont+bond+ins;
+  document.getElementById('mv_mob').textContent=fmt(mob);
+  document.getElementById('mv_esc').textContent=fmt(esc);
+  document.getElementById('mv_oh').textContent=fmt(oh);
+  document.getElementById('mv_profit').textContent=fmt(profit);
+  document.getElementById('mv_cont').textContent=fmt(cont);
+  document.getElementById('mv_bond').textContent=fmt(bond);
+  document.getElementById('mv_ins').textContent=fmt(ins);
+  document.getElementById('mv_total').textContent=fmt(total);
+}
+
+function generateBid(){
+  const direct=getDirectTotal();
+  const mob=direct*(getNum('mkMob')/100);
+  const afterMob=direct+mob;
+  const esc=afterMob*(getNum('mkEsc')/100);
+  const afterEsc=afterMob+esc;
+  const oh=afterEsc*(getNum('mkOH')/100);
+  const afterOH=afterEsc+oh;
+  const profit=afterOH*(getNum('mkProfit')/100);
+  const afterProfit=afterOH+profit;
+  const cont=afterProfit*(getNum('mkCont')/100);
+  const afterCont=afterProfit+cont;
+  const bond=afterCont*(getNum('mkBond')/100);
+  const ins=afterCont*(getNum('mkIns')/100);
+  const total=afterCont+bond+ins;
+
+  document.getElementById('bidTotalDisplay').textContent=fmt(total);
+
+  // Project info block
+  document.getElementById('bs_projName').textContent=document.getElementById('projName').value||'[Project Name]';
+  document.getElementById('bs_scope').textContent=document.getElementById('scope').value||'';
+  const bidDate=document.getElementById('bidDate').value;
+  const fmtDate=bidDate?new Date(bidDate+'T12:00').toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'}):'—';
+  const tbl=document.getElementById('bs_infoTable');
+  tbl.innerHTML='';
+  [['Client / Owner',document.getElementById('client').value||'—'],
+   ['Location',document.getElementById('location').value||'—'],
+   ['Bid No.',document.getElementById('bidNum').value||'—'],
+   ['Contract Type',document.getElementById('contractType').value||'—'],
+   ['Bid Date',fmtDate],
+   ['Prepared By',document.getElementById('preparedBy').value||'—'],
+   ['Company',document.getElementById('companyName').value||'—'],
+  ].forEach(([l,v])=>{const tr=document.createElement('tr');tr.innerHTML=`<td>${l}</td><td>${v}</td>`;tbl.appendChild(tr);});
+
+  // Schedule of Values
+  const sovDiv=document.getElementById('bs_sov');
+  sovDiv.innerHTML='<div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--orange);margin-bottom:10px;">SCHEDULE OF VALUES</div>';
+  const sov=document.createElement('table');
+  sov.className='bid-sov-table';
+  sov.innerHTML='<thead><tr><th>#</th><th>Description</th><th>Division</th><th class="right">Qty</th><th>Unit</th><th class="right">Unit Price</th><th class="right">Extended</th></tr></thead>';
+  const tbody=document.createElement('tbody');
+  let runTotal=0;
+  document.querySelectorAll('#sovBody .dynamic-row').forEach(row=>{
+    if(row.classList.contains('divider-row')){
+      const txt=row.querySelector('input').value||'Section';
+      const tr=document.createElement('tr');tr.className='cat-hdr';
+      tr.innerHTML=`<td colspan="7">${txt}</td>`;tbody.appendChild(tr);
+    } else {
+      const num=row.querySelector('[data-field="num"]').value;
+      const desc=row.querySelector('[data-field="desc"]').value||'—';
+      const div=row.querySelector('[data-field="div"]').value;
+      const qty=parseFloat(row.querySelector('[data-field="qty"]').value)||0;
+      const unit=row.querySelector('[data-field="unit"]').value;
+      const up=parseFloat(row.querySelector('[data-field="up"]').value)||0;
+      const ext=qty*up;
+      runTotal+=ext;
+      const tr=document.createElement('tr');
+      tr.innerHTML=`<td>${num}</td><td>${desc}</td><td>${div}</td><td class="right">${qty.toLocaleString()}</td><td>${unit}</td><td class="right">${fmt(up)}</td><td class="right">${fmt(ext)}</td>`;
+      tbody.appendChild(tr);
+    }
+  });
+  const totRow=document.createElement('tr');totRow.className='sub-row';
+  totRow.innerHTML=`<td colspan="6">DIRECT COST TOTAL</td><td class="right">${fmt(direct)}</td>`;
+  tbody.appendChild(totRow);
+  sov.appendChild(tbody);
+  sovDiv.appendChild(sov);
+
+  // Markup table
+  const mtbl=document.getElementById('bs_markup');
+  mtbl.innerHTML='';
+  [['Direct Cost Total','',fmt(direct)],
+   ['Mobilization ('+getNum('mkMob')+'%)',fmt(mob),fmt(afterMob)],
+   ['Escalation ('+getNum('mkEsc')+'%)',fmt(esc),fmt(afterEsc)],
+   ['Overhead & G&A ('+getNum('mkOH')+'%)',fmt(oh),fmt(afterOH)],
+   ['Profit ('+getNum('mkProfit')+'%)',fmt(profit),fmt(afterProfit)],
+   ['Contingency ('+getNum('mkCont')+'%)',fmt(cont),fmt(afterCont)],
+   ['Performance Bond ('+getNum('mkBond')+'%)',fmt(bond),''],
+   ['Insurance ('+getNum('mkIns')+'%)',fmt(ins),''],
+   ['BID TOTAL','',fmt(total)],
+  ].forEach(([l,add,cum],idx)=>{
+    const tr=document.createElement('tr');
+    if(idx===8)tr.className='total-row';
+    tr.innerHTML=`<td>${l}</td><td class="right">${add}</td><td class="right">${cum}</td>`;
+    mtbl.appendChild(tr);
+  });
+
+  // Signature block
+  document.getElementById('bs_submittedBy').textContent=
+    (document.getElementById('preparedBy').value||'___________________________________')+
+    (document.getElementById('companyName').value?' — '+document.getElementById('companyName').value:'');
+
+  document.getElementById('results').classList.add('show');
+  document.getElementById('results').scrollIntoView({behavior:'smooth'});
+}
+
+function initDefaults(){
+  if(document.querySelectorAll('#sovBody .dynamic-row').length===0){
+    addDividerRow('SITE PREPARATION');
+    addSOVRow({num:'1',desc:'Site Clearing & Grubbing',div:'02 — Site Clearing',qty:'',unit:'LS',up:''});
+    addSOVRow({num:'2',desc:'Topsoil Strip & Stockpile',div:'02 — Earthwork & Grading',qty:'',unit:'CY',up:''});
+    addDividerRow('UNDERGROUND UTILITIES');
+    addSOVRow({num:'3',desc:'Storm Sewer — 300mm RCP Supply & Install',div:'02 — Storm Drainage',qty:'',unit:'LF',up:''});
+    addSOVRow({num:'4',desc:'Maintenance Hole — 1200mm Precast',div:'02 — Storm Drainage',qty:'',unit:'EA',up:''});
+    addDividerRow('ROAD RESTORATION');
+    addSOVRow({num:'5',desc:'Granular B — Supply & Place',div:'02 — Road Restoration',qty:'',unit:'TON',up:''});
+    addSOVRow({num:'6',desc:'Hot Mix Asphalt — HL4 Base Course',div:'32 — Asphalt Paving',qty:'',unit:'TON',up:''});
+  }
+}
+initDefaults();
 </script>
 </body>
 </html>

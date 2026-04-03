@@ -6,65 +6,120 @@
 <title>Change Order Calculator — The Excavation Academy</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap');
-:root{--orange:#E8650A;--bg:#f5f3ee;--header-bg:#fff;--card:#fff;--card-inner:#f0ede6;--border:#ddd9d0;--text:#1a1a1a;--muted:#6b6560;--input-bg:#f0ede6;--blue:#2471a3;--red:#c0392b;}
-body.dark{--bg:#0a0a0a;--header-bg:#111;--card:#141414;--card-inner:#1a1a1a;--border:#2a2a2a;--text:#e0e0e0;--muted:#777;--input-bg:#1a1a1a;--blue:#3498db;--red:#e74c3c;}
+:root{--orange:#E8650A;--bg:#f5f3ee;--header-bg:#fff;--card:#fff;--card-inner:#f0ede6;--border:#ddd9d0;--text:#1a1a1a;--muted:#6b6560;--input-bg:#f0ede6;--blue:#2471a3;--red:#c0392b;--green:#1a8a3a;}
+body.dark{--bg:#0a0a0a;--header-bg:#111;--card:#141414;--card-inner:#1a1a1a;--border:#2a2a2a;--text:#e0e0e0;--muted:#777;--input-bg:#1a1a1a;--blue:#3498db;--red:#e74c3c;--green:#2ecc71;}
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;min-height:100vh;transition:background .2s,color .2s;}
-.header{background:var(--header-bg);border-bottom:3px solid var(--orange);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;}
+.header{background:var(--header-bg);border-bottom:3px solid var(--orange);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
 .header-left{display:flex;align-items:center;gap:20px;}
 .logo{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--orange);letter-spacing:3px;}
-.back-link{font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:2px;color:var(--muted);text-decoration:none;text-transform:uppercase;border:1px solid var(--border);padding:6px 12px;transition:color .2s,border-color .2s;}
+.back-link{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:2px;color:var(--muted);text-decoration:none;text-transform:uppercase;border:1px solid var(--border);padding:5px 11px;}
 .back-link:hover{color:var(--orange);border-color:var(--orange);}
-.theme-btn{background:none;border:1px solid var(--border);color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:6px 12px;cursor:pointer;transition:border-color .2s,color .2s;}
+.pm-badge{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:2px;background:rgba(36,113,163,.15);color:var(--blue);padding:4px 10px;border:1px solid rgba(36,113,163,.3);}
+.theme-btn{background:none;border:1px solid var(--border);color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:5px 11px;cursor:pointer;}
 .theme-btn:hover{border-color:var(--orange);color:var(--orange);}
-.pm-badge{display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:2px;background:rgba(36,113,163,.15);color:var(--blue);padding:4px 10px;margin-left:12px;vertical-align:middle;}
-.container{max-width:900px;margin:0 auto;padding:32px 20px;}
-.tool-title{font-family:'Bebas Neue',sans-serif;font-size:48px;color:var(--text);letter-spacing:2px;line-height:1;margin-bottom:6px;}
-.tool-sub{font-family:'Barlow Condensed',sans-serif;font-size:15px;color:var(--muted);letter-spacing:1px;margin-bottom:32px;text-transform:uppercase;}
-.card{background:var(--card);border:1px solid var(--border);padding:24px;margin-bottom:20px;}
-.card-title{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--orange);letter-spacing:2px;margin-bottom:20px;border-bottom:1px solid var(--border);padding-bottom:10px;}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
-.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
-.field{margin-bottom:16px;}
-label{display:block;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:8px;}
-input,select,textarea{width:100%;background:var(--input-bg);border:1px solid var(--border);color:var(--text);font-family:'Barlow',sans-serif;font-size:15px;padding:11px 13px;outline:none;transition:border-color .2s;}
-textarea{resize:vertical;min-height:72px;font-size:14px;}
+.container{max-width:1000px;margin:0 auto;padding:28px 20px;}
+.tool-title{font-family:'Bebas Neue',sans-serif;font-size:46px;color:var(--text);letter-spacing:2px;line-height:1;margin-bottom:4px;}
+.tool-sub{font-family:'Barlow Condensed',sans-serif;font-size:14px;color:var(--muted);letter-spacing:1px;margin-bottom:28px;text-transform:uppercase;}
+.card{background:var(--card);border:1px solid var(--border);padding:22px;margin-bottom:18px;}
+.card-title{font-family:'Bebas Neue',sans-serif;font-size:17px;color:var(--orange);letter-spacing:2px;margin-bottom:18px;border-bottom:1px solid var(--border);padding-bottom:9px;display:flex;align-items:center;justify-content:space-between;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+.grid4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:14px;}
+.field{margin-bottom:14px;}
+label{display:block;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:6px;}
+input,select,textarea{width:100%;background:var(--input-bg);border:1px solid var(--border);color:var(--text);font-family:'Barlow',sans-serif;font-size:14px;padding:10px 12px;outline:none;transition:border-color .2s;}
 input:focus,select:focus,textarea:focus{border-color:var(--orange);}
-.btn{width:100%;background:var(--orange);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;padding:15px;border:none;cursor:pointer;margin-top:8px;}
-.btn:hover{background:#d45a08;}
+textarea{resize:vertical;min-height:80px;}
+.row-grid{display:grid;gap:8px;align-items:center;margin-bottom:8px;}
+.row-grid.labour-row{grid-template-columns:2fr 70px 70px 90px 70px 80px 36px;}
+.row-grid.equip-row{grid-template-columns:2fr 70px 90px 70px 80px 36px;}
+.row-grid.mat-row{grid-template-columns:2fr 70px 110px 90px 70px 36px;}
+.row-grid.sub-row{grid-template-columns:2fr 120px 70px 36px;}
+.row-hdr{display:grid;gap:8px;margin-bottom:6px;}
+.row-hdr.labour-hdr{grid-template-columns:2fr 70px 70px 90px 70px 80px 36px;}
+.row-hdr.equip-hdr{grid-template-columns:2fr 70px 90px 70px 80px 36px;}
+.row-hdr.mat-hdr{grid-template-columns:2fr 70px 110px 90px 70px 36px;}
+.row-hdr.sub-hdr{grid-template-columns:2fr 120px 70px 36px;}
+.row-hdr span{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;}
+.ot-toggle{display:flex;border:1px solid var(--border);overflow:hidden;}
+.ot-toggle button{flex:1;padding:9px 2px;font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:1px;background:var(--input-bg);border:none;color:var(--muted);cursor:pointer;}
+.ot-toggle button.active{background:var(--orange);color:#fff;}
+.own-toggle{display:flex;border:1px solid var(--border);overflow:hidden;}
+.own-toggle button{flex:1;padding:9px 2px;font-family:'Barlow Condensed',sans-serif;font-size:11px;background:var(--input-bg);border:none;color:var(--muted);cursor:pointer;}
+.own-toggle button.active{background:var(--blue);color:#fff;}
+.add-btn{background:transparent;border:1px dashed var(--orange);color:var(--orange);font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:9px 18px;cursor:pointer;margin-top:6px;}
+.add-btn:hover{background:rgba(232,101,10,.08);}
+.del-btn{background:transparent;border:1px solid var(--border);color:var(--muted);font-size:16px;width:36px;height:36px;cursor:pointer;text-align:center;line-height:34px;transition:border-color .15s,color .15s;flex-shrink:0;}
+.del-btn:hover{border-color:var(--red);color:var(--red);}
+.section-total{display:flex;justify-content:flex-end;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:var(--text);padding:10px 0 2px;border-top:1px solid var(--border);margin-top:6px;}
+.section-total span{color:var(--orange);margin-left:10px;}
+.delay-section{display:none;}
+.delay-section.show{display:block;}
+.toggle-check{display:flex;align-items:center;gap:10px;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:600;letter-spacing:1px;cursor:pointer;color:var(--muted);padding:10px 0;}
+.toggle-check input[type=checkbox]{width:18px;height:18px;accent-color:var(--orange);}
+.toggle-check:hover{color:var(--orange);}
+.markup-row{display:grid;grid-template-columns:1fr 120px;gap:14px;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);}
+.markup-row:last-child{border-bottom:none;}
+.markup-label{font-family:'Barlow Condensed',sans-serif;font-size:14px;color:var(--text);}
+.markup-label small{display:block;font-size:11px;color:var(--muted);margin-top:2px;}
+.calc-btn{width:100%;background:var(--orange);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;padding:15px;border:none;cursor:pointer;margin-top:6px;}
+.calc-btn:hover{background:#d45a08;}
 .results{display:none;}
 .results.show{display:block;}
-.co-sheet{background:var(--card);border:2px solid var(--border);padding:28px;margin-bottom:16px;}
-.co-header-bar{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:3px solid var(--orange);padding-bottom:16px;margin-bottom:20px;}
-.co-title-block .co-title{font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--orange);letter-spacing:3px;}
-.co-title-block .co-number{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--text);letter-spacing:2px;margin-top:2px;}
-.co-meta{font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--muted);text-align:right;line-height:1.8;}
-.co-meta strong{color:var(--text);}
-.co-desc-block{background:var(--card-inner);border:1px solid var(--border);padding:14px 16px;margin-bottom:20px;font-family:'Barlow',sans-serif;font-size:14px;color:var(--text);line-height:1.6;}
-.co-desc-label{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:6px;}
-.co-table{width:100%;border-collapse:collapse;margin-bottom:0;}
-.co-table th{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;padding:9px 12px;text-align:left;border-bottom:2px solid var(--border);background:var(--card-inner);}
-.co-table td{padding:9px 12px;border-bottom:1px solid var(--border);font-family:'Barlow Condensed',sans-serif;font-size:14px;}
-.co-table td.amt{text-align:right;color:var(--orange);}
-.co-table tr.spacer td{padding:4px;background:var(--card-inner);}
-.co-table tr.total-row td{font-weight:700;font-size:16px;color:var(--text);border-top:2px solid var(--border);}
-.co-table tr.grand td{font-size:18px;color:#fff;background:var(--orange);}
-.co-table tr.grand td.amt{color:#fff;}
-.result-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
-.result-item{text-align:center;padding:16px 8px;background:var(--card-inner);border:1px solid var(--border);}
-.result-value{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--orange);line-height:1;}
-.result-unit{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-top:4px;}
-.tool-actions{display:flex;gap:10px;margin-top:16px;}
-.act-btn{flex:1;padding:11px;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:2px;cursor:pointer;border:1px solid var(--border);background:var(--card);color:var(--text);transition:border-color .2s,color .2s;}
+.result-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px;}
+.result-item{text-align:center;padding:14px 6px;background:var(--card-inner);border:1px solid var(--border);}
+.result-item.highlight{border-color:var(--orange);}
+.result-value{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--orange);line-height:1;}
+.result-item.highlight .result-value{font-size:34px;}
+.result-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-top:3px;}
+.co-doc{background:var(--card);border:2px solid var(--border);padding:28px 32px;}
+.co-header-block{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;padding-bottom:16px;border-bottom:3px solid var(--orange);}
+.co-title-area{font-family:'Bebas Neue',sans-serif;}
+.co-doc-title{font-size:36px;color:var(--orange);letter-spacing:4px;}
+.co-num{font-size:20px;color:var(--text);margin-top:2px;}
+.co-info{font-family:'Barlow Condensed',sans-serif;font-size:13px;}
+.co-info table{border-collapse:collapse;}
+.co-info td{padding:3px 12px 3px 0;}
+.co-info td:first-child{color:var(--muted);}
+.co-info td:last-child{color:var(--text);font-weight:600;}
+.co-section-title{font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--orange);letter-spacing:2px;margin:16px 0 8px;padding-bottom:4px;border-bottom:1px solid var(--border);}
+.co-table{width:100%;border-collapse:collapse;margin-bottom:10px;font-size:13px;font-family:'Barlow Condensed',sans-serif;}
+.co-table th{background:var(--card-inner);padding:7px 10px;text-align:left;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);}
+.co-table td{padding:7px 10px;border-bottom:1px solid var(--border);}
+.co-table .right{text-align:right;}
+.co-table .subtotal-row td{background:var(--card-inner);font-weight:700;border-top:1px solid var(--border);}
+.co-table .total-row td{background:var(--orange);color:#fff;font-weight:700;font-size:15px;}
+.co-text-block{font-family:'Barlow Condensed',sans-serif;font-size:14px;color:var(--text);line-height:1.6;background:var(--card-inner);padding:12px 16px;border-left:3px solid var(--orange);margin-bottom:10px;}
+.co-sigs{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:24px;padding-top:18px;border-top:2px solid var(--border);}
+.sig-block label{display:block;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:20px;font-family:'Barlow Condensed',sans-serif;}
+.sig-line{border-top:1px solid var(--text);padding-top:6px;font-size:12px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;}
+.tool-actions{display:flex;gap:10px;margin-top:14px;}
+.act-btn{flex:1;padding:11px;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:2px;cursor:pointer;border:1px solid var(--border);background:var(--card);color:var(--text);}
 .act-btn:hover{border-color:var(--orange);color:var(--orange);}
-.act-clear:hover{border-color:var(--red);color:var(--red);}
-.cta-bar{background:var(--card-inner);border:1px solid rgba(232,101,10,.25);padding:22px 24px;margin-top:24px;display:flex;align-items:center;justify-content:space-between;gap:20px;}
-.cta-text{font-family:'Barlow Condensed',sans-serif;font-size:17px;color:var(--text);font-weight:600;}
+.act-clear:hover{border-color:var(--red)!important;color:var(--red)!important;}
+.cta-bar{background:var(--card-inner);border:1px solid rgba(232,101,10,.25);padding:20px 22px;margin-top:22px;display:flex;align-items:center;justify-content:space-between;gap:20px;}
+.cta-text{font-family:'Barlow Condensed',sans-serif;font-size:16px;color:var(--text);font-weight:600;}
 .cta-text span{color:var(--orange);}
-.cta-link{background:var(--orange);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:2px;padding:11px 24px;text-decoration:none;white-space:nowrap;}
-.footer{background:var(--header-bg);border-top:1px solid var(--border);padding:16px 24px;text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:12px;color:var(--muted);letter-spacing:1px;}
-@media print{.header,.tool-actions,.cta-bar,.footer,.card:not(.co-sheet){display:none!important;}.results{display:block!important;}body{background:#fff!important;}}
-@media(max-width:640px){.grid2,.grid3,.result-grid{grid-template-columns:1fr 1fr;}.tool-actions{flex-direction:column;}.cta-bar{flex-direction:column;}.co-header-bar{flex-direction:column;gap:12px;}.co-meta{text-align:left;}}
+.cta-link{background:var(--orange);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;padding:10px 22px;text-decoration:none;}
+.footer{text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:12px;color:var(--muted);padding:20px;border-top:1px solid var(--border);margin-top:24px;}
+@media print{
+  .header,.tool-sub,.card:not(.co-card),.calc-btn,.tool-actions,.cta-bar,.footer,.add-btn,.del-btn{display:none!important;}
+  .results{display:block!important;}
+  body{background:#fff;color:#000;}
+  .co-doc{border:2px solid #000;}
+}
+@media(max-width:800px){
+  .row-grid.labour-row{grid-template-columns:1fr 1fr 1fr 36px;}
+  .row-grid.equip-row{grid-template-columns:1fr 1fr 1fr 36px;}
+  .row-grid.mat-row{grid-template-columns:1fr 1fr 1fr 36px;}
+  .row-grid.sub-row{grid-template-columns:1fr 1fr 36px;}
+  .row-hdr{display:none;}
+  .result-grid{grid-template-columns:1fr 1fr;}
+  .co-header-block{flex-direction:column;gap:12px;}
+  .co-sigs{grid-template-columns:1fr;}
+  .cta-bar{flex-direction:column;}
+}
 </style>
 </head>
 <body>
@@ -72,160 +127,509 @@ input:focus,select:focus,textarea:focus{border-color:var(--orange);}
 <div class="header">
   <div class="header-left">
     <div class="logo">THE EXCAVATION ACADEMY</div>
-    <a class="back-link" href="tea-tools-hub.html">&#8592; All Tools</a>
+    <a class="back-link" href="tea-tools-hub.html">&larr; All Tools</a>
   </div>
-  <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">&#9790; DARK</button>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <span class="pm-badge">PM TOOL</span>
+    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">&#9790; DARK</button>
+  </div>
 </div>
 <div class="container">
-  <div class="tool-title">CHANGE ORDER CALCULATOR <span class="pm-badge">PM TOOL</span></div>
-  <div class="tool-sub">Calculate CO costs, apply markup, and generate a clean summary to submit</div>
+<div class="tool-title">CHANGE ORDER CALCULATOR</div>
+<div class="tool-sub">Force account tracking &mdash; Labour, Equipment, Materials &amp; Delay Costs &mdash; HeavyBid style</div>
 
-  <div class="card">
-    <div class="card-title">CHANGE ORDER INFO</div>
-    <div class="grid3">
-      <div class="field"><label>CO Number</label><input type="text" id="coNum" data-save placeholder="e.g. CO-003"></div>
-      <div class="field"><label>Date</label><input type="date" id="coDate" data-save></div>
-      <div class="field"><label>Project Name</label><input type="text" id="projName" data-save placeholder="e.g. Main St. Watermain"></div>
-    </div>
-    <div class="field"><label>Description of Work</label><textarea id="coDesc" data-save placeholder="Describe the change in scope — what changed, why, and what work is required..."></textarea></div>
+<div class="card">
+  <div class="card-title">CHANGE ORDER DETAILS</div>
+  <div class="grid4">
+    <div class="field"><label>CO Number</label><input type="text" id="coNum" data-save placeholder="e.g. CO-007"></div>
+    <div class="field"><label>CO Date</label><input type="date" id="coDate" data-save></div>
+    <div class="field"><label>Contract Number</label><input type="text" id="contractNum" data-save placeholder="Contract #"></div>
+    <div class="field"><label>Requested By</label><input type="text" id="requestedBy" data-save placeholder="Owner / Consultant"></div>
   </div>
-
-  <div class="card">
-    <div class="card-title">LABOUR</div>
-    <div class="grid3">
-      <div class="field"><label>Hours</label><input type="number" id="labHrs" data-save placeholder="e.g. 24" step="0.5" min="0"></div>
-      <div class="field"><label>Rate ($/hr)</label><input type="number" id="labRate" data-save placeholder="e.g. 48" step="0.50" min="0"></div>
-      <div class="field"><label>Burden %</label><input type="number" id="labBurden" data-save placeholder="30" step="1" min="0" value="30"></div>
-    </div>
+  <div class="grid2">
+    <div class="field"><label>Project Name</label><input type="text" id="projName" data-save placeholder="Project name"></div>
+    <div class="field"><label>Client / Owner</label><input type="text" id="client" data-save placeholder="Client name"></div>
   </div>
-
-  <div class="card">
-    <div class="card-title">EQUIPMENT</div>
-    <div class="grid3">
-      <div class="field"><label>Hours</label><input type="number" id="eqHrs" data-save placeholder="e.g. 8" step="0.5" min="0"></div>
-      <div class="field"><label>Rate ($/hr)</label><input type="number" id="eqRate" data-save placeholder="e.g. 180" step="5" min="0"></div>
-      <div class="field"><label>Fuel &amp; Maint. %</label><input type="number" id="eqFuel" data-save placeholder="10" step="1" min="0" value="10"></div>
+  <div class="grid2">
+    <div class="field"><label>CO Type</label>
+      <select id="coType" data-save>
+        <option>Extra Work — Not in Original Scope</option>
+        <option>Changed Conditions — Site Conditions Differ</option>
+        <option>Owner-Directed Change</option>
+        <option>Differing Site Conditions (DSC)</option>
+        <option>Design Error / Omission</option>
+        <option>Quantity Overrun</option>
+        <option>Weather Day / Force Majeure</option>
+        <option>Acceleration — Owner-Directed</option>
+        <option>Scope Reduction / Credit CO</option>
+        <option>Other</option>
+      </select>
     </div>
+    <div class="field"><label>Work Period</label><input type="text" id="workPeriod" data-save placeholder="e.g. March 15 – March 22, 2025"></div>
   </div>
+  <div class="field"><label>Description of Change</label><textarea id="coDesc" data-save placeholder="Describe the additional work, changed conditions, or scope change in detail..."></textarea></div>
+  <div class="field"><label>Justification / Basis of Claim</label><textarea id="coJustification" data-save placeholder="Explain why this is a valid change order — reference contract clauses, drawings, or site conditions..."></textarea></div>
+</div>
 
-  <div class="card">
-    <div class="card-title">MATERIALS &amp; SUBCONTRACTORS</div>
+<div class="card">
+  <div class="card-title">
+    <span>&#128119; LABOUR (Force Account)</span>
+    <span id="labourSectionTotal" style="font-size:13px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-weight:400;">Subtotal: $0.00</span>
+  </div>
+  <div class="row-hdr labour-hdr">
+    <span>Role</span><span>Workers</span><span>Hours</span><span>Rate $/hr</span><span>Burden %</span><span>ST / OT</span><span></span>
+  </div>
+  <div id="labourRows"></div>
+  <button class="add-btn" onclick="addLabourRow()">+ ADD LABOUR ROW</button>
+</div>
+
+<div class="card">
+  <div class="card-title">
+    <span>&#128738; EQUIPMENT</span>
+    <span id="equipSectionTotal" style="font-size:13px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-weight:400;">Subtotal: $0.00</span>
+  </div>
+  <div class="row-hdr equip-hdr">
+    <span>Equipment Type</span><span>Hours</span><span>Rate $/hr</span><span>Op Cost %</span><span>Owned/Rented</span><span></span>
+  </div>
+  <div id="equipRows"></div>
+  <button class="add-btn" onclick="addEquipRow()">+ ADD EQUIPMENT ROW</button>
+</div>
+
+<div class="card">
+  <div class="card-title">
+    <span>&#127981; MATERIALS</span>
+    <span id="matSectionTotal" style="font-size:13px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-weight:400;">Subtotal: $0.00</span>
+  </div>
+  <div class="row-hdr mat-hdr">
+    <span>Description</span><span>Qty</span><span>Unit</span><span>Unit Cost $</span><span>Markup %</span><span></span>
+  </div>
+  <div id="matRows"></div>
+  <button class="add-btn" onclick="addMatRow()">+ ADD MATERIAL ROW</button>
+</div>
+
+<div class="card">
+  <div class="card-title">
+    <span>&#128101; SUBCONTRACTORS</span>
+    <span id="subSectionTotal" style="font-size:13px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-weight:400;">Subtotal: $0.00</span>
+  </div>
+  <div class="row-hdr sub-hdr">
+    <span>Subcontractor / Description</span><span>Quoted Amount $</span><span>Markup %</span><span></span>
+  </div>
+  <div id="subRows"></div>
+  <button class="add-btn" onclick="addSubRow()">+ ADD SUBCONTRACTOR</button>
+</div>
+
+<div class="card">
+  <div class="card-title">DELAY &amp; IMPACT COSTS</div>
+  <label class="toggle-check"><input type="checkbox" id="includeDelay" onchange="toggleDelay()"> Include Delay / Impact Costs</label>
+  <div class="delay-section" id="delaySection">
     <div class="grid2">
-      <div class="field"><label>Material Description</label><input type="text" id="matDesc" data-save placeholder="e.g. 300mm pipe, fittings, concrete"></div>
-      <div class="field"><label>Material Cost ($)</label><input type="number" id="matCost" data-save placeholder="e.g. 2400" step="50" min="0"></div>
-    </div>
-    <div class="grid2">
-      <div class="field"><label>Subcontractor Cost ($)</label><input type="number" id="subCost" data-save placeholder="e.g. 0" step="100" min="0" value="0"></div>
-      <div class="field"><label>Delay / Disruption Cost ($) <span style="font-weight:400;text-transform:none;font-size:11px;">(optional)</span></label><input type="number" id="delayCost" data-save placeholder="e.g. 0" step="100" min="0" value="0"></div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-title">MARKUP</div>
-    <div class="grid2">
-      <div class="field"><label>Overhead %</label><input type="number" id="overhead" data-save placeholder="e.g. 15" step="1" min="0" value="15"></div>
-      <div class="field"><label>Profit %</label><input type="number" id="profit" data-save placeholder="e.g. 10" step="1" min="0" value="10"></div>
-    </div>
-    <button class="btn" onclick="calcCO()">GENERATE CHANGE ORDER</button>
-  </div>
-
-  <div class="results" id="results">
-    <div class="result-grid">
-      <div class="result-item"><div class="result-value" id="r_lab">—</div><div class="result-unit">Labour Cost</div></div>
-      <div class="result-item"><div class="result-value" id="r_eq">—</div><div class="result-unit">Equipment Cost</div></div>
-      <div class="result-item"><div class="result-value" id="r_direct">—</div><div class="result-unit">Direct Cost</div></div>
-      <div class="result-item" style="border-color:var(--orange)"><div class="result-value" id="r_total" style="font-size:32px">—</div><div class="result-unit">CO TOTAL</div></div>
-    </div>
-    <div class="co-sheet results-card">
-      <div class="co-header-bar">
-        <div class="co-title-block">
-          <div class="co-title">CHANGE ORDER</div>
-          <div class="co-number" id="s_conum">—</div>
-        </div>
-        <div class="co-meta">
-          Project: <strong id="s_proj">—</strong><br>
-          Date: <strong id="s_date">—</strong><br>
-          Prepared by: <strong>The Excavation Academy Tools</strong>
-        </div>
+      <div class="field"><label>Delay Type</label>
+        <select id="delayType" data-save>
+          <option>Idle Crew &amp; Equipment</option>
+          <option>Extended General Conditions</option>
+          <option>Loss of Productivity</option>
+          <option>Escalation / Extended Duration</option>
+          <option>Weather Delay</option>
+          <option>Other Impact</option>
+        </select>
       </div>
-      <div class="co-desc-block">
-        <div class="co-desc-label">Description of Work</div>
-        <div id="s_desc">—</div>
-      </div>
-      <table class="co-table">
-        <thead><tr><th>Component</th><th>Detail</th><th class="amt">Amount</th></tr></thead>
-        <tbody id="coBody"></tbody>
-      </table>
+      <div class="field"><label>Delay Duration</label><input type="text" id="delayDuration" data-save placeholder="e.g. 3 days / 22 hours"></div>
     </div>
-    <div class="tool-actions">
-      <button class="act-btn" onclick="window.print()">&#8595; EXPORT PDF</button>
-      <button class="act-btn" id="shareBtn" onclick="shareLink()">&#9993; SHARE LINK</button>
-      <button class="act-btn act-clear" onclick="clearAll()">&#10005; CLEAR</button>
+    <div class="grid3">
+      <div class="field"><label>Daily Crew Idle Cost ($)</label><input type="number" id="dailyCrewIdle" data-save placeholder="e.g. 2400" step="100" min="0"></div>
+      <div class="field"><label>Daily Equipment Idle Cost ($)</label><input type="number" id="dailyEquipIdle" data-save placeholder="e.g. 1200" step="100" min="0"></div>
+      <div class="field"><label>Number of Days</label><input type="number" id="delayDays" data-save placeholder="e.g. 3" step="0.5" min="0"></div>
     </div>
-  </div>
-
-  <div class="cta-bar">
-    <div class="cta-text">Free tool from <span>The Excavation Academy</span> — 138 modules of civil excavation training. Free to start.</div>
-    <a class="cta-link" href="https://www.skool.com/the-excavation-academy-2540" target="_blank">JOIN FREE</a>
+    <div class="field"><label>Impact Description</label><textarea id="delayDesc" data-save placeholder="Describe the delay impact, lost productivity, extended general conditions..."></textarea></div>
   </div>
 </div>
-<div class="footer">&#169; The Excavation Academy — For estimating reference only. Always review change orders with your project manager before submission.</div>
+
+<div class="card">
+  <div class="card-title">MARKUP STACK</div>
+  <div class="markup-row">
+    <div class="markup-label">Overhead on Labour<small>Applied to burdened labour cost</small></div>
+    <div class="field" style="margin:0"><input type="number" id="ohLabour" data-save value="15" step="0.5" min="0"> <label style="margin-top:4px;">%</label></div>
+  </div>
+  <div class="markup-row">
+    <div class="markup-label">Overhead on Equipment<small>Applied to equipment + op cost</small></div>
+    <div class="field" style="margin:0"><input type="number" id="ohEquip" data-save value="10" step="0.5" min="0"> <label style="margin-top:4px;">%</label></div>
+  </div>
+  <div class="markup-row">
+    <div class="markup-label">Overhead on Materials &amp; Subs<small>Applied to material + sub cost</small></div>
+    <div class="field" style="margin:0"><input type="number" id="ohMat" data-save value="10" step="0.5" min="0"> <label style="margin-top:4px;">%</label></div>
+  </div>
+  <div class="markup-row">
+    <div class="markup-label">Profit Margin<small>Applied to all direct + overhead</small></div>
+    <div class="field" style="margin:0"><input type="number" id="profit" data-save value="10" step="0.5" min="0"> <label style="margin-top:4px;">%</label></div>
+  </div>
+  <div class="markup-row">
+    <div class="markup-label">Performance Bond<small>Applied after profit</small></div>
+    <div class="field" style="margin:0"><input type="number" id="bond" data-save value="1.5" step="0.25" min="0"> <label style="margin-top:4px;">%</label></div>
+  </div>
+</div>
+
+<button class="calc-btn" onclick="generateCO()">&#9654; GENERATE CHANGE ORDER</button>
+
+<div class="results" id="results">
+<div class="card co-card">
+  <div class="result-grid">
+    <div class="result-item"><div class="result-value" id="r_labour">$0</div><div class="result-label">Labour (w/ Burden + OH)</div></div>
+    <div class="result-item"><div class="result-value" id="r_equip">$0</div><div class="result-label">Equipment (w/ Op + OH)</div></div>
+    <div class="result-item"><div class="result-value" id="r_mat">$0</div><div class="result-label">Materials + Subs (w/ OH)</div></div>
+    <div class="result-item highlight"><div class="result-value" id="r_total">$0</div><div class="result-label">CO TOTAL</div></div>
+  </div>
+  <div class="co-doc" id="coDoc"></div>
+  <div class="tool-actions">
+    <button class="act-btn" onclick="window.print()">&#8659; EXPORT PDF</button>
+    <button class="act-btn" id="shareBtn" onclick="shareLink()">&#9993; SHARE LINK</button>
+    <button class="act-btn act-clear" onclick="clearAll()">&#10005; CLEAR</button>
+  </div>
+</div>
+</div>
+
+<div class="cta-bar">
+  <div class="cta-text">Built by <span>The Excavation Academy</span> &mdash; Professional tools for civil contractors.</div>
+  <a class="cta-link" href="tea-tools-hub.html">All Tools &rarr;</a>
+</div>
+<div class="footer">&copy; The Excavation Academy &mdash; Review all change orders with your project manager and legal counsel before submission.</div>
+</div>
 
 <script>
-(function(){if(localStorage.getItem('tea-theme')==='dark')document.body.classList.add('dark');})();
-function toggleTheme(){document.body.classList.toggle('dark');localStorage.setItem('tea-theme',document.body.classList.contains('dark')?'dark':'light');document.getElementById('themeBtn').textContent=document.body.classList.contains('dark')?'\u2600 LIGHT':'\u263E DARK';}
-(function(){document.getElementById('themeBtn').textContent=document.body.classList.contains('dark')?'\u2600 LIGHT':'\u263E DARK';})();
-const TOOL_KEY='tea-change-order';
-function saveInputs(){const d={};document.querySelectorAll('[data-save]').forEach(e=>d[e.id]=e.value);localStorage.setItem(TOOL_KEY,JSON.stringify(d));}
-function restoreInputs(){const p=new URLSearchParams(window.location.search);if([...p].length){p.forEach((v,k)=>{const e=document.getElementById(k);if(e)e.value=v;});return;}try{const s=localStorage.getItem(TOOL_KEY);if(s){const d=JSON.parse(s);Object.entries(d).forEach(([k,v])=>{const e=document.getElementById(k);if(e)e.value=v;});}}catch(e){}}
+function toggleTheme(){document.body.classList.toggle('dark');const d=document.body.classList.contains('dark');localStorage.setItem('tea-theme',d?'dark':'light');document.getElementById('themeBtn').textContent=d?'☀ LIGHT':'☾ DARK';}
+(function(){const d=document.body.classList.contains('dark');document.getElementById('themeBtn').textContent=d?'☀ LIGHT':'☾ DARK';})();
+
+const TOOL_KEY='tea-change-order-v2';
+function saveInputs(){const d={};document.querySelectorAll('[data-save]').forEach(e=>d[e.id]=e.value);d._delay=document.getElementById('includeDelay').checked;localStorage.setItem(TOOL_KEY,JSON.stringify(d));}
 document.addEventListener('input',saveInputs);document.addEventListener('change',saveInputs);
-window.addEventListener('load',restoreInputs);
-function shareLink(){const p=new URLSearchParams();document.querySelectorAll('[data-save]').forEach(e=>{if(e.value)p.set(e.id,e.value);});navigator.clipboard.writeText(location.origin+location.pathname+'?'+p.toString()).then(()=>{const b=document.getElementById('shareBtn');const o=b.textContent;b.textContent='\u2713 COPIED!';setTimeout(()=>b.textContent=o,2000);});}
-function clearAll(){localStorage.removeItem(TOOL_KEY);document.querySelectorAll('[data-save]').forEach(e=>{if(e.tagName==='SELECT')e.selectedIndex=0;else e.value='';});document.getElementById('results').classList.remove('show');}
-function fmt(n){return'$'+n.toLocaleString('en',{minimumFractionDigits:2,maximumFractionDigits:2});}
-function calcCO(){
-  const labHrs=parseFloat(document.getElementById('labHrs').value)||0;
-  const labRate=parseFloat(document.getElementById('labRate').value)||0;
-  const labBurden=parseFloat(document.getElementById('labBurden').value)||0;
-  const eqHrs=parseFloat(document.getElementById('eqHrs').value)||0;
-  const eqRate=parseFloat(document.getElementById('eqRate').value)||0;
-  const eqFuel=parseFloat(document.getElementById('eqFuel').value)||0;
-  const matCost=parseFloat(document.getElementById('matCost').value)||0;
-  const subCost=parseFloat(document.getElementById('subCost').value)||0;
-  const delayCost=parseFloat(document.getElementById('delayCost').value)||0;
-  const oh=parseFloat(document.getElementById('overhead').value)||0;
-  const pr=parseFloat(document.getElementById('profit').value)||0;
-  const labTotal=labHrs*labRate*(1+labBurden/100);
-  const eqTotal=eqHrs*eqRate*(1+eqFuel/100);
-  const direct=labTotal+eqTotal+matCost+subCost+delayCost;
-  if(direct<=0){alert('Enter at least one cost.');return;}
-  const ohAmt=direct*(oh/100);
-  const withOH=direct+ohAmt;
-  const profAmt=withOH*(pr/100);
-  const total=withOH+profAmt;
-  document.getElementById('r_lab').textContent=fmt(labTotal);
-  document.getElementById('r_eq').textContent=fmt(eqTotal);
-  document.getElementById('r_direct').textContent=fmt(direct);
-  document.getElementById('r_total').textContent=fmt(total);
-  document.getElementById('s_conum').textContent=document.getElementById('coNum').value||'Change Order';
-  document.getElementById('s_proj').textContent=document.getElementById('projName').value||'—';
-  document.getElementById('s_date').textContent=document.getElementById('coDate').value||new Date().toLocaleDateString();
-  document.getElementById('s_desc').textContent=document.getElementById('coDesc').value||'No description provided.';
-  const tbody=document.getElementById('coBody');tbody.innerHTML='';
-  const addRow=(label,detail,val,cls)=>{const tr=document.createElement('tr');if(cls)tr.className=cls;tr.innerHTML='<td>'+label+'</td><td>'+detail+'</td><td class="amt">'+fmt(val)+'</td>';tbody.appendChild(tr);};
-  if(labTotal>0)addRow('Labour',''+labHrs+' hrs @ $'+labRate+'/hr + '+labBurden+'% burden',labTotal);
-  if(eqTotal>0)addRow('Equipment',''+eqHrs+' hrs @ $'+eqRate+'/hr + '+eqFuel+'% fuel/maint.',eqTotal);
-  if(matCost>0)addRow('Materials',document.getElementById('matDesc').value||'—',matCost);
-  if(subCost>0)addRow('Subcontractor','As quoted',subCost);
-  if(delayCost>0)addRow('Delay / Disruption','As assessed',delayCost);
-  const spacer=document.createElement('tr');spacer.className='spacer';spacer.innerHTML='<td colspan="3"></td>';tbody.appendChild(spacer);
-  addRow('Direct Cost Total','',direct,'total-row');
-  addRow('Overhead ('+oh+'%)','',ohAmt);
-  addRow('Subtotal with Overhead','',withOH,'total-row');
-  addRow('Profit ('+pr+'%)','',profAmt);
-  addRow('CHANGE ORDER TOTAL','',total,'grand');
-  document.getElementById('results').classList.add('show');
+window.addEventListener('load',function(){
+  try{const s=localStorage.getItem(TOOL_KEY);if(s){const d=JSON.parse(s);Object.entries(d).forEach(([k,v])=>{if(k==='_delay'){document.getElementById('includeDelay').checked=v;toggleDelay();return;}const e=document.getElementById(k);if(e)e.value=v;});}}catch(e){}
+  initDefaults();
+});
+
+function shareLink(){const p=new URLSearchParams();document.querySelectorAll('[data-save]').forEach(e=>{if(e.value)p.set(e.id,e.value);});navigator.clipboard.writeText(location.origin+location.pathname+'?'+p.toString()).then(()=>{const b=document.getElementById('shareBtn');const o=b.textContent;b.textContent='✓ COPIED!';setTimeout(()=>b.textContent=o,2000);});}
+
+function clearAll(){if(!confirm('Clear all data?'))return;localStorage.removeItem(TOOL_KEY);document.querySelectorAll('[data-save]').forEach(e=>{if(e.tagName==='SELECT')e.selectedIndex=0;else if(e.tagName==='TEXTAREA')e.value='';else e.value='';});['labourRows','equipRows','matRows','subRows'].forEach(id=>document.getElementById(id).innerHTML='');document.getElementById('includeDelay').checked=false;toggleDelay();document.getElementById('results').classList.remove('show');initDefaults();}
+
+function toggleDelay(){const s=document.getElementById('delaySection');s.classList.toggle('show',document.getElementById('includeDelay').checked);saveInputs();}
+
+const LABOUR_RATES={'Superintendent':72,'General Foreman':62,'Foreman':54,'Excavator Operator (Large)':58,'Excavator Operator (Medium)':52,'Grade Operator (Dozer/Grader)':56,'Truck Driver':44,'Pipe Layer':46,'Labourer':36,'Traffic Control':32,'Survey Technician':68,'Safety Officer':55,'Custom':0};
+const EQUIP_RATES={'Excavator — 20 Tonne':145,'Excavator — 30 Tonne':185,'Excavator — 45 Tonne':240,'Bulldozer — D6':175,'Bulldozer — D8':215,'Motor Grader':165,'Vibratory Compactor':95,'Dump Truck — 14 CY':95,'Dump Truck — 20 CY':125,'Water Truck':85,'Backhoe / TLB':110,'Skid Steer':75,'Crane — 50T':280,'Concrete Pump':195,'Generator / Light Plant':45,'Vacuum Excavator':155,'Idle / Standby (50% rate)':0,'Custom':0};
+
+function addLabourRow(vals){
+  const roles=Object.keys(LABOUR_RATES);
+  const sel=vals&&vals.role?vals.role:'Labourer';
+  const rate=vals&&vals.rate?vals.rate:(LABOUR_RATES[sel]||36);
+  const div=document.createElement('div');
+  div.className='row-grid labour-row dynamic-row';
+  div.innerHTML=`
+    <select data-field="role" onchange="onLabourRoleChange(this)">${roles.map(r=>`<option${r===sel?' selected':''}>${r}</option>`).join('')}</select>
+    <input type="number" data-field="workers" value="${vals&&vals.workers?vals.workers:1}" min="1" step="1" placeholder="1">
+    <input type="number" data-field="hours" value="${vals&&vals.hours?vals.hours:8}" min="0" step="0.5" placeholder="8">
+    <input type="number" data-field="rate" value="${rate}" min="0" step="0.5" placeholder="Rate">
+    <input type="number" data-field="burden" value="${vals&&vals.burden?vals.burden:35}" min="0" step="1" max="100" placeholder="35">
+    <div class="ot-toggle"><button data-mode="ST" class="${(!vals||vals._ot!=='OT')?'active':''}" onclick="setOT(this,'ST')">ST</button><button data-mode="OT" class="${vals&&vals._ot==='OT'?'active':''}" onclick="setOT(this,'OT')">OT</button></div>
+    <button class="del-btn" onclick="this.parentNode.remove();updateTotals();">&times;</button>`;
+  div.querySelectorAll('input,select').forEach(el=>el.addEventListener('input',updateTotals));
+  document.getElementById('labourRows').appendChild(div);
+  updateTotals();
 }
+function onLabourRoleChange(sel){const r=LABOUR_RATES[sel.value];if(r!==undefined&&r>0)sel.parentNode.querySelector('[data-field="rate"]').value=r;updateTotals();}
+function setOT(btn,mode){btn.parentNode.querySelectorAll('button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');updateTotals();}
+
+function addEquipRow(vals){
+  const types=Object.keys(EQUIP_RATES);
+  const sel=vals&&vals.type?vals.type:'Excavator — 20 Tonne';
+  const rate=vals&&vals.rate?vals.rate:(EQUIP_RATES[sel]||145);
+  const div=document.createElement('div');
+  div.className='row-grid equip-row dynamic-row';
+  div.innerHTML=`
+    <select data-field="type" onchange="onEquipTypeChange(this)">${types.map(t=>`<option${t===sel?' selected':''}>${t}</option>`).join('')}</select>
+    <input type="number" data-field="hours" value="${vals&&vals.hours?vals.hours:8}" min="0" step="0.5" placeholder="8">
+    <input type="number" data-field="rate" value="${rate}" min="0" step="0.5" placeholder="Rate">
+    <input type="number" data-field="opcost" value="${vals&&vals.opcost?vals.opcost:25}" min="0" step="1" max="100" placeholder="25">
+    <div class="own-toggle"><button class="active" onclick="setOwn(this,'Owned')">Owned</button><button onclick="setOwn(this,'Rented')">Rented</button></div>
+    <button class="del-btn" onclick="this.parentNode.remove();updateTotals();">&times;</button>`;
+  div.querySelectorAll('input,select').forEach(el=>el.addEventListener('input',updateTotals));
+  document.getElementById('equipRows').appendChild(div);
+  updateTotals();
+}
+function onEquipTypeChange(sel){
+  const name=sel.value;
+  if(name==='Idle / Standby (50% rate)'){sel.parentNode.querySelector('[data-field="opcost"]').value=0;}
+  else{const r=EQUIP_RATES[name];if(r!==undefined&&r>0)sel.parentNode.querySelector('[data-field="rate"]').value=r;}
+  updateTotals();
+}
+function setOwn(btn){btn.parentNode.querySelectorAll('button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');updateTotals();}
+
+function addMatRow(vals){
+  const units=['LF','LM','CY','m³','SF','m²','TON','Tonne','EA','LS','Bag','Litre','kg','lbs'];
+  const div=document.createElement('div');
+  div.className='row-grid mat-row dynamic-row';
+  div.innerHTML=`
+    <input type="text" data-field="desc" value="${vals&&vals.desc?vals.desc:''}" placeholder="e.g. Clear Stone — 19mm">
+    <input type="number" data-field="qty" value="${vals&&vals.qty?vals.qty:''}" min="0" step="1" placeholder="Qty">
+    <select data-field="unit">${units.map(u=>`<option${vals&&vals.unit===u?' selected':''}>${u}</option>`).join('')}</select>
+    <input type="number" data-field="cost" value="${vals&&vals.cost?vals.cost:''}" min="0" step="0.01" placeholder="Unit Cost">
+    <input type="number" data-field="markup" value="${vals&&vals.markup?vals.markup:15}" min="0" step="1" max="100" placeholder="15">
+    <button class="del-btn" onclick="this.parentNode.remove();updateTotals();">&times;</button>`;
+  div.querySelectorAll('input,select').forEach(el=>el.addEventListener('input',updateTotals));
+  document.getElementById('matRows').appendChild(div);
+  updateTotals();
+}
+
+function addSubRow(vals){
+  const div=document.createElement('div');
+  div.className='row-grid sub-row dynamic-row';
+  div.innerHTML=`
+    <input type="text" data-field="desc" value="${vals&&vals.desc?vals.desc:''}" placeholder="e.g. Concrete Cutting">
+    <input type="number" data-field="amount" value="${vals&&vals.amount?vals.amount:''}" min="0" step="100" placeholder="Quoted $">
+    <input type="number" data-field="markup" value="${vals&&vals.markup?vals.markup:10}" min="0" step="1" max="100" placeholder="10">
+    <button class="del-btn" onclick="this.parentNode.remove();updateTotals();">&times;</button>`;
+  div.querySelectorAll('input,select').forEach(el=>el.addEventListener('input',updateTotals));
+  document.getElementById('subRows').appendChild(div);
+  updateTotals();
+}
+
+function getNum(id){return parseFloat(document.getElementById(id).value)||0;}
+function fmt(n){return '$'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+
+function updateTotals(){
+  let lDirect=0;
+  document.querySelectorAll('#labourRows .dynamic-row').forEach(row=>{
+    const w=parseFloat(row.querySelector('[data-field="workers"]').value)||1;
+    const h=parseFloat(row.querySelector('[data-field="hours"]').value)||0;
+    let r=parseFloat(row.querySelector('[data-field="rate"]').value)||0;
+    const b=parseFloat(row.querySelector('[data-field="burden"]').value)||0;
+    const ot=row.querySelector('[data-mode="OT"]')&&row.querySelector('[data-mode="OT"]').classList.contains('active');
+    if(ot)r*=1.5;
+    lDirect+=w*h*r*(1+b/100);
+  });
+  let eDirect=0;
+  document.querySelectorAll('#equipRows .dynamic-row').forEach(row=>{
+    const h=parseFloat(row.querySelector('[data-field="hours"]').value)||0;
+    let r=parseFloat(row.querySelector('[data-field="rate"]').value)||0;
+    const type=row.querySelector('[data-field="type"]').value;
+    if(type==='Idle / Standby (50% rate)')r*=0.5;
+    const op=parseFloat(row.querySelector('[data-field="opcost"]').value)||0;
+    eDirect+=h*r*(1+op/100);
+  });
+  let mDirect=0;
+  document.querySelectorAll('#matRows .dynamic-row').forEach(row=>{
+    const q=parseFloat(row.querySelector('[data-field="qty"]').value)||0;
+    const c=parseFloat(row.querySelector('[data-field="cost"]').value)||0;
+    const mk=parseFloat(row.querySelector('[data-field="markup"]').value)||0;
+    mDirect+=q*c*(1+mk/100);
+  });
+  let sDirect=0;
+  document.querySelectorAll('#subRows .dynamic-row').forEach(row=>{
+    const a=parseFloat(row.querySelector('[data-field="amount"]').value)||0;
+    const mk=parseFloat(row.querySelector('[data-field="markup"]').value)||0;
+    sDirect+=a*(1+mk/100);
+  });
+  document.getElementById('labourSectionTotal').textContent='Subtotal: '+fmt(lDirect);
+  document.getElementById('equipSectionTotal').textContent='Subtotal: '+fmt(eDirect);
+  document.getElementById('matSectionTotal').textContent='Subtotal: '+fmt(mDirect);
+  document.getElementById('subSectionTotal').textContent='Subtotal: '+fmt(sDirect);
+  saveInputs();
+}
+
+function generateCO(){
+  // Collect labour
+  const labourRows=[];let lDirect=0;
+  document.querySelectorAll('#labourRows .dynamic-row').forEach(row=>{
+    const role=row.querySelector('[data-field="role"]').value;
+    const w=parseFloat(row.querySelector('[data-field="workers"]').value)||1;
+    const h=parseFloat(row.querySelector('[data-field="hours"]').value)||0;
+    let r=parseFloat(row.querySelector('[data-field="rate"]').value)||0;
+    const b=parseFloat(row.querySelector('[data-field="burden"]').value)||0;
+    const ot=row.querySelector('[data-mode="OT"]')&&row.querySelector('[data-mode="OT"]').classList.contains('active');
+    const effectiveRate=ot?r*1.5:r;
+    const subtotal=w*h*effectiveRate*(1+b/100);
+    lDirect+=subtotal;
+    labourRows.push({role,w,h,r,effectiveRate,b,ot,subtotal});
+  });
+  const ohL=getNum('ohLabour')/100;
+  const labourTotal=lDirect*(1+ohL);
+
+  // Collect equipment
+  const equipRows=[];let eDirect=0;
+  document.querySelectorAll('#equipRows .dynamic-row').forEach(row=>{
+    const type=row.querySelector('[data-field="type"]').value;
+    const h=parseFloat(row.querySelector('[data-field="hours"]').value)||0;
+    let r=parseFloat(row.querySelector('[data-field="rate"]').value)||0;
+    const isStandby=type==='Idle / Standby (50% rate)';
+    if(isStandby)r*=0.5;
+    const op=parseFloat(row.querySelector('[data-field="opcost"]').value)||0;
+    const owned=row.querySelector('.own-toggle button.active').textContent;
+    const subtotal=h*r*(1+op/100);
+    eDirect+=subtotal;
+    equipRows.push({type,h,r,op,owned,isStandby,subtotal});
+  });
+  const ohE=getNum('ohEquip')/100;
+  const equipTotal=eDirect*(1+ohE);
+
+  // Collect materials
+  const matRows=[];let mDirect=0;
+  document.querySelectorAll('#matRows .dynamic-row').forEach(row=>{
+    const desc=row.querySelector('[data-field="desc"]').value;
+    const q=parseFloat(row.querySelector('[data-field="qty"]').value)||0;
+    const unit=row.querySelector('[data-field="unit"]').value;
+    const c=parseFloat(row.querySelector('[data-field="cost"]').value)||0;
+    const mk=parseFloat(row.querySelector('[data-field="markup"]').value)||0;
+    const subtotal=q*c*(1+mk/100);
+    mDirect+=subtotal;
+    matRows.push({desc,q,unit,c,mk,subtotal});
+  });
+
+  // Collect subs
+  const subRows=[];let sDirect=0;
+  document.querySelectorAll('#subRows .dynamic-row').forEach(row=>{
+    const desc=row.querySelector('[data-field="desc"]').value;
+    const a=parseFloat(row.querySelector('[data-field="amount"]').value)||0;
+    const mk=parseFloat(row.querySelector('[data-field="markup"]').value)||0;
+    const subtotal=a*(1+mk/100);
+    sDirect+=subtotal;
+    subRows.push({desc,a,mk,subtotal});
+  });
+  const ohM=getNum('ohMat')/100;
+  const matSubTotal=(mDirect+sDirect)*(1+ohM);
+
+  // Delay
+  let delayTotal=0;
+  const includeDelay=document.getElementById('includeDelay').checked;
+  if(includeDelay){
+    const days=getNum('delayDays');
+    const crewIdle=getNum('dailyCrewIdle');
+    const equipIdle=getNum('dailyEquipIdle');
+    delayTotal=(crewIdle+equipIdle)*days;
+  }
+
+  const directTotal=labourTotal+equipTotal+matSubTotal+delayTotal;
+  const profPct=getNum('profit')/100;
+  const afterProfit=directTotal*(1+profPct);
+  const bondPct=getNum('bond')/100;
+  const grandTotal=afterProfit*(1+bondPct);
+
+  // Update cards
+  document.getElementById('r_labour').textContent=fmt(labourTotal);
+  document.getElementById('r_equip').textContent=fmt(equipTotal);
+  document.getElementById('r_mat').textContent=fmt(matSubTotal);
+  document.getElementById('r_total').textContent=fmt(grandTotal);
+
+  // Build CO document
+  const coDate=document.getElementById('coDate').value;
+  const fmtDate=coDate?new Date(coDate+'T12:00').toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'}):'—';
+  let html=`
+  <div class="co-header-block">
+    <div class="co-title-area">
+      <div class="co-doc-title">CHANGE ORDER</div>
+      <div class="co-num">${document.getElementById('coNum').value||'CO-XXX'}</div>
+    </div>
+    <div class="co-info">
+      <table>
+        <tr><td>Date</td><td>${fmtDate}</td></tr>
+        <tr><td>Project</td><td>${document.getElementById('projName').value||'—'}</td></tr>
+        <tr><td>Client</td><td>${document.getElementById('client').value||'—'}</td></tr>
+        <tr><td>Contract #</td><td>${document.getElementById('contractNum').value||'—'}</td></tr>
+        <tr><td>Requested By</td><td>${document.getElementById('requestedBy').value||'—'}</td></tr>
+        <tr><td>CO Type</td><td>${document.getElementById('coType').value||'—'}</td></tr>
+        <tr><td>Work Period</td><td>${document.getElementById('workPeriod').value||'—'}</td></tr>
+      </table>
+    </div>
+  </div>`;
+
+  if(document.getElementById('coDesc').value){
+    html+=`<div class="co-section-title">DESCRIPTION OF CHANGE</div><div class="co-text-block">${document.getElementById('coDesc').value}</div>`;
+  }
+  if(document.getElementById('coJustification').value){
+    html+=`<div class="co-section-title">JUSTIFICATION / BASIS OF CLAIM</div><div class="co-text-block">${document.getElementById('coJustification').value}</div>`;
+  }
+
+  // Labour table
+  if(labourRows.length>0){
+    html+=`<div class="co-section-title">LABOUR COSTS</div><table class="co-table"><thead><tr><th>Role</th><th>Workers</th><th>Hours</th><th>Rate</th><th>Burden</th><th>Type</th><th class="right">Subtotal</th></tr></thead><tbody>`;
+    labourRows.forEach(r=>{html+=`<tr><td>${r.role}</td><td>${r.w}</td><td>${r.h}</td><td>${fmt(r.r)}/hr${r.ot?' (OT ×1.5)':''}</td><td>${r.b}%</td><td>${r.ot?'Overtime':'Straight'}</td><td class="right">${fmt(r.subtotal)}</td></tr>`;});
+    html+=`<tr class="subtotal-row"><td colspan="6">Labour Direct Subtotal</td><td class="right">${fmt(lDirect)}</td></tr>`;
+    html+=`<tr class="subtotal-row"><td colspan="6">Overhead (${getNum('ohLabour')}%)</td><td class="right">${fmt(lDirect*ohL)}</td></tr>`;
+    html+=`<tr class="subtotal-row"><td colspan="6"><strong>LABOUR TOTAL</strong></td><td class="right"><strong>${fmt(labourTotal)}</strong></td></tr>`;
+    html+=`</tbody></table>`;
+  }
+
+  // Equipment table
+  if(equipRows.length>0){
+    html+=`<div class="co-section-title">EQUIPMENT COSTS</div><table class="co-table"><thead><tr><th>Equipment</th><th>Ownership</th><th>Hours</th><th>Rate</th><th>Op Cost</th><th>Status</th><th class="right">Subtotal</th></tr></thead><tbody>`;
+    equipRows.forEach(r=>{html+=`<tr><td>${r.type}</td><td>${r.owned}</td><td>${r.h}</td><td>${fmt(r.r)}/hr</td><td>${r.op}%</td><td>${r.isStandby?'Standby':'Operating'}</td><td class="right">${fmt(r.subtotal)}</td></tr>`;});
+    html+=`<tr class="subtotal-row"><td colspan="6">Equipment Direct Subtotal</td><td class="right">${fmt(eDirect)}</td></tr>`;
+    html+=`<tr class="subtotal-row"><td colspan="6">Overhead (${getNum('ohEquip')}%)</td><td class="right">${fmt(eDirect*ohE)}</td></tr>`;
+    html+=`<tr class="subtotal-row"><td colspan="6"><strong>EQUIPMENT TOTAL</strong></td><td class="right"><strong>${fmt(equipTotal)}</strong></td></tr>`;
+    html+=`</tbody></table>`;
+  }
+
+  // Materials
+  if(matRows.length>0){
+    html+=`<div class="co-section-title">MATERIAL COSTS</div><table class="co-table"><thead><tr><th>Description</th><th>Qty</th><th>Unit</th><th>Unit Cost</th><th>Markup</th><th class="right">Subtotal</th></tr></thead><tbody>`;
+    matRows.forEach(r=>{html+=`<tr><td>${r.desc||'—'}</td><td>${r.q}</td><td>${r.unit}</td><td>${fmt(r.c)}</td><td>${r.mk}%</td><td class="right">${fmt(r.subtotal)}</td></tr>`;});
+    html+=`<tr class="subtotal-row"><td colspan="5"><strong>Materials Total</strong></td><td class="right"><strong>${fmt(mDirect)}</strong></td></tr>`;
+    html+=`</tbody></table>`;
+  }
+
+  // Subs
+  if(subRows.length>0){
+    html+=`<div class="co-section-title">SUBCONTRACTOR COSTS</div><table class="co-table"><thead><tr><th>Description</th><th>Quoted Amount</th><th>Markup</th><th class="right">Total</th></tr></thead><tbody>`;
+    subRows.forEach(r=>{html+=`<tr><td>${r.desc||'—'}</td><td>${fmt(r.a)}</td><td>${r.mk}%</td><td class="right">${fmt(r.subtotal)}</td></tr>`;});
+    html+=`<tr class="subtotal-row"><td colspan="3"><strong>Subcontractor Total</strong></td><td class="right"><strong>${fmt(sDirect)}</strong></td></tr>`;
+    html+=`</tbody></table>`;
+  }
+
+  // Delay
+  if(includeDelay&&delayTotal>0){
+    html+=`<div class="co-section-title">DELAY &amp; IMPACT COSTS</div><table class="co-table"><tbody>`;
+    html+=`<tr><td>Delay Type</td><td>${document.getElementById('delayType').value}</td></tr>`;
+    if(document.getElementById('delayDesc').value)html+=`<tr><td>Description</td><td>${document.getElementById('delayDesc').value}</td></tr>`;
+    html+=`<tr><td>Duration</td><td>${document.getElementById('delayDuration').value||getNum('delayDays')+' days'}</td></tr>`;
+    html+=`<tr class="subtotal-row"><td>DELAY / IMPACT TOTAL</td><td class="right"><strong>${fmt(delayTotal)}</strong></td></tr>`;
+    html+=`</tbody></table>`;
+  }
+
+  // Summary / markup
+  html+=`<div class="co-section-title">COST SUMMARY</div><table class="co-table"><tbody>`;
+  html+=`<tr><td>Labour Total (burdened + OH)</td><td class="right">${fmt(labourTotal)}</td></tr>`;
+  html+=`<tr><td>Equipment Total (op cost + OH)</td><td class="right">${fmt(equipTotal)}</td></tr>`;
+  html+=`<tr><td>Materials &amp; Subcontractors (+ OH)</td><td class="right">${fmt(matSubTotal)}</td></tr>`;
+  if(delayTotal>0)html+=`<tr><td>Delay / Impact Costs</td><td class="right">${fmt(delayTotal)}</td></tr>`;
+  html+=`<tr class="subtotal-row"><td><strong>Direct Cost Total</strong></td><td class="right"><strong>${fmt(directTotal)}</strong></td></tr>`;
+  html+=`<tr><td>Profit (${getNum('profit')}%)</td><td class="right">${fmt(directTotal*profPct)}</td></tr>`;
+  html+=`<tr><td>Subtotal Before Bond</td><td class="right">${fmt(afterProfit)}</td></tr>`;
+  html+=`<tr><td>Performance Bond (${getNum('bond')}%)</td><td class="right">${fmt(afterProfit*bondPct)}</td></tr>`;
+  html+=`<tr class="total-row"><td><strong>CHANGE ORDER TOTAL</strong></td><td class="right"><strong>${fmt(grandTotal)}</strong></td></tr>`;
+  html+=`</tbody></table>`;
+
+  html+=`<div class="co-sigs">
+    <div class="sig-block"><label>Submitted By (Contractor)</label><div class="sig-line">___________________________________</div></div>
+    <div class="sig-block"><label>Date Submitted</label><div class="sig-line">___________________________________</div></div>
+    <div class="sig-block"><label>Approved By (Owner/Consultant)</label><div class="sig-line">___________________________________</div></div>
+    <div class="sig-block"><label>Date Approved</label><div class="sig-line">___________________________________</div></div>
+  </div>`;
+
+  document.getElementById('coDoc').innerHTML=html;
+  document.getElementById('results').classList.add('show');
+  document.getElementById('results').scrollIntoView({behavior:'smooth'});
+}
+
+function initDefaults(){
+  if(document.querySelectorAll('#labourRows .dynamic-row').length===0){
+    addLabourRow({role:'Foreman',workers:1,hours:8,rate:54,burden:35});
+    addLabourRow({role:'Labourer',workers:2,hours:8,rate:36,burden:35});
+  }
+  if(document.querySelectorAll('#equipRows .dynamic-row').length===0){
+    addEquipRow({type:'Excavator — 20 Tonne',hours:8,rate:145,opcost:25});
+  }
+  if(document.querySelectorAll('#matRows .dynamic-row').length===0){
+    addMatRow();
+  }
+}
+initDefaults();
 </script>
 </body>
 </html>
