@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spec Document Search — The Excavation Academy</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap');
+:root{--orange:#E8650A;--bg:#f5f3ee;--header-bg:#fff;--card:#fff;--card-inner:#f0ede6;--border:#ddd9d0;--text:#1a1a1a;--muted:#6b6560;--input-bg:#f0ede6;--blue:#2471a3;--red:#c0392b;--green:#1a8a3a;}
+body.dark{--bg:#0a0a0a;--header-bg:#111;--card:#141414;--card-inner:#1a1a1a;--border:#2a2a2a;--text:#e0e0e0;--muted:#777;--input-bg:#1a1a1a;--blue:#3498db;--red:#e74c3c;--green:#2ecc71;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;min-height:100vh;transition:background .2s,color .2s;}
+.header{background:var(--header-bg);border-bottom:3px solid var(--orange);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.header-left{display:flex;align-items:center;gap:20px;}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--orange);letter-spacing:3px;}
+.back-link{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:2px;color:var(--muted);text-decoration:none;text-transform:uppercase;border:1px solid var(--border);padding:5px 11px;}
+.back-link:hover{color:var(--orange);border-color:var(--orange);}
+.theme-btn{background:none;border:1px solid var(--border);color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:5px 11px;cursor:pointer;}
+.theme-btn:hover{border-color:var(--orange);color:var(--orange);}
+.container{max-width:1000px;margin:0 auto;padding:28px 20px;}
+.tool-title{font-family:'Bebas Neue',sans-serif;font-size:46px;color:var(--text);letter-spacing:2px;line-height:1;margin-bottom:4px;}
+.tool-sub{font-family:'Barlow Condensed',sans-serif;font-size:14px;color:var(--muted);letter-spacing:1px;margin-bottom:28px;text-transform:uppercase;}
+.card{background:var(--card);border:1px solid var(--border);padding:22px;margin-bottom:18px;}
+.card-title{font-family:'Bebas Neue',sans-serif;font-size:17px;color:var(--orange);letter-spacing:2px;margin-bottom:14px;border-bottom:1px solid var(--border);padding-bottom:9px;display:flex;align-items:center;justify-content:space-between;}
+.field{margin-bottom:14px;}
+label{display:block;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:6px;}
+input,select,textarea{width:100%;background:var(--input-bg);border:1px solid var(--border);color:var(--text);font-family:'Barlow',sans-serif;font-size:14px;padding:10px 12px;outline:none;transition:border-color .2s;}
+input:focus,select:focus,textarea:focus{border-color:var(--orange);}
+.upload-zone{border:2px dashed var(--border);padding:32px;text-align:center;cursor:pointer;transition:border-color .2s;background:var(--input-bg);position:relative;}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--orange);background:rgba(232,101,10,.04);}
+.upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.upload-icon{font-size:40px;margin-bottom:10px;}
+.upload-text{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;letter-spacing:1px;color:var(--muted);}
+.upload-sub{font-family:'Barlow Condensed',sans-serif;font-size:12px;color:var(--muted);opacity:.7;margin-top:4px;}
+.progress-bar{height:4px;background:var(--border);margin-top:14px;display:none;}
+.progress-bar.show{display:block;}
+.progress-fill{height:100%;background:var(--orange);transition:width .2s;width:0%;}
+.doc-loaded{background:var(--card-inner);border:1px solid var(--border);padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:14px;}
+.doc-info{font-family:'Barlow Condensed',sans-serif;}
+.doc-name{font-size:16px;font-weight:700;color:var(--text);}
+.doc-meta{font-size:12px;color:var(--muted);margin-top:2px;}
+.doc-clear{background:transparent;border:1px solid var(--border);color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:1px;text-transform:uppercase;padding:7px 14px;cursor:pointer;}
+.doc-clear:hover{border-color:var(--red);color:var(--red);}
+.search-row{display:flex;gap:10px;}
+.search-input{flex:1;background:var(--input-bg);border:1px solid var(--border);color:var(--text);font-family:'Barlow',sans-serif;font-size:16px;padding:12px 16px;outline:none;}
+.search-input:focus{border-color:var(--orange);}
+.search-btn{background:var(--orange);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;padding:12px 24px;border:none;cursor:pointer;white-space:nowrap;}
+.search-btn:hover{background:#d45a08;}
+.search-btn:disabled{opacity:.5;cursor:not-allowed;}
+.result-count{font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--muted);margin-top:8px;}
+.result-item{background:var(--card);border:1px solid var(--border);padding:16px 18px;margin-bottom:10px;}
+.result-page{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:2px;color:var(--orange);text-transform:uppercase;margin-bottom:6px;}
+.result-text{font-family:'Barlow',sans-serif;font-size:14px;line-height:1.7;color:var(--text);}
+.result-text mark{background:rgba(232,101,10,.25);color:var(--text);padding:0 2px;}
+.ai-section{margin-top:6px;}
+.ai-note{font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--muted);margin-bottom:12px;padding:10px 14px;background:rgba(36,113,163,.08);border:1px solid rgba(36,113,163,.2);}
+.ai-note a{color:var(--blue);}
+.question-row{display:flex;gap:10px;margin-bottom:10px;}
+.question-input{flex:1;background:var(--input-bg);border:1px solid var(--border);color:var(--text);font-family:'Barlow',sans-serif;font-size:15px;padding:12px 16px;outline:none;}
+.question-input:focus{border-color:var(--blue);}
+.ask-btn{background:var(--blue);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:2px;padding:12px 22px;border:none;cursor:pointer;white-space:nowrap;}
+.ask-btn:hover{background:#1a5e8a;}
+.ask-btn:disabled{opacity:.5;cursor:not-allowed;}
+.ai-answer{background:var(--card-inner);border:1px solid var(--border);border-left:3px solid var(--blue);padding:16px 18px;font-family:'Barlow',sans-serif;font-size:14px;line-height:1.8;color:var(--text);margin-top:10px;display:none;white-space:pre-wrap;}
+.ai-answer.show{display:block;}
+.api-key-row{display:flex;gap:10px;align-items:flex-end;margin-top:10px;}
+.api-key-input{flex:1;font-family:'Barlow',sans-serif;font-size:14px;padding:10px 12px;background:var(--input-bg);border:1px solid var(--border);color:var(--text);outline:none;}
+.api-key-input:focus{border-color:var(--blue);}
+.api-save-btn{background:var(--blue);color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;padding:10px 16px;border:none;cursor:pointer;white-space:nowrap;}
+.api-key-status{font-family:'Barlow Condensed',sans-serif;font-size:12px;margin-top:6px;}
+.key-set{color:var(--green);}
+.key-none{color:var(--muted);}
+.spinner{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;margin-right:6px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.tabs{display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:18px;}
+.tab{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;padding:10px 24px;cursor:pointer;color:var(--muted);border-bottom:3px solid transparent;margin-bottom:-2px;transition:color .15s;}
+.tab.active{color:var(--orange);border-bottom-color:var(--orange);}
+.tab:hover{color:var(--text);}
+.tab-pane{display:none;}
+.tab-pane.active{display:block;}
+.highlight-count{background:var(--orange);color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;padding:2px 7px;border-radius:10px;margin-left:6px;vertical-align:middle;}
+.cta-bar{background:var(--card-inner);border:1px solid rgba(232,101,10,.25);padding:20px 22px;margin-top:22px;display:flex;align-items:center;justify-content:space-between;gap:20px;}
+.cta-text{font-family:'Barlow Condensed',sans-serif;font-size:16px;color:var(--text);font-weight:600;}
+.cta-text span{color:var(--orange);}
+.cta-link{background:var(--orange);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;padding:10px 22px;text-decoration:none;}
+.footer{text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:12px;color:var(--muted);padding:20px;border-top:1px solid var(--border);margin-top:24px;}
+@media(max-width:640px){.search-row,.question-row{flex-direction:column;}.cta-bar{flex-direction:column;}}
+</style>
+</head>
+<body>
+<script>(function(){if(localStorage.getItem('tea-theme')==='dark')document.body.classList.add('dark');})()</script>
+<div class="header">
+  <div class="header-left">
+    <div class="logo">THE EXCAVATION ACADEMY</div>
+    <a class="back-link" href="tea-tools-hub.html">&larr; All Tools</a>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">&#9790; DARK</button>
+  </div>
+</div>
+<div class="container">
+<div class="tool-title">SPEC DOCUMENT SEARCH</div>
+<div class="tool-sub">Upload a PDF spec &mdash; MMCD, city specs, engineer specs, plumbing code &mdash; then search or ask questions</div>
+
+<div class="card" id="uploadCard">
+  <div class="card-title">LOAD SPECIFICATION DOCUMENT</div>
+  <div class="upload-zone" id="uploadZone">
+    <input type="file" id="fileInput" accept=".pdf,.txt" onchange="handleFile(this.files[0])">
+    <div class="upload-icon">&#128196;</div>
+    <div class="upload-text">TAP TO UPLOAD PDF OR TXT SPECIFICATION</div>
+    <div class="upload-sub">MMCD &bull; City Specs &bull; Engineer Specs &bull; Plumbing Code &bull; Any spec document</div>
+  </div>
+  <div class="progress-bar" id="progressBar"><div class="progress-fill" id="progressFill"></div></div>
+  <div id="docLoaded" style="display:none;" class="doc-loaded">
+    <div class="doc-info">
+      <div class="doc-name" id="docName"></div>
+      <div class="doc-meta" id="docMeta"></div>
+    </div>
+    <button class="doc-clear" onclick="clearDocument()">&#10005; Clear Document</button>
+  </div>
+</div>
+
+<div id="searchArea" style="display:none;">
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('search',this)">&#128269; KEYWORD SEARCH</div>
+    <div class="tab" onclick="switchTab('ai',this)">&#129302; ASK AI <span id="aiTabBadge" style="display:none;" class="highlight-count">&#10003;</span></div>
+  </div>
+
+  <div class="tab-pane active" id="tab-search">
+    <div class="card">
+      <div class="card-title">SEARCH SPECIFICATION</div>
+      <div class="search-row">
+        <input type="text" class="search-input" id="searchInput" placeholder="e.g. bedding, pipe slope, compaction, testing, warranty..." onkeydown="if(event.key==='Enter')doSearch()">
+        <button class="search-btn" id="searchBtn" onclick="doSearch()">&#128269; SEARCH</button>
+      </div>
+      <div class="result-count" id="resultCount"></div>
+    </div>
+    <div id="searchResults"></div>
+  </div>
+
+  <div class="tab-pane" id="tab-ai">
+    <div class="card">
+      <div class="card-title">ASK A QUESTION</div>
+      <div class="ai-note">
+        &#128273; The AI Q&amp;A uses the Claude API with your own API key &mdash; stored only in your browser, never shared. Get a free key at <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a>. Without a key, use the Keyword Search tab above.
+      </div>
+      <div class="field" style="margin-bottom:8px;"><label>Your Anthropic API Key</label>
+        <div class="api-key-row">
+          <input type="password" class="api-key-input" id="apiKeyInput" placeholder="sk-ant-...">
+          <button class="api-save-btn" onclick="saveApiKey()">SAVE KEY</button>
+        </div>
+        <div class="api-key-status" id="apiKeyStatus"></div>
+      </div>
+      <div class="question-row" style="margin-top:16px;">
+        <input type="text" class="question-input" id="questionInput" placeholder="e.g. What are the bedding requirements for 300mm RCP pipe?" onkeydown="if(event.key==='Enter')askQuestion()">
+        <button class="ask-btn" id="askBtn" onclick="askQuestion()">&#129302; ASK</button>
+      </div>
+      <div class="ai-answer" id="aiAnswer"></div>
+    </div>
+  </div>
+</div>
+
+<div class="cta-bar">
+  <div class="cta-text">Built by <span>The Excavation Academy</span> &mdash; Professional tools for civil contractors.</div>
+  <a class="cta-link" href="tea-tools-hub.html">All Tools &rarr;</a>
+</div>
+<div class="footer">&copy; The Excavation Academy &mdash; Documents are read locally in your browser. No data is uploaded to any server.</div>
+</div>
+
+<!-- PDF.js CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+if(typeof pdfjsLib!=='undefined')pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+</script>
+
+<script>
+function toggleTheme(){document.body.classList.toggle('dark');const d=document.body.classList.contains('dark');localStorage.setItem('tea-theme',d?'dark':'light');document.getElementById('themeBtn').textContent=d?'☀ LIGHT':'☾ DARK';}
+(function(){const d=document.body.classList.contains('dark');document.getElementById('themeBtn').textContent=d?'☀ LIGHT':'☾ DARK';})();
+
+let docText=''; // full extracted text
+let docPages=[]; // array of {page, text}
+let docFileName='';
+
+// Drag & drop
+const zone=document.getElementById('uploadZone');
+zone.addEventListener('dragover',e=>{e.preventDefault();zone.classList.add('drag');});
+zone.addEventListener('dragleave',()=>zone.classList.remove('drag'));
+zone.addEventListener('drop',e=>{e.preventDefault();zone.classList.remove('drag');const f=e.dataTransfer.files[0];if(f)handleFile(f);});
+
+async function handleFile(file){
+  if(!file)return;
+  docFileName=file.name;
+  const ext=file.name.split('.').pop().toLowerCase();
+  document.getElementById('progressBar').classList.add('show');
+  document.getElementById('progressFill').style.width='10%';
+  try{
+    if(ext==='pdf'){await extractPDF(file);}
+    else if(ext==='txt'){await extractTXT(file);}
+    else{alert('Please upload a PDF or TXT file.');document.getElementById('progressBar').classList.remove('show');return;}
+    showDocLoaded(file);
+  }catch(err){alert('Error reading file: '+err.message);document.getElementById('progressBar').classList.remove('show');}
+}
+
+async function extractPDF(file){
+  if(typeof pdfjsLib==='undefined'){
+    // Fallback: try to read as text
+    await extractTXT(file);
+    return;
+  }
+  const arrayBuffer=await file.arrayBuffer();
+  document.getElementById('progressFill').style.width='20%';
+  const pdf=await pdfjsLib.getDocument({data:arrayBuffer}).promise;
+  const totalPages=pdf.numPages;
+  docPages=[];
+  let fullText='';
+  for(let i=1;i<=totalPages;i++){
+    const page=await pdf.getPage(i);
+    const content=await page.getTextContent();
+    const pageText=content.items.map(s=>s.str).join(' ').replace(/\s+/g,' ').trim();
+    docPages.push({page:i,text:pageText});
+    fullText+=pageText+'
+
+';
+    document.getElementById('progressFill').style.width=Math.round(20+80*(i/totalPages))+'%';
+  }
+  docText=fullText;
+}
+
+async function extractTXT(file){
+  const text=await file.text();
+  docText=text;
+  // Split into fake "pages" of ~2000 chars
+  docPages=[];
+  const chunkSize=2000;
+  for(let i=0;i<text.length;i+=chunkSize){
+    docPages.push({page:Math.floor(i/chunkSize)+1,text:text.slice(i,i+chunkSize)});
+  }
+  document.getElementById('progressFill').style.width='100%';
+}
+
+function showDocLoaded(file){
+  document.getElementById('progressFill').style.width='100%';
+  setTimeout(()=>{document.getElementById('progressBar').classList.remove('show');document.getElementById('progressFill').style.width='0%';},400);
+  document.getElementById('uploadZone').style.display='none';
+  document.getElementById('docLoaded').style.display='flex';
+  document.getElementById('docName').textContent=file.name;
+  const kb=Math.round(file.size/1024);
+  document.getElementById('docMeta').textContent=docPages.length+' sections extracted — '+kb+' KB — '+docText.length.toLocaleString()+' characters';
+  document.getElementById('searchArea').style.display='block';
+  // Check for saved API key
+  const savedKey=localStorage.getItem('tea-claude-api-key');
+  if(savedKey){document.getElementById('apiKeyInput').value=savedKey;document.getElementById('apiKeyStatus').innerHTML='<span class="key-set">✓ API key loaded from browser storage</span>';}
+  else{document.getElementById('apiKeyStatus').innerHTML='<span class="key-none">No API key saved. Enter your key above to enable AI Q&A.</span>';}
+}
+
+function clearDocument(){
+  docText='';docPages=[];docFileName='';
+  document.getElementById('uploadZone').style.display='block';
+  document.getElementById('docLoaded').style.display='none';
+  document.getElementById('searchArea').style.display='none';
+  document.getElementById('searchResults').innerHTML='';
+  document.getElementById('resultCount').textContent='';
+  document.getElementById('aiAnswer').classList.remove('show');
+  document.getElementById('fileInput').value='';
+}
+
+function switchTab(name,tabEl){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  tabEl.classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active');
+}
+
+// Keyword search
+function doSearch(){
+  const query=document.getElementById('searchInput').value.trim();
+  if(!query){return;}
+  if(!docText){alert('Please load a document first.');return;}
+  const terms=query.toLowerCase().split(/\s+/).filter(Boolean);
+  const CONTEXT=400; // chars around match
+  const results=[];
+  docPages.forEach(({page,text})=>{
+    const lower=text.toLowerCase();
+    // Find all positions where any term matches
+    const positions=[];
+    terms.forEach(term=>{
+      let idx=lower.indexOf(term);
+      while(idx!==-1){positions.push(idx);idx=lower.indexOf(term,idx+1);}
+    });
+    if(!positions.length)return;
+    // Dedupe nearby positions
+    positions.sort((a,b)=>a-b);
+    const clusters=[];
+    let cur=null;
+    positions.forEach(p=>{if(!cur||p-cur.end>CONTEXT){cur={start:Math.max(0,p-100),end:Math.min(text.length,p+CONTEXT)};clusters.push(cur);}else{cur.end=Math.min(text.length,p+CONTEXT);}});
+    clusters.forEach(({start,end})=>{
+      let snippet=text.slice(start,end);
+      // Highlight terms
+      terms.forEach(term=>{snippet=snippet.replace(new RegExp('('+escapeRe(term)+')','gi'),'<mark>$1</mark>');});
+      if(start>0)snippet='…'+snippet;
+      if(end<text.length)snippet=snippet+'…';
+      results.push({page,snippet});
+    });
+  });
+  const container=document.getElementById('searchResults');
+  document.getElementById('resultCount').textContent=results.length?' Found '+results.length+' result'+(results.length===1?'':'s')+' for "'+query+'"':' No results found for "'+query+'"';
+  if(!results.length){container.innerHTML='';return;}
+  container.innerHTML='';
+  results.slice(0,40).forEach(r=>{
+    const div=document.createElement('div');div.className='result-item';
+    div.innerHTML=`<div class="result-page">Section / Page ${r.page}</div><div class="result-text">${r.snippet}</div>`;
+    container.appendChild(div);
+  });
+}
+
+function escapeRe(s){return s.replace(/[.*+?^${}()|[\]\]/g,'\$&');}
+
+// AI Q&A
+function saveApiKey(){
+  const key=document.getElementById('apiKeyInput').value.trim();
+  if(!key.startsWith('sk-')){alert('Please enter a valid Anthropic API key (starts with sk-ant-).');return;}
+  localStorage.setItem('tea-claude-api-key',key);
+  document.getElementById('apiKeyStatus').innerHTML='<span class="key-set">✓ API key saved to browser storage</span>';
+  document.getElementById('aiTabBadge').style.display='';
+}
+
+async function askQuestion(){
+  const question=document.getElementById('questionInput').value.trim();
+  if(!question)return;
+  if(!docText){alert('Please load a document first.');return;}
+  const apiKey=localStorage.getItem('tea-claude-api-key');
+  if(!apiKey){alert('Please enter and save your Claude API key in the "Ask AI" tab to use AI Q&A.');return;}
+
+  const btn=document.getElementById('askBtn');
+  btn.disabled=true;
+  btn.innerHTML='<span class="spinner"></span>THINKING...';
+  const answerEl=document.getElementById('aiAnswer');
+  answerEl.classList.remove('show');
+  answerEl.textContent='';
+
+  // Find most relevant chunks
+  const relevantText=findRelevantChunks(question,8000);
+
+  const systemPrompt='You are a construction specification expert helping a civil contractor interpret specification documents. Answer questions accurately based ONLY on the provided specification text. If the answer is not in the spec, say so clearly. Quote the relevant spec section when possible. Be concise and practical.';
+  const userPrompt='SPECIFICATION DOCUMENT: "'+docFileName+'"
+
+---
+'+relevantText+'
+---
+
+QUESTION: '+question;
+
+  try{
+    const response=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-opus-4-6',max_tokens:1024,system:systemPrompt,messages:[{role:'user',content:userPrompt}]})
+    });
+    if(!response.ok){const err=await response.json();throw new Error(err.error?.message||'API error: '+response.status);}
+    const data=await response.json();
+    const answer=data.content?.[0]?.text||'No response received.';
+    answerEl.textContent=answer;
+    answerEl.classList.add('show');
+  }catch(err){
+    answerEl.textContent='⚠ Error: '+err.message+'
+
+Check your API key and try again.';
+    answerEl.classList.add('show');
+  }finally{
+    btn.disabled=false;
+    btn.innerHTML='&#129302; ASK';
+  }
+}
+
+function findRelevantChunks(question,maxChars){
+  // Simple relevance: find pages with the most question term matches, return top chunks
+  const terms=question.toLowerCase().split(/\s+/).filter(w=>w.length>3);
+  const scored=docPages.map(({page,text})=>{
+    const lower=text.toLowerCase();
+    const score=terms.reduce((s,t)=>{let c=0,i=lower.indexOf(t);while(i!==-1){c++;i=lower.indexOf(t,i+1);}return s+c;},0);
+    return{page,text,score};
+  });
+  scored.sort((a,b)=>b.score-a.score);
+  let out='',chars=0;
+  for(const{page,text,score}of scored){
+    if(score===0&&chars>1000)break;
+    if(chars>=maxChars)break;
+    const add='[Section/Page '+page+']
+'+text+'
+
+';
+    out+=add.slice(0,maxChars-chars);
+    chars+=add.length;
+  }
+  return out||docText.slice(0,maxChars);
+}
+
+// Init date field
+document.getElementById('f_date')&&(document.getElementById('f_date').value=new Date().toISOString().split('T')[0]);
+</script>
+</body>
+</html>

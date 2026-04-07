@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Field Invoice Tracker — The Excavation Academy</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap');
+:root{--orange:#E8650A;--bg:#f5f3ee;--header-bg:#fff;--card:#fff;--card-inner:#f0ede6;--border:#ddd9d0;--text:#1a1a1a;--muted:#6b6560;--input-bg:#f0ede6;--blue:#2471a3;--red:#c0392b;--green:#1a8a3a;}
+body.dark{--bg:#0a0a0a;--header-bg:#111;--card:#141414;--card-inner:#1a1a1a;--border:#2a2a2a;--text:#e0e0e0;--muted:#777;--input-bg:#1a1a1a;--blue:#3498db;--red:#e74c3c;--green:#2ecc71;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;min-height:100vh;transition:background .2s,color .2s;}
+.header{background:var(--header-bg);border-bottom:3px solid var(--orange);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.header-left{display:flex;align-items:center;gap:20px;}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--orange);letter-spacing:3px;}
+.back-link{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:2px;color:var(--muted);text-decoration:none;text-transform:uppercase;border:1px solid var(--border);padding:5px 11px;}
+.back-link:hover{color:var(--orange);border-color:var(--orange);}
+.theme-btn{background:none;border:1px solid var(--border);color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:5px 11px;cursor:pointer;}
+.theme-btn:hover{border-color:var(--orange);color:var(--orange);}
+.container{max-width:1000px;margin:0 auto;padding:28px 20px;}
+.tool-title{font-family:'Bebas Neue',sans-serif;font-size:46px;color:var(--text);letter-spacing:2px;line-height:1;margin-bottom:4px;}
+.tool-sub{font-family:'Barlow Condensed',sans-serif;font-size:14px;color:var(--muted);letter-spacing:1px;margin-bottom:28px;text-transform:uppercase;}
+.card{background:var(--card);border:1px solid var(--border);padding:22px;margin-bottom:18px;}
+.card-title{font-family:'Bebas Neue',sans-serif;font-size:17px;color:var(--orange);letter-spacing:2px;margin-bottom:18px;border-bottom:1px solid var(--border);padding-bottom:9px;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+.grid4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:14px;}
+.field{margin-bottom:14px;}
+label{display:block;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:6px;}
+input,select,textarea{width:100%;background:var(--input-bg);border:1px solid var(--border);color:var(--text);font-family:'Barlow',sans-serif;font-size:14px;padding:10px 12px;outline:none;transition:border-color .2s;}
+input:focus,select:focus,textarea:focus{border-color:var(--orange);}
+textarea{resize:vertical;min-height:70px;}
+.pay-toggle{display:flex;gap:0;border:1px solid var(--border);overflow:hidden;border-radius:2px;}
+.pay-toggle button{flex:1;padding:10px 6px;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;background:var(--input-bg);border:none;color:var(--muted);cursor:pointer;transition:background .15s,color .15s;border-right:1px solid var(--border);}
+.pay-toggle button:last-child{border-right:none;}
+.pay-toggle button.active{background:var(--orange);color:#fff;}
+.photo-zone{border:2px dashed var(--border);padding:24px;text-align:center;cursor:pointer;transition:border-color .2s;position:relative;background:var(--input-bg);}
+.photo-zone:hover{border-color:var(--orange);}
+.photo-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.photo-zone-text{font-family:'Barlow Condensed',sans-serif;font-size:14px;color:var(--muted);letter-spacing:1px;}
+.photo-zone-icon{font-size:32px;margin-bottom:8px;}
+.photo-previews{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;}
+.photo-thumb{position:relative;width:100px;height:100px;}
+.photo-thumb img{width:100px;height:100px;object-fit:cover;border:1px solid var(--border);}
+.photo-thumb .del-photo{position:absolute;top:2px;right:2px;background:rgba(192,57,43,.85);color:#fff;border:none;width:22px;height:22px;font-size:14px;cursor:pointer;line-height:20px;text-align:center;}
+.save-btn{width:100%;background:var(--orange);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;padding:15px;border:none;cursor:pointer;margin-top:6px;}
+.save-btn:hover{background:#d45a08;}
+.log-section{margin-top:10px;}
+.log-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.log-title{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--text);letter-spacing:2px;}
+.log-controls{display:flex;gap:10px;align-items:center;}
+.search-box{background:var(--input-bg);border:1px solid var(--border);color:var(--text);font-family:'Barlow',sans-serif;font-size:14px;padding:8px 12px;outline:none;width:220px;}
+.search-box:focus{border-color:var(--orange);}
+.filter-sel{background:var(--input-bg);border:1px solid var(--border);color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:13px;padding:8px 10px;outline:none;cursor:pointer;}
+.export-btn{background:var(--card-inner);border:1px solid var(--border);color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:8px 14px;cursor:pointer;}
+.export-btn:hover{border-color:var(--orange);color:var(--orange);}
+.log-empty{text-align:center;padding:40px;font-family:'Barlow Condensed',sans-serif;font-size:16px;color:var(--muted);border:1px dashed var(--border);}
+.inv-card{background:var(--card);border:1px solid var(--border);margin-bottom:12px;overflow:hidden;}
+.inv-card-header{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:var(--card-inner);border-bottom:1px solid var(--border);cursor:pointer;gap:10px;}
+.inv-card-header:hover{background:rgba(232,101,10,.05);}
+.inv-meta{display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+.inv-num{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--orange);letter-spacing:2px;}
+.inv-date{font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--muted);}
+.inv-supplier{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;color:var(--text);}
+.inv-material{font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--blue);}
+.inv-amount{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--orange);white-space:nowrap;}
+.inv-pay-badge{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:1px;padding:3px 8px;border-radius:2px;font-weight:700;}
+.pay-cc{background:rgba(36,113,163,.15);color:var(--blue);}
+.pay-reimb{background:rgba(192,57,43,.15);color:var(--red);}
+.pay-po{background:rgba(26,138,58,.15);color:var(--green);}
+.pay-cash{background:rgba(232,101,10,.15);color:var(--orange);}
+.inv-card-body{display:none;padding:18px;border-top:1px solid var(--border);}
+.inv-card-body.open{display:block;}
+.inv-details-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;}
+.inv-detail{font-family:'Barlow Condensed',sans-serif;font-size:13px;}
+.inv-detail-label{color:var(--muted);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:2px;}
+.inv-detail-value{color:var(--text);font-weight:600;}
+.inv-photos{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+.inv-photo{width:80px;height:80px;object-fit:cover;border:1px solid var(--border);cursor:pointer;}
+.inv-actions{display:flex;gap:8px;margin-top:14px;}
+.inv-action-btn{padding:8px 14px;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;border:1px solid var(--border);background:var(--card);color:var(--muted);cursor:pointer;}
+.inv-action-btn:hover{border-color:var(--orange);color:var(--orange);}
+.inv-action-btn.del:hover{border-color:var(--red);color:var(--red);}
+.inv-notes{font-family:'Barlow',sans-serif;font-size:13px;color:var(--muted);margin-top:10px;padding:10px;background:var(--card-inner);border-left:3px solid var(--border);font-style:italic;}
+.stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px;}
+.stat-item{text-align:center;padding:14px 8px;background:var(--card);border:1px solid var(--border);}
+.stat-value{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--orange);line-height:1;}
+.stat-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-top:3px;}
+.lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:1000;align-items:center;justify-content:center;}
+.lightbox.open{display:flex;}
+.lightbox img{max-width:90vw;max-height:90vh;object-fit:contain;}
+.lightbox-close{position:absolute;top:20px;right:28px;color:#fff;font-size:36px;cursor:pointer;line-height:1;}
+.cta-bar{background:var(--card-inner);border:1px solid rgba(232,101,10,.25);padding:20px 22px;margin-top:22px;display:flex;align-items:center;justify-content:space-between;gap:20px;}
+.cta-text{font-family:'Barlow Condensed',sans-serif;font-size:16px;color:var(--text);font-weight:600;}
+.cta-text span{color:var(--orange);}
+.cta-link{background:var(--orange);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;padding:10px 22px;text-decoration:none;}
+.footer{text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:12px;color:var(--muted);padding:20px;border-top:1px solid var(--border);margin-top:24px;}
+.reimbursement-alert{background:rgba(192,57,43,.08);border:1px solid rgba(192,57,43,.3);padding:10px 14px;font-family:'Barlow Condensed',sans-serif;font-size:13px;color:var(--red);margin-top:10px;display:none;}
+.reimbursement-alert.show{display:block;}
+@media(max-width:700px){.grid2,.grid3,.grid4{grid-template-columns:1fr;}.inv-details-grid{grid-template-columns:1fr 1fr;}.stats-bar{grid-template-columns:1fr 1fr;}.cta-bar{flex-direction:column;}.log-controls{flex-wrap:wrap;}.search-box{width:100%;}}
+</style>
+</head>
+<body>
+<script>(function(){if(localStorage.getItem('tea-theme')==='dark')document.body.classList.add('dark');})()</script>
+<div class="lightbox" id="lightbox" onclick="closeLightbox()"><span class="lightbox-close">&times;</span><img id="lightboxImg" src="" alt=""></div>
+<div class="header">
+  <div class="header-left">
+    <div class="logo">THE EXCAVATION ACADEMY</div>
+    <a class="back-link" href="tea-tools-hub.html">&larr; All Tools</a>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">&#9790; DARK</button>
+  </div>
+</div>
+<div class="container">
+<div class="tool-title">FIELD INVOICE TRACKER</div>
+<div class="tool-sub">Capture deliveries, material receipts &amp; expenses in the field &mdash; gravel, credit cards, reimbursements &amp; more</div>
+
+<div class="card">
+  <div class="card-title">NEW ENTRY</div>
+
+  <div class="grid4">
+    <div class="field"><label>Date</label><input type="date" id="f_date"></div>
+    <div class="field"><label>Job / Site Name</label><input type="text" id="f_job" placeholder="e.g. Hwy 12 Storm Sewer"></div>
+    <div class="field"><label>Job # / PO Number</label><input type="text" id="f_po" placeholder="e.g. JOB-2025-04"></div>
+    <div class="field"><label>Invoice / Ticket #</label><input type="text" id="f_invnum" placeholder="e.g. INV-8821"></div>
+  </div>
+
+  <div class="grid3">
+    <div class="field"><label>Supplier / Vendor</label><input type="text" id="f_supplier" placeholder="e.g. Dufferin Aggregates"></div>
+    <div class="field"><label>Material Type</label>
+      <select id="f_mattype">
+        <option value="">Select type...</option>
+        <option>Granular A</option>
+        <option>Granular B</option>
+        <option>Clear Stone — 19mm</option>
+        <option>Clear Stone — 50mm</option>
+        <option>Crusher Run Limestone</option>
+        <option>Sand — Concrete</option>
+        <option>Sand — Fill</option>
+        <option>Topsoil</option>
+        <option>Asphalt — HL4</option>
+        <option>Asphalt — HL8</option>
+        <option>Concrete — Ready Mix</option>
+        <option>Pipe — RCP</option>
+        <option>Pipe — HDPE</option>
+        <option>Catch Basin / MH Frames</option>
+        <option>Geotextile Fabric</option>
+        <option>Fuel</option>
+        <option>Equipment Parts</option>
+        <option>Safety Supplies</option>
+        <option>Hardware / Fasteners</option>
+        <option>Lumber / Form Material</option>
+        <option>Other Material</option>
+        <option>Service / Labour Only</option>
+      </select>
+    </div>
+    <div class="field"><label>Material Description</label><input type="text" id="f_matdesc" placeholder="e.g. 50mm Clear Stone — 14 CY"></div>
+  </div>
+
+  <div class="grid4">
+    <div class="field"><label>Quantity</label><input type="number" id="f_qty" placeholder="e.g. 14" step="0.01" min="0"></div>
+    <div class="field"><label>Unit</label>
+      <select id="f_unit">
+        <option>TON</option><option>Tonne</option><option>CY</option><option>m³</option>
+        <option>LF</option><option>LM</option><option>SF</option><option>m²</option>
+        <option>EA</option><option>LS</option><option>Load</option><option>Litre</option><option>gal</option><option>bag</option>
+      </select>
+    </div>
+    <div class="field"><label>Unit Price ($)</label><input type="number" id="f_unitprice" placeholder="e.g. 24.50" step="0.01" min="0"></div>
+    <div class="field"><label>Total Amount ($)</label><input type="number" id="f_total" placeholder="Auto or enter" step="0.01" min="0"></div>
+  </div>
+
+  <div class="field"><label>Payment Method</label>
+    <div class="pay-toggle" id="payToggle">
+      <button class="active" data-pay="Company Credit Card" onclick="setPay(this)">&#128179; Company Card</button>
+      <button data-pay="Personal — Reimbursement Required" onclick="setPay(this)">&#128184; Personal / Reimb.</button>
+      <button data-pay="PO / Invoice — Net Terms" onclick="setPay(this)">&#128196; PO / Invoice</button>
+      <button data-pay="Cash" onclick="setPay(this)">&#128181; Cash</button>
+    </div>
+  </div>
+  <div class="reimbursement-alert" id="reimbAlert">&#9888; This entry is marked for REIMBURSEMENT. Attach a photo of the receipt and get it approved by your supervisor.</div>
+
+  <div class="grid2">
+    <div class="field"><label>Dispatching Contractor (who ordered)</label><input type="text" id="f_dispatcher" placeholder="e.g. ABC Excavating Ltd."></div>
+    <div class="field"><label>Delivering Contractor / Trucking Co.</label><input type="text" id="f_trucker" placeholder="e.g. XYZ Trucking (if different from supplier)"></div>
+  </div>
+  <div class="grid3">
+    <div class="field"><label>Truck # / Vehicle ID</label><input type="text" id="f_truck" placeholder="e.g. T-14 or plate ABC-123"></div>
+    <div class="field"><label>Driver Name</label><input type="text" id="f_driver" placeholder="e.g. Mike S."></div>
+    <div class="field"><label>Received By (on site)</label><input type="text" id="f_received" placeholder="Your name"></div>
+  </div>
+
+  <div class="field"><label>Notes / Additional Details</label><textarea id="f_notes" placeholder="Any issues, short loads, damage, discrepancies, or extra context..."></textarea></div>
+
+  <div class="field">
+    <label>Photos &mdash; Delivery Ticket, Invoice, Receipt, Load</label>
+    <div class="photo-zone" id="photoZone">
+      <input type="file" id="photoInput" accept="image/*" multiple capture="environment" onchange="handlePhotos(this)">
+      <div class="photo-zone-icon">&#128247;</div>
+      <div class="photo-zone-text">TAP TO CAPTURE OR UPLOAD PHOTO<br><span style="font-size:11px;opacity:.7;">Invoice, delivery ticket, receipt, load photo &mdash; multiple OK</span></div>
+    </div>
+    <div class="photo-previews" id="photoPreviews"></div>
+  </div>
+
+  <button class="save-btn" onclick="saveEntry()">&#10003; SAVE ENTRY TO LOG</button>
+</div>
+
+<div class="log-section">
+  <div class="log-header">
+    <div class="log-title">ENTRY LOG</div>
+    <div class="log-controls">
+      <input type="text" class="search-box" id="searchBox" placeholder="Search entries..." oninput="renderLog()">
+      <select class="filter-sel" id="filterPay" onchange="renderLog()">
+        <option value="">All Payments</option>
+        <option>Company Credit Card</option>
+        <option>Personal — Reimbursement Required</option>
+        <option>PO / Invoice — Net Terms</option>
+        <option>Cash</option>
+      </select>
+      <select class="filter-sel" id="filterJob" onchange="renderLog()">
+        <option value="">All Jobs</option>
+      </select>
+      <button class="export-btn" onclick="exportCSV()">&#8659; CSV</button>
+    </div>
+  </div>
+  <div class="stats-bar" id="statsBar"></div>
+  <div id="logContainer"></div>
+</div>
+
+<div class="cta-bar">
+  <div class="cta-text">Built by <span>The Excavation Academy</span> &mdash; Professional tools for civil contractors.</div>
+  <a class="cta-link" href="tea-tools-hub.html">All Tools &rarr;</a>
+</div>
+<div class="footer">&copy; The Excavation Academy &mdash; All invoice data stored locally on this device. Export CSV for accounting records.</div>
+</div>
+
+<script>
+function toggleTheme(){document.body.classList.toggle('dark');const d=document.body.classList.contains('dark');localStorage.setItem('tea-theme',d?'dark':'light');document.getElementById('themeBtn').textContent=d?'☀ LIGHT':'☾ DARK';}
+(function(){const d=document.body.classList.contains('dark');document.getElementById('themeBtn').textContent=d?'☀ LIGHT':'☾ DARK';})();
+
+// IndexedDB for photos + entries
+const DB_NAME='TEAInvoices',DB_VER=1;
+let db;
+function openDB(){return new Promise((res,rej)=>{const r=indexedDB.open(DB_NAME,DB_VER);r.onupgradeneeded=e=>{const db=e.target.result;if(!db.objectStoreNames.contains('entries'))db.createObjectStore('entries',{keyPath:'id'});};r.onsuccess=e=>{db=e.target.result;res(db);};r.onerror=e=>rej(e);});}
+
+function saveEntryDB(entry){return new Promise((res,rej)=>{const tx=db.transaction('entries','readwrite');tx.objectStore('entries').put(entry);tx.oncomplete=()=>res();tx.onerror=e=>rej(e);});}
+function getAllEntries(){return new Promise((res,rej)=>{const tx=db.transaction('entries','readonly');const req=tx.objectStore('entries').getAll();req.onsuccess=()=>res(req.result||[]);req.onerror=e=>rej(e);});}
+function deleteEntryDB(id){return new Promise((res,rej)=>{const tx=db.transaction('entries','readwrite');tx.objectStore('entries').delete(id);tx.oncomplete=()=>res();tx.onerror=e=>rej(e);});}
+
+let currentPhotos=[]; // base64 strings
+let entries=[];
+
+function setPay(btn){
+  document.querySelectorAll('#payToggle button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const isReimb=btn.dataset.pay==='Personal — Reimbursement Required';
+  document.getElementById('reimbAlert').classList.toggle('show',isReimb);
+}
+
+function handlePhotos(input){
+  const files=Array.from(input.files);
+  files.forEach(file=>{
+    const reader=new FileReader();
+    reader.onload=e=>{
+      currentPhotos.push(e.target.result);
+      renderPhotoPreviews();
+    };
+    reader.readAsDataURL(file);
+  });
+  input.value='';
+}
+
+function renderPhotoPreviews(){
+  const container=document.getElementById('photoPreviews');
+  container.innerHTML='';
+  currentPhotos.forEach((src,idx)=>{
+    const wrap=document.createElement('div');wrap.className='photo-thumb';
+    wrap.innerHTML=`<img src="${src}" alt="Photo ${idx+1}" onclick="openLightbox('${src}')"><button class="del-photo" onclick="removePhoto(${idx})">&times;</button>`;
+    container.appendChild(wrap);
+  });
+}
+
+function removePhoto(idx){currentPhotos.splice(idx,1);renderPhotoPreviews();}
+function openLightbox(src){document.getElementById('lightboxImg').src=src;document.getElementById('lightbox').classList.add('open');}
+function closeLightbox(){document.getElementById('lightbox').classList.remove('open');}
+
+function getVal(id){return document.getElementById(id).value.trim();}
+function getNum(id){return parseFloat(document.getElementById(id).value)||0;}
+
+// Auto-calc total
+document.addEventListener('input',function(e){
+  if(e.target.id==='f_qty'||e.target.id==='f_unitprice'){
+    const q=getNum('f_qty'),up=getNum('f_unitprice');
+    if(q&&up)document.getElementById('f_total').value=(q*up).toFixed(2);
+  }
+});
+
+async function saveEntry(){
+  const payBtn=document.querySelector('#payToggle button.active');
+  const payMethod=payBtn?payBtn.dataset.pay:'Company Credit Card';
+  const entry={
+    id:Date.now(),
+    date:getVal('f_date')||new Date().toISOString().split('T')[0],
+    job:getVal('f_job'),
+    po:getVal('f_po'),
+    invnum:getVal('f_invnum'),
+    supplier:getVal('f_supplier'),
+    mattype:getVal('f_mattype'),
+    matdesc:getVal('f_matdesc'),
+    qty:getNum('f_qty'),
+    unit:getVal('f_unit'),
+    unitprice:getNum('f_unitprice'),
+    total:getNum('f_total'),
+    pay:payMethod,
+    dispatcher:getVal('f_dispatcher'),
+    trucker:getVal('f_trucker'),
+    truck:getVal('f_truck'),
+    driver:getVal('f_driver'),
+    received:getVal('f_received'),
+    notes:getVal('f_notes'),
+    photos:currentPhotos.slice()
+  };
+  if(!entry.supplier&&!entry.mattype){alert('Please enter at least a Supplier or Material Type.');return;}
+  await saveEntryDB(entry);
+  clearForm();
+  await loadAndRender();
+  window.scrollTo({top:document.getElementById('logContainer').offsetTop-80,behavior:'smooth'});
+}
+
+function clearForm(){
+  ['f_date','f_job','f_po','f_invnum','f_supplier','f_matdesc','f_qty','f_unitprice','f_total','f_dispatcher','f_trucker','f_truck','f_driver','f_received','f_notes'].forEach(id=>{document.getElementById(id).value='';});
+  document.getElementById('f_mattype').selectedIndex=0;
+  document.getElementById('f_unit').selectedIndex=0;
+  document.querySelectorAll('#payToggle button').forEach((b,i)=>{b.classList.toggle('active',i===0);});
+  document.getElementById('reimbAlert').classList.remove('show');
+  currentPhotos=[];
+  document.getElementById('photoPreviews').innerHTML='';
+  // Set today's date
+  document.getElementById('f_date').value=new Date().toISOString().split('T')[0];
+}
+
+async function deleteEntry(id){
+  if(!confirm('Delete this entry?'))return;
+  await deleteEntryDB(id);
+  await loadAndRender();
+}
+
+async function loadAndRender(){
+  entries=await getAllEntries();
+  entries.sort((a,b)=>b.id-a.id);
+  updateJobFilter();
+  updateStats();
+  renderLog();
+}
+
+function updateJobFilter(){
+  const sel=document.getElementById('filterJob');
+  const cur=sel.value;
+  const jobs=[...new Set(entries.map(e=>e.job).filter(Boolean))].sort();
+  sel.innerHTML='<option value="">All Jobs</option>';
+  jobs.forEach(j=>{const o=document.createElement('option');o.value=j;o.textContent=j;if(j===cur)o.selected=true;sel.appendChild(o);});
+}
+
+function updateStats(){
+  const total=entries.reduce((s,e)=>s+e.total,0);
+  const reimb=entries.filter(e=>e.pay.includes('Reimbursement'));
+  const reimbTotal=reimb.reduce((s,e)=>s+e.total,0);
+  const withPhotos=entries.filter(e=>e.photos&&e.photos.length>0).length;
+  document.getElementById('statsBar').innerHTML=`
+    <div class="stat-item"><div class="stat-value">${entries.length}</div><div class="stat-label">Total Entries</div></div>
+    <div class="stat-item"><div class="stat-value">$${total.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}</div><div class="stat-label">Total Value</div></div>
+    <div class="stat-item"><div class="stat-value" style="color:var(--red);">$${reimbTotal.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}</div><div class="stat-label">Pending Reimbursement</div></div>
+    <div class="stat-item"><div class="stat-value">${withPhotos}</div><div class="stat-label">Entries w/ Photos</div></div>`;
+}
+
+function renderLog(){
+  const search=document.getElementById('searchBox').value.toLowerCase();
+  const filterPay=document.getElementById('filterPay').value;
+  const filterJob=document.getElementById('filterJob').value;
+  let filtered=entries.filter(e=>{
+    if(filterPay&&!e.pay.includes(filterPay.split(' ')[0]))return false;
+    if(filterJob&&e.job!==filterJob)return false;
+    if(search){const s=JSON.stringify(e).toLowerCase();if(!s.includes(search))return false;}
+    return true;
+  });
+  const container=document.getElementById('logContainer');
+  if(filtered.length===0){container.innerHTML='<div class="log-empty">No entries yet. Add your first delivery or invoice above.</div>';return;}
+  container.innerHTML='';
+  filtered.forEach(e=>{
+    const payClass=e.pay.includes('Credit')?'pay-cc':e.pay.includes('Reimbursement')?'pay-reimb':e.pay.includes('PO')?'pay-po':'pay-cash';
+    const div=document.createElement('div');div.className='inv-card';
+    const fmtDate=e.date?new Date(e.date+'T12:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'—';
+    div.innerHTML=`
+      <div class="inv-card-header" onclick="toggleCard(this)">
+        <div class="inv-meta">
+          <span class="inv-num">${e.invnum||'#'+e.id.toString().slice(-4)}</span>
+          <span class="inv-date">${fmtDate}</span>
+          <span class="inv-supplier">${e.supplier||'—'}</span>
+          <span class="inv-material">${e.mattype||e.matdesc||'—'}</span>
+          ${e.job?`<span style="font-family:'Barlow Condensed',sans-serif;font-size:12px;color:var(--muted);">JOB: ${e.job}</span>`:''}
+          <span class="inv-pay-badge ${payClass}">${e.pay.split(' ')[0]+(e.pay.includes('Reimbursement')?' REIMB':'')}</span>
+        </div>
+        <div class="inv-amount">${e.total?'$'+e.total.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}):'—'}</div>
+      </div>
+      <div class="inv-card-body" id="body-${e.id}">
+        <div class="inv-details-grid">
+          <div class="inv-detail"><div class="inv-detail-label">Job / Site</div><div class="inv-detail-value">${e.job||'—'}</div></div>
+          <div class="inv-detail"><div class="inv-detail-label">Job # / PO</div><div class="inv-detail-value">${e.po||'—'}</div></div>
+          <div class="inv-detail"><div class="inv-detail-label">Invoice #</div><div class="inv-detail-value">${e.invnum||'—'}</div></div>
+          <div class="inv-detail"><div class="inv-detail-label">Quantity</div><div class="inv-detail-value">${e.qty||'—'} ${e.unit||''}</div></div>
+          <div class="inv-detail"><div class="inv-detail-label">Unit Price</div><div class="inv-detail-value">${e.unitprice?'$'+e.unitprice.toFixed(2):'—'}</div></div>
+          <div class="inv-detail"><div class="inv-detail-label">Total Amount</div><div class="inv-detail-value" style="color:var(--orange)">${e.total?'$'+e.total.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}):'—'}</div></div>
+          <div class="inv-detail"><div class="inv-detail-label">Dispatching Co.</div><div class="inv-detail-value">${e.dispatcher||'—'}</div></div>
+          <div class="inv-detail"><div class="inv-detail-label">Delivering Trucker</div><div class="inv-detail-value">${e.trucker||'—'}</div></div>
+          <div class="inv-detail"><div class="inv-detail-label">Truck # / Driver</div><div class="inv-detail-value">${[e.truck,e.driver].filter(Boolean).join(' / ')||'—'}</div></div>
+          <div class="inv-detail"><div class="inv-detail-label">Received By</div><div class="inv-detail-value">${e.received||'—'}</div></div>
+          <div class="inv-detail"><div class="inv-detail-label">Payment</div><div class="inv-detail-value">${e.pay}</div></div>
+          <div class="inv-detail"><div class="inv-detail-label">Material</div><div class="inv-detail-value">${[e.mattype,e.matdesc].filter(Boolean).join(' — ')||'—'}</div></div>
+        </div>
+        ${e.notes?`<div class="inv-notes">${e.notes}</div>`:''}
+        ${e.photos&&e.photos.length>0?`<div class="inv-photos">${e.photos.map(p=>`<img class="inv-photo" src="${p}" alt="photo" onclick="openLightbox('${p}')">`).join('')}</div>`:''}
+        <div class="inv-actions">
+          <button class="inv-action-btn del" onclick="deleteEntry(${e.id})">&#10005; Delete</button>
+          ${e.pay.includes('Reimbursement')?'<button class="inv-action-btn" style="border-color:var(--red);color:var(--red);">&#9888; Reimbursement Pending</button>':''}
+        </div>
+      </div>`;
+    container.appendChild(div);
+  });
+}
+
+function toggleCard(header){
+  const body=header.nextElementSibling;
+  body.classList.toggle('open');
+}
+
+function exportCSV(){
+  if(!entries.length){alert('No entries to export.');return;}
+  const cols=['Date','Job/Site','Job #/PO','Invoice #','Supplier','Material Type','Material Desc','Qty','Unit','Unit Price','Total','Payment','Dispatcher','Trucker','Truck #','Driver','Received By','Notes','Photos #'];
+  const rows=entries.map(e=>[e.date,e.job,e.po,e.invnum,e.supplier,e.mattype,e.matdesc,e.qty,e.unit,e.unitprice,e.total,e.pay,e.dispatcher,e.trucker,e.truck,e.driver,e.received,e.notes,(e.photos||[]).length].map(v=>'"'+(v||'').toString().replace(/"/g,'""')+'"'));
+  const csv=[cols.join(','),...rows.map(r=>r.join(','))].join('
+');
+  const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);a.download='TEA_invoices_'+new Date().toISOString().slice(0,10)+'.csv';a.click();
+}
+
+// Init
+(async()=>{
+  await openDB();
+  document.getElementById('f_date').value=new Date().toISOString().split('T')[0];
+  await loadAndRender();
+})();
+</script>
+</body>
+</html>
