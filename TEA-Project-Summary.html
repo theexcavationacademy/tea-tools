@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>TEA Tools — Project Summary</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;500;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Barlow',sans-serif;font-size:13px;color:#1a1a1a;background:#fff;padding:40px 48px;max-width:900px;margin:0 auto;line-height:1.6;}
+.cover{text-align:center;padding:60px 0 48px;border-bottom:4px solid #E8650A;margin-bottom:36px;}
+.cover-logo{font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:4px;color:#E8650A;margin-bottom:10px;}
+.cover-title{font-family:'Bebas Neue',sans-serif;font-size:52px;color:#1a1a1a;letter-spacing:3px;line-height:1;margin-bottom:8px;}
+.cover-sub{font-family:'Barlow Condensed',sans-serif;font-size:16px;color:#6b6560;letter-spacing:2px;text-transform:uppercase;margin-bottom:28px;}
+.cover-meta{font-family:'Barlow Condensed',sans-serif;font-size:13px;color:#6b6560;}
+.cover-meta strong{color:#1a1a1a;}
+h1{font-family:'Bebas Neue',sans-serif;font-size:26px;color:#E8650A;letter-spacing:2px;margin:32px 0 12px;padding-bottom:6px;border-bottom:2px solid #E8650A;}
+h2{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#1a1a1a;margin:20px 0 8px;}
+h3{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#6b6560;margin:14px 0 6px;}
+p{margin-bottom:10px;color:#1a1a1a;}
+ul{margin:6px 0 10px 18px;}
+li{margin-bottom:4px;}
+table{width:100%;border-collapse:collapse;margin:10px 0 18px;font-size:12px;}
+th{background:#E8650A;color:#fff;font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:8px 10px;text-align:left;}
+td{padding:7px 10px;border-bottom:1px solid #e0ddd6;}
+tr:nth-child(even) td{background:#f9f7f4;}
+td:first-child{font-weight:600;}
+.badge{display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;padding:2px 7px;border-radius:2px;}
+.new{background:rgba(232,101,10,.15);color:#E8650A;}
+.soon{background:#f0ede6;color:#6b6560;}
+.pm{background:rgba(36,113,163,.12);color:#2471a3;}
+.highlight-box{background:#f5f3ee;border-left:4px solid #E8650A;padding:14px 18px;margin:14px 0;}
+.highlight-box p{margin:0;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.info-box{background:#f5f3ee;padding:14px 18px;margin:8px 0;}
+.info-box .label{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#6b6560;margin-bottom:4px;}
+.info-box .val{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:#1a1a1a;word-break:break-all;}
+.price-table td:nth-child(2){color:#E8650A;font-weight:700;}
+.section-rule{border:none;border-top:1px solid #ddd9d0;margin:24px 0;}
+.footer-doc{margin-top:40px;padding-top:16px;border-top:2px solid #E8650A;font-family:'Barlow Condensed',sans-serif;font-size:11px;color:#6b6560;display:flex;justify-content:space-between;}
+code{font-family:monospace;background:#f0ede6;padding:1px 5px;font-size:11px;color:#E8650A;}
+@media print{
+  body{padding:0;font-size:12px;}
+  h1{page-break-before:auto;}
+  table{page-break-inside:avoid;}
+  .cover{padding:40px 0 36px;}
+  .footer-doc{position:fixed;bottom:20px;left:48px;right:48px;}
+}
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="cover-logo">THE EXCAVATION ACADEMY</div>
+  <div class="cover-title">TEA TOOLS SUITE</div>
+  <div class="cover-sub">Project Summary &amp; Status Report</div>
+  <div class="cover-meta">
+    <strong>Date:</strong> April 2026 &nbsp;&bull;&nbsp;
+    <strong>Repo:</strong> theexcavationacademy/tea-tools &nbsp;&bull;&nbsp;
+    <strong>Status:</strong> Active Development
+  </div>
+</div>
+
+<h1>What We're Building</h1>
+<p>A web-based suite of professional civil excavation tools hosted on <strong>GitHub Pages</strong> (free, static — no backend required). Organized into two tabs: <strong>Field Tools</strong> for superintendents and foremen on-site, and <strong>Project Management</strong> tools for estimators, PMs, and owners.</p>
+
+<div class="two-col">
+  <div class="info-box">
+    <div class="label">Live Hub URL</div>
+    <div class="val">theexcavationacademy.github.io/tea-tools/tea-tools-hub.html</div>
+  </div>
+  <div class="info-box">
+    <div class="label">GitHub Repository</div>
+    <div class="val">github.com/theexcavationacademy/tea-tools</div>
+  </div>
+</div>
+
+<div class="highlight-box">
+  <p><strong>Core promise:</strong> Every tool has light/dark mode, auto-save, a share link you can email, and PDF export. No login required. Works on phone or desktop. Claude handles all code and GitHub pushes — you never need to touch the repo.</p>
+</div>
+
+<h1>Tech Stack</h1>
+<table>
+  <tr><th>Layer</th><th>Technology</th><th>Purpose</th></tr>
+  <tr><td>Hosting</td><td>GitHub Pages</td><td>Free static hosting, live on every push to main</td></tr>
+  <tr><td>Frontend</td><td>Pure HTML / CSS / JS</td><td>No frameworks, no build tools — self-contained files</td></tr>
+  <tr><td>Fonts</td><td>Google Fonts (Bebas Neue + Barlow)</td><td>TEA brand typography</td></tr>
+  <tr><td>Local Storage</td><td>localStorage + IndexedDB</td><td>Auto-save inputs; store photos and documents in browser</td></tr>
+  <tr><td>PDF Reading</td><td>PDF.js (CDN)</td><td>Reads spec PDFs client-side — nothing uploaded to server</td></tr>
+  <tr><td>AI Engine</td><td>Anthropic Claude API</td><td>Spec Q&amp;A and AI chat — called directly from browser</td></tr>
+  <tr><td>PWA</td><td>Web App Manifest</td><td>"Add to Home Screen" — opens like a native app, no URL bar</td></tr>
+</table>
+
+<h1>All Tools Built — 24 Files</h1>
+
+<h2>Field Tools (14 Active)</h2>
+<table>
+  <tr><th>#</th><th>Tool Name</th><th>What It Does</th></tr>
+  <tr><td>1</td><td>Pipe Slope Calculator</td><td>Rise/run, slope %, grade check for gravity pipe</td></tr>
+  <tr><td>2</td><td>Cut &amp; Fill Estimator</td><td>Cross-section volumes, cut/fill balance, import/export</td></tr>
+  <tr><td>3</td><td>Truck Load Counter</td><td>BCY to loads, haul cycles, fleet sizing</td></tr>
+  <tr><td>4</td><td>Compaction Calculator</td><td>Proctor test pass/fail, lift thickness, roller passes</td></tr>
+  <tr><td>5</td><td>Trench Shoring Checker</td><td>OSHA/BC shoring requirements by soil type and depth</td></tr>
+  <tr><td>6</td><td>Bedding Calculator</td><td>Bedding stone qty by pipe size and trench dimensions</td></tr>
+  <tr><td>7</td><td>Daily Field Log</td><td>Crew, equipment, weather, work summary — PDF printable</td></tr>
+  <tr><td>8</td><td>Crew Cost Calculator</td><td>Daily burn rate, weekly cost, project labour budget</td></tr>
+  <tr><td>9</td><td>Basement Excavation</td><td>Pit BCY/LCY, haul loads, over-excavation</td></tr>
+  <tr><td>10</td><td>Lot Grading</td><td>Cut/fill volumes, import/export balance</td></tr>
+  <tr><td>11</td><td>Land Clearing</td><td>Trees, stumps, debris LCY, disposal loads</td></tr>
+  <tr><td>12</td><td>Swell &amp; Shrink Converter</td><td>Bank/Loose/Compacted converter with material presets</td></tr>
+  <tr><td>13</td><td>Stockpile Volume</td><td>Cone, half-cone, and windrow volume calculations</td></tr>
+  <tr><td>14</td><td>Trench Volume</td><td>Gross CY, pipe displacement, bedding, spoil, cost/LF</td></tr>
+  <tr><td>15</td><td>Field Invoice Tracker</td><td>Capture deliveries, receipts &amp; expenses — see detail below</td></tr>
+</table>
+
+<h2>Project Management Tools (5 Active)</h2>
+<table>
+  <tr><th>#</th><th>Tool Name</th><th>What It Does</th></tr>
+  <tr><td>PM1</td><td>Unit Price Builder</td><td>HeavyBid-style — dynamic labour/equipment/material rows, auto-fill rates, 6-layer markup stack</td></tr>
+  <tr><td>PM2</td><td>Bid Summary &amp; Markup</td><td>Full Schedule of Values, section headers, 7-layer live markup stack, printable bid sheet with signatures</td></tr>
+  <tr><td>PM3</td><td>Change Order Calculator</td><td>Force account — ST/OT toggle, standby equipment, delay costs, professional CO document</td></tr>
+  <tr><td>PM4</td><td>Spec Document Search</td><td>Upload any PDF spec — persistent library, keyword search with highlights, AI Q&amp;A</td></tr>
+  <tr><td>PM5</td><td>TEA AI Assistant</td><td>Standalone construction AI chatbot — ask anything about civil excavation</td></tr>
+</table>
+
+<h2>Coming Soon</h2>
+<table>
+  <tr><th>#</th><th>Tool Name</th><th>Notes</th></tr>
+  <tr><td>16</td><td>Manning's Pipe Flow Checker</td><td>Gravity pipe capacity and velocity check — Field</td></tr>
+  <tr><td>17</td><td>Equipment Production Rate</td><td>BCY/day, days to complete, cost per CY — Field</td></tr>
+  <tr><td>PM6</td><td>Subcontractor Quote Comparison</td><td>Compare up to 5 sub quotes side-by-side — PM</td></tr>
+  <tr><td>PM7</td><td>Job Cost vs. Estimate Tracker</td><td>Track actual vs. budget by category — PM</td></tr>
+</table>
+
+<hr class="section-rule">
+
+<h1>Featured Tool Detail</h1>
+
+<h2>Field Invoice Tracker</h2>
+<p>Built specifically for tracking materials, deliveries, and expenses in the field. Every entry captures:</p>
+<div class="two-col">
+<ul>
+  <li>Date, job name, job #, PO number</li>
+  <li>Invoice / delivery ticket number</li>
+  <li>Supplier / vendor name</li>
+  <li>22 material types in dropdown (Granular A/B, clear stone, asphalt, pipe, fuel, etc.)</li>
+  <li>Quantity, unit, unit price — total auto-calculates</li>
+</ul>
+<ul>
+  <li>Dispatching contractor (who ordered) — separate from delivering trucker</li>
+  <li>Truck number, driver name, received by</li>
+  <li>Payment toggle: Company Card / Personal Reimbursement / PO / Cash</li>
+  <li>Multiple photo attachments (camera or upload) stored in IndexedDB</li>
+  <li>CSV export for accounting</li>
+</ul>
+</div>
+
+<h2>PM Tools — HeavyBid / Trimble Level</h2>
+<ul>
+  <li><strong>Unit Price Builder:</strong> 12 pre-loaded labour roles with auto-fill rates (Superintendent $72/hr → Labourer $36/hr), 18 equipment types (45T Excavator $240/hr, etc.), ST/OT toggle per row, live subtotals per section, 6-layer markup stack</li>
+  <li><strong>Bid Summary:</strong> Full Schedule of Values with division dropdowns (15 options), section dividers, 7-layer markup (mob → escalation → OH → profit → contingency → bond → insurance) all updating live as you type, printable bid sheet with signature blocks</li>
+  <li><strong>Change Order:</strong> Force account style. OT multiplier toggle, equipment standby mode (auto 50% rate), owned/rented toggle, delay &amp; impact costs section, complete professional CO document output</li>
+</ul>
+
+<h2>Spec Document Search</h2>
+<p>Upload any PDF specification — MMCD, city specs, engineer specs, plumbing code, any project spec. The document is read entirely in the browser using PDF.js — nothing is uploaded to any server. Supports a persistent library of multiple documents organized by job name. Works for any jurisdiction worldwide because the contractor uploads their own project-specific spec.</p>
+<ul>
+  <li><strong>Keyword Search:</strong> Find any term across the spec, highlighted results with page references and surrounding context</li>
+  <li><strong>AI Q&amp;A:</strong> Ask natural language questions, answers grounded in the actual spec text using Claude API</li>
+</ul>
+
+<h2>TEA AI Assistant</h2>
+<p>A standalone construction AI chatbot. No spec document required. Ask anything about civil excavation, underground utilities, estimating, equipment, contracts, site safety, drainage, soils, quantities. Built as a PWA — users can "Add to Home Screen" on iPhone/Android and it opens fullscreen like a native app with no browser URL bar visible.</p>
+
+<hr class="section-rule">
+
+<h1>Design System</h1>
+<p>Every tool shares the same visual language:</p>
+<table>
+  <tr><th>Element</th><th>Value</th></tr>
+  <tr><td>Brand Orange</td><td>#E8650A</td></tr>
+  <tr><td>Light Background</td><td>#f5f3ee (page) / #fff (card) / #f0ede6 (inputs)</td></tr>
+  <tr><td>Dark Background</td><td>#0a0a0a (page) / #141414 (card) / #1a1a1a (inputs)</td></tr>
+  <tr><td>Heading Font</td><td>Bebas Neue (all caps)</td></tr>
+  <tr><td>Label Font</td><td>Barlow Condensed Bold</td></tr>
+  <tr><td>Body Font</td><td>Barlow Regular/Medium</td></tr>
+  <tr><td>Standard Features</td><td>Theme toggle (persisted), auto-save, share link, PDF export, back-to-hub link</td></tr>
+</table>
+
+<hr class="section-rule">
+
+<h1>Business Model</h1>
+
+<h2>Pricing Plan</h2>
+<table class="price-table">
+  <tr><th>Tier</th><th>Price</th><th>Access</th></tr>
+  <tr><td>Free</td><td>$0</td><td>All field calculator tools — no AI features</td></tr>
+  <tr><td>Pro</td><td>$25/month</td><td>All tools + AI Spec Search + TEA AI Assistant</td></tr>
+  <tr><td>Team</td><td>$49–79/month</td><td>Multi-user, shared job data</td></tr>
+</table>
+
+<h2>AI Cost at $25/month Pro Tier</h2>
+<p>Using <strong>Claude Haiku</strong> (~$0.002 per query). 100 subscribers doing 50 queries/month = approximately <strong>$10/month in API costs</strong>. Margins are ~98% — the API cost is essentially negligible at any reasonable subscription price.</p>
+
+<h2>AI Feature Gate — Roadmap</h2>
+<ul>
+  <li><strong>Phase 1 (Now):</strong> Users bring their own Anthropic API key — no cost to TEA, small friction for users</li>
+  <li><strong>Phase 2 (Soon):</strong> Subscriber access code — paying users get a monthly code that unlocks TEA's embedded key. Low-tech, works for small subscriber counts (&lt;100)</li>
+  <li><strong>Phase 3 (Scale):</strong> Cloudflare Worker as API proxy — holds TEA's key securely server-side, validates subscription tokens. Proper SaaS architecture, still no traditional server needed</li>
+</ul>
+
+<hr class="section-rule">
+
+<h1>How Updates Work</h1>
+<ul>
+  <li>All code is written and pushed to GitHub by Claude — you never need to touch the repo</li>
+  <li>Changes go to the working branch → merged to <code>main</code> → live on GitHub Pages within minutes</li>
+  <li>Every tool is a self-contained HTML file — easy to update one without touching others</li>
+  <li>Tools can be updated, redesigned, or improved at any time on request</li>
+</ul>
+
+<hr class="section-rule">
+
+<h1>Next Up</h1>
+<ol>
+  <li>Spec Document Search upgrade — multi-document persistent library (organized by job name and tags)</li>
+  <li>TEA AI Assistant PWA polish — "Add to Home Screen" native app experience</li>
+  <li>Subscriber API key gate — Cloudflare Worker proxy so Pro tier users get AI powered by TEA's key</li>
+  <li>Manning's Pipe Flow Checker — Field Tool #16</li>
+  <li>Equipment Production Rate — Field Tool #17</li>
+  <li>Subcontractor Quote Comparison — PM Tool</li>
+  <li>Job Cost vs. Estimate Tracker — PM Tool</li>
+  <li>Custom domain (optional) — cleaner URL for marketing</li>
+</ol>
+
+<div class="footer-doc">
+  <span>The Excavation Academy — TEA Tools Suite</span>
+  <span>theexcavationacademy.github.io/tea-tools</span>
+  <span>April 2026</span>
+</div>
+
+</body>
+</html>
