@@ -1,14 +1,20 @@
 {
-  "name": "T.E.A. Vernon Rock Tracker",
-  "short_name": "Vernon Rock",
-  "description": "Site load departure tracker for King Hoe Excavating — Vernon Rock jobs",
-  "start_url": "/tea-tools/tea-vernon-rock.html",
+  "name": "The Excavation Academy Tools",
+  "short_name": "TEA Tools",
+  "description": "Professional field and estimating tools for civil excavation contractors",
+  "start_url": "/tea-tools/tea-tools-hub.html",
   "scope": "/tea-tools/",
   "display": "standalone",
-  "background_color": "#0a0a0a",
+  "background_color": "#f5f3ee",
   "theme_color": "#E8650A",
   "orientation": "portrait",
   "icons": [
+    {
+      "src": "/tea-tools/tea-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
     {
       "src": "/tea-tools/tea-icon-192.png",
       "sizes": "192x192",
@@ -22,5 +28,28 @@
       "purpose": "any maskable"
     }
   ],
-  "categories": ["utilities", "productivity"]
+  "shortcuts": [
+    {
+      "name": "TEA AI Assistant",
+      "short_name": "TEA AI",
+      "description": "Ask the construction AI anything",
+      "url": "/tea-tools/tea-tool-ai-assistant.html",
+      "icons": [{"src": "/tea-tools/tea-icon.svg", "sizes": "any"}]
+    },
+    {
+      "name": "Spec Library & Search",
+      "short_name": "Spec Search",
+      "description": "Search your spec documents",
+      "url": "/tea-tools/tea-tool-spec-search.html",
+      "icons": [{"src": "/tea-tools/tea-icon.svg", "sizes": "any"}]
+    },
+    {
+      "name": "Field Invoice Tracker",
+      "short_name": "Invoice Tracker",
+      "description": "Track field deliveries and receipts",
+      "url": "/tea-tools/tea-tool-invoice-tracker.html",
+      "icons": [{"src": "/tea-tools/tea-icon.svg", "sizes": "any"}]
+    }
+  ],
+  "categories": ["utilities", "productivity", "business"]
 }

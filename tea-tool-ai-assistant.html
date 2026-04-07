@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="TEA AI">
+<meta name="theme-color" content="#E8650A">
+<link rel="manifest" href="tea-manifest.json">
+<title>TEA AI Assistant -- The Excavation Academy</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap');
+:root{--orange:#E8650A;--bg:#f5f3ee;--header-bg:#fff;--card:#fff;--card-inner:#f0ede6;--border:#ddd9d0;--text:#1a1a1a;--muted:#6b6560;--input-bg:#f0ede6;--blue:#2471a3;--red:#c0392b;--green:#1a8a3a;}
+body.dark{--bg:#0a0a0a;--header-bg:#111;--card:#141414;--card-inner:#1a1a1a;--border:#2a2a2a;--text:#e0e0e0;--muted:#777;--input-bg:#1a1a1a;--blue:#3498db;--red:#e74c3c;--green:#2ecc71;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;}
+body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;display:flex;flex-direction:column;transition:background .2s,color .2s;}
+.header{background:var(--header-bg);border-bottom:3px solid var(--orange);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.08);}
+.header-left{display:flex;align-items:center;gap:16px;}
+.logo-wrap{display:flex;flex-direction:column;}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--orange);letter-spacing:3px;line-height:1;}
+.logo-sub{font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;}
+.back-link{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:2px;color:var(--muted);text-decoration:none;text-transform:uppercase;border:1px solid var(--border);padding:4px 10px;}
+.back-link:hover{color:var(--orange);border-color:var(--orange);}
+.header-right{display:flex;align-items:center;gap:10px;}
+.theme-btn{background:none;border:1px solid var(--border);color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:4px 10px;cursor:pointer;}
+.theme-btn:hover{border-color:var(--orange);color:var(--orange);}
+.clear-btn{background:none;border:1px solid var(--border);color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:4px 10px;cursor:pointer;}
+.clear-btn:hover{border-color:var(--red);color:var(--red);}
+.api-banner{background:rgba(36,113,163,.08);border-bottom:1px solid rgba(36,113,163,.2);padding:10px 20px;display:flex;align-items:center;gap:10px;flex-shrink:0;flex-wrap:wrap;}
+.api-banner.hidden{display:none;}
+.api-banner-text{font-family:'Barlow Condensed',sans-serif;font-size:12px;color:var(--muted);flex:1;min-width:200px;}
+.api-banner-text a{color:var(--blue);}
+.api-key-input{background:var(--input-bg);border:1px solid var(--border);color:var(--text);font-family:'Barlow',sans-serif;font-size:13px;padding:7px 10px;outline:none;width:220px;}
+.api-key-input:focus{border-color:var(--blue);}
+.api-save-btn{background:var(--blue);color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:1px;padding:7px 12px;border:none;cursor:pointer;white-space:nowrap;}
+.chat-area{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:14px;scroll-behavior:smooth;}
+.welcome{text-align:center;padding:36px 20px;max-width:520px;margin:0 auto;}
+.welcome-icon{font-size:40px;margin-bottom:12px;}
+.welcome-title{font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--text);letter-spacing:3px;margin-bottom:6px;}
+.welcome-title span{color:var(--orange);}
+.welcome-sub{font-family:'Barlow Condensed',sans-serif;font-size:14px;color:var(--muted);margin-bottom:22px;}
+.welcome-chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;}
+.chip{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:8px 12px;border:1px solid var(--border);background:var(--card);color:var(--muted);cursor:pointer;transition:border-color .15s,color .15s;}
+.chip:hover{border-color:var(--orange);color:var(--orange);}
+.msg{display:flex;gap:10px;max-width:800px;width:100%;}
+.msg.user{align-self:flex-end;flex-direction:row-reverse;}
+.msg.ai{align-self:flex-start;}
+.msg-bubble{padding:12px 16px;font-family:'Barlow',sans-serif;font-size:14px;line-height:1.7;max-width:640px;position:relative;}
+.msg.user .msg-bubble{background:var(--orange);color:#fff;}
+.msg.ai .msg-bubble{background:var(--card);border:1px solid var(--border);color:var(--text);}
+.msg-avatar{width:30px;height:30px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-family:'Barlow Condensed',sans-serif;font-weight:700;}
+.msg.user .msg-avatar{background:var(--orange);color:#fff;font-size:11px;letter-spacing:1px;}
+.msg.ai .msg-avatar{background:var(--card-inner);border:1px solid var(--border);font-size:16px;}
+.msg-copy{position:absolute;top:6px;right:8px;background:transparent;border:none;font-size:12px;cursor:pointer;opacity:0;color:rgba(255,255,255,.6);}
+.msg.ai .msg-copy{color:var(--muted);}
+.msg-bubble:hover .msg-copy{opacity:1;}
+.thinking{display:flex;gap:5px;padding:16px;align-items:center;}
+.dot{width:8px;height:8px;background:var(--orange);border-radius:50%;animation:bounce .9s infinite;}
+.dot:nth-child(2){animation-delay:.15s;}
+.dot:nth-child(3){animation-delay:.3s;}
+@keyframes bounce{0%,60%,100%{transform:translateY(0);}30%{transform:translateY(-8px);}}
+.skool-cta-mini{background:linear-gradient(135deg,#1a0f00,#0d0800);border:1px solid rgba(232,101,10,.3);padding:16px 20px;display:none;align-items:center;justify-content:space-between;gap:14px;max-width:800px;}
+.skool-cta-mini.show{display:flex;}
+.skool-mini-text{font-family:'Barlow Condensed',sans-serif;font-size:14px;color:#fff;font-weight:600;}
+.skool-mini-text span{color:var(--orange);}
+.skool-mini-btn{background:var(--orange);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:2px;padding:8px 18px;text-decoration:none;white-space:nowrap;}
+.input-bar{background:var(--header-bg);border-top:1px solid var(--border);padding:14px 20px;flex-shrink:0;}
+.input-row{display:flex;gap:10px;max-width:800px;margin:0 auto;}
+.msg-input{flex:1;background:var(--input-bg);border:1px solid var(--border);color:var(--text);font-family:'Barlow',sans-serif;font-size:15px;padding:12px 14px;outline:none;resize:none;max-height:120px;line-height:1.5;}
+.msg-input:focus{border-color:var(--orange);}
+.send-btn{background:var(--orange);color:#fff;font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:2px;padding:12px 20px;border:none;cursor:pointer;flex-shrink:0;align-self:flex-end;}
+.send-btn:hover{background:#d45a08;}
+.send-btn:disabled{opacity:.4;cursor:not-allowed;}
+.input-hint{font-family:'Barlow Condensed',sans-serif;font-size:10px;color:var(--muted);text-align:center;margin-top:5px;max-width:800px;margin-left:auto;margin-right:auto;}
+@media(max-width:600px){.skool-cta-mini{flex-direction:column;text-align:center;}}
+</style>
+</head>
+<body>
+<script>(function(){if(localStorage.getItem('tea-theme')==='dark')document.body.classList.add('dark');})()</script>
+<div class="header">
+  <div class="header-left">
+    <div class="logo-wrap"><div class="logo">TEA AI</div><div class="logo-sub">The Excavation Academy</div></div>
+    <a class="back-link" href="tea-tools-hub.html">&larr; All Tools</a>
+  </div>
+  <div class="header-right">
+    <button class="clear-btn" onclick="clearChat()">CLEAR</button>
+    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">&#9790; DARK</button>
+  </div>
+</div>
+<div class="api-banner" id="apiBanner">
+  <div class="api-banner-text">&#128273; Enter your Claude API key to activate AI &mdash; Get one free at <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a></div>
+  <input type="password" class="api-key-input" id="apiKeyInput" placeholder="sk-ant-...">
+  <button class="api-save-btn" onclick="saveApiKey()">ACTIVATE</button>
+</div>
+<div class="chat-area" id="chatArea">
+  <div class="welcome" id="welcomeMsg">
+    <div class="welcome-icon">&#129302;</div>
+    <div class="welcome-title">TEA <span>AI</span> ASSISTANT</div>
+    <div class="welcome-sub">Ask anything about civil excavation, underground utilities, estimating, equipment, contracts &amp; more.</div>
+    <div class="welcome-chips">
+      <div class="chip" onclick="sendChip(this)">Typical swell factor for clay?</div>
+      <div class="chip" onclick="sendChip(this)">How do I calculate pipe slope?</div>
+      <div class="chip" onclick="sendChip(this)">Difference between Granular A and B?</div>
+      <div class="chip" onclick="sendChip(this)">How do I read a shoring table?</div>
+      <div class="chip" onclick="sendChip(this)">What goes in a change order?</div>
+      <div class="chip" onclick="sendChip(this)">Excavation production rate estimate?</div>
+      <div class="chip" onclick="sendChip(this)">Fair markup for civil contractors?</div>
+      <div class="chip" onclick="sendChip(this)">Explain BCY vs LCY vs CCY</div>
+    </div>
+  </div>
+  <div class="skool-cta-mini" id="skoolCta">
+    <div class="skool-mini-text">Level up with <span>The Excavation Academy</span> &mdash; 138 modules, free to start.</div>
+    <a class="skool-mini-btn" href="https://www.skool.com/the-excavation-academy-2540" target="_blank">JOIN FREE &#8594;</a>
+  </div>
+</div>
+<div class="input-bar">
+  <div class="input-row">
+    <textarea class="msg-input" id="msgInput" placeholder="Ask about excavation, utilities, estimating, equipment, contracts..." rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+    <button class="send-btn" id="sendBtn" onclick="sendMessage()">SEND &#9658;</button>
+  </div>
+  <div class="input-hint">Powered by Claude Haiku &mdash; TEA AI Assistant &mdash; The Excavation Academy</div>
+</div>
+
+<script>
+function toggleTheme(){document.body.classList.toggle('dark');const d=document.body.classList.contains('dark');localStorage.setItem('tea-theme',d?'dark':'light');document.getElementById('themeBtn').textContent=d?'\u2600 LIGHT':'\u263e DARK';}
+(function(){const d=document.body.classList.contains('dark');document.getElementById('themeBtn').textContent=d?'\u2600 LIGHT':'\u263e DARK';})();
+
+const SYSTEM='You are TEA AI, the expert assistant for The Excavation Academy. Help civil excavation contractors, supervisors, estimators, and project managers with: excavation (cut/fill, BCY/LCY/CCY, swell/shrink, production rates), underground utilities (storm, sanitary, watermain, bedding, compaction, grades), estimating (unit prices, labour burden, equipment rates, markup, change orders), equipment selection and production, site safety (shoring, trench safety, traffic control), contracts and change orders, soil classification, and reading drawings and specs. Be direct and practical -- your users are experienced field people. Show calculations when relevant. Use both imperial and metric as needed.';
+
+let messages=[];
+let thinking=false;
+
+function saveApiKey(){
+  const k=document.getElementById('apiKeyInput').value.trim();
+  if(!k.startsWith('sk-')){alert('Please enter a valid API key starting with sk-ant-');return;}
+  localStorage.setItem('tea-claude-api-key',k);
+  document.getElementById('apiBanner').classList.add('hidden');
+}
+
+function sendChip(el){document.getElementById('msgInput').value=el.textContent;sendMessage();}
+function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}}
+function autoResize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,120)+'px';}
+function scrollBottom(){const c=document.getElementById('chatArea');c.scrollTop=c.scrollHeight;}
+
+function addMsg(role,text){
+  document.getElementById('welcomeMsg').style.display='none';
+  document.getElementById('skoolCta').classList.add('show');
+  const wrap=document.createElement('div');wrap.className='msg '+role;
+  const av=document.createElement('div');av.className='msg-avatar';
+  av.textContent=role==='user'?'YOU':'AI';
+  const bub=document.createElement('div');bub.className='msg-bubble';
+  let html=text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/```([\s\S]*?)```/g,'<pre style="background:rgba(0,0,0,.1);padding:10px;margin:8px 0;overflow-x:auto;font-size:12px;font-family:monospace;white-space:pre-wrap;">$1</pre>')
+    .replace(/`([^`]+)`/g,'<code style="background:rgba(0,0,0,.1);padding:1px 4px;font-size:12px;font-family:monospace;">$1</code>')
+    .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\n/g,'<br>');
+  bub.innerHTML=html;
+  const cp=document.createElement('button');cp.className='msg-copy';cp.title='Copy';cp.textContent='Copy';
+  cp.onclick=()=>{navigator.clipboard.writeText(text);cp.textContent='Copied!';setTimeout(()=>cp.textContent='Copy',1500);};
+  bub.appendChild(cp);
+  wrap.appendChild(av);wrap.appendChild(bub);
+  document.getElementById('chatArea').insertBefore(wrap,document.getElementById('skoolCta'));
+  scrollBottom();
+}
+
+function showThinking(){
+  document.getElementById('welcomeMsg').style.display='none';
+  const wrap=document.createElement('div');wrap.className='msg ai';wrap.id='thinkingMsg';
+  const av=document.createElement('div');av.className='msg-avatar';av.textContent='AI';
+  const bub=document.createElement('div');bub.className='msg-bubble';
+  bub.innerHTML='<div class="thinking"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>';
+  wrap.appendChild(av);wrap.appendChild(bub);
+  document.getElementById('chatArea').insertBefore(wrap,document.getElementById('skoolCta'));
+  scrollBottom();
+}
+function hideThinking(){const el=document.getElementById('thinkingMsg');if(el)el.remove();}
+
+async function sendMessage(){
+  const inp=document.getElementById('msgInput');
+  const text=inp.value.trim();
+  if(!text||thinking)return;
+  const key=localStorage.getItem('tea-claude-api-key');
+  if(!key){alert('Please enter your Claude API key at the top first.');document.getElementById('apiKeyInput').focus();return;}
+  inp.value='';inp.style.height='auto';
+  messages.push({role:'user',content:text});
+  addMsg('user',text);
+  thinking=true;
+  document.getElementById('sendBtn').disabled=true;
+  showThinking();
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:1024,system:SYSTEM,messages:messages.slice(-20)})
+    });
+    if(!r.ok){const e=await r.json();throw new Error(e.error?.message||'API error '+r.status);}
+    const data=await r.json();
+    const reply=data.content&&data.content[0]?data.content[0].text:'No response.';
+    messages.push({role:'assistant',content:reply});
+    hideThinking();
+    addMsg('ai',reply);
+  }catch(err){
+    hideThinking();
+    addMsg('ai','Error: '+err.message);
+  }finally{thinking=false;document.getElementById('sendBtn').disabled=false;inp.focus();}
+}
+
+function clearChat(){
+  if(messages.length&&!confirm('Clear conversation?'))return;
+  messages=[];
+  document.getElementById('chatArea').querySelectorAll('.msg').forEach(el=>el.remove());
+  document.getElementById('welcomeMsg').style.display='block';
+  document.getElementById('skoolCta').classList.remove('show');
+}
+
+(function(){
+  const k=localStorage.getItem('tea-claude-api-key');
+  if(k){document.getElementById('apiKeyInput').value=k;document.getElementById('apiBanner').classList.add('hidden');}
+})();
+</script>
+</body>
+</html>
