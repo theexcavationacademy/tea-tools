@@ -213,6 +213,7 @@ body { font-family:'IBM Plex Sans',sans-serif; background:var(--bg); color:var(-
     <div class="nav-item" data-tab="vehicles"><span class="nav-icon">&#9951;</span> Vehicles</div>
     <div class="nav-item" data-tab="equipment"><span class="nav-icon">&#9881;</span> Lab Equipment</div>
     <div class="nav-item" data-tab="reports"><span class="nav-icon">&#9998;</span> Monthly Reports</div>
+    <div class="nav-item" data-tab="help"><span class="nav-icon">&#63;</span> Help / Manual</div>
   </nav>
   <div class="sidebar-footer">
     <div id="driveStatus" style="margin-bottom:8px;"></div>
@@ -234,6 +235,7 @@ body { font-family:'IBM Plex Sans',sans-serif; background:var(--bg); color:var(-
     <div class="section" id="sec-vehicles"></div>
     <div class="section" id="sec-equipment"></div>
     <div class="section" id="sec-reports"></div>
+    <div class="section" id="sec-help"></div>
   </div>
 </div>
 
@@ -425,7 +427,7 @@ function emailPDF(subject) {
 // ========== NAV / TABS ==========
 var tabTitles = {
   dashboard:'Dashboard', inventory:'Inventory', suppliers:'Suppliers',
-  budget:'Budget', vehicles:'Vehicles', equipment:'Lab Equipment', reports:'Monthly Reports'
+  budget:'Budget', vehicles:'Vehicles', equipment:'Lab Equipment', reports:'Monthly Reports', help:'Help / User Manual'
 };
 
 function switchTab(tab) {
@@ -458,6 +460,7 @@ function renderSection(tab) {
   else if (tab==='vehicles') renderVehicles();
   else if (tab==='equipment') renderEquipment();
   else if (tab==='reports') renderReports();
+  else if (tab==='help') renderHelp();
 }
 
 function updateBadge() {
@@ -884,6 +887,153 @@ function loadReport() {
   state.reportLoaded = true;
   saveState();
   renderReports();
+}
+
+// ========== HELP / USER MANUAL ==========
+function renderHelp() {
+  var h = '<div style="max-width:780px">';
+
+  h += '<div class="card" style="margin-bottom:20px;border-left:4px solid var(--primary)">';
+  h += '<div class="card-title" style="margin-bottom:8px">Welcome to XEPA Inventory!</div>';
+  h += '<p style="font-size:14px;color:var(--text-secondary);line-height:1.7">This is your tool for keeping track of supplies, vendors, money, vehicles, and lab equipment. Everything you do here is saved automatically. This guide will show you how to use each part of the program.</p>';
+  h += '</div>';
+
+  // Navigation
+  h += '<div class="card" style="margin-bottom:16px">';
+  h += '<div class="card-title" style="margin-bottom:10px">Getting Around</div>';
+  h += '<p style="font-size:14px;color:var(--text-secondary);line-height:1.8">';
+  h += 'Look at the <strong>left side of the screen</strong>. You will see a list of pages you can go to. Just <strong>click on any name</strong> to open that page. Here is what each page does:';
+  h += '</p>';
+  h += '<table class="data-table" style="margin-top:12px"><tbody>';
+  h += '<tr><td style="font-weight:600;white-space:nowrap">Dashboard</td><td>Your home page. Shows a quick summary of everything — how many items you have, alerts, budget info, and recent changes.</td></tr>';
+  h += '<tr><td style="font-weight:600;white-space:nowrap">Inventory</td><td>Your list of all supplies and items. You can add new items, edit them, delete them, and see which ones are running low.</td></tr>';
+  h += '<tr><td style="font-weight:600;white-space:nowrap">Suppliers</td><td>Your list of vendors/companies you buy from. Stores their name, phone number, email, and order link.</td></tr>';
+  h += '<tr><td style="font-weight:600;white-space:nowrap">Budget</td><td>Track how much money you have and how much you have spent. Log every purchase here.</td></tr>';
+  h += '<tr><td style="font-weight:600;white-space:nowrap">Vehicles</td><td>Keep track of company vehicles — service dates, insurance, fuel, and maintenance records.</td></tr>';
+  h += '<tr><td style="font-weight:600;white-space:nowrap">Lab Equipment</td><td>Track lab tools and when they need to be calibrated (checked/tested).</td></tr>';
+  h += '<tr><td style="font-weight:600;white-space:nowrap">Monthly Reports</td><td>Pick a month and see a full report of inventory and spending. You can print it or email it.</td></tr>';
+  h += '</tbody></table>';
+  h += '</div>';
+
+  // How to Add
+  h += '<div class="card" style="margin-bottom:16px">';
+  h += '<div class="card-title" style="margin-bottom:10px">How to Add Something New</div>';
+  h += '<p style="font-size:14px;color:var(--text-secondary);line-height:1.8">';
+  h += '<strong>Step 1:</strong> Go to the page you want (Inventory, Suppliers, Vehicles, etc.).<br>';
+  h += '<strong>Step 2:</strong> Click the <strong>blue button at the top right</strong> that says "+ Add Item", "+ Add Supplier", etc.<br>';
+  h += '<strong>Step 3:</strong> A form will pop up. Fill in the information.<br>';
+  h += '<strong>Step 4:</strong> Click the <strong>Save</strong> button at the bottom of the form.<br>';
+  h += '<br>That\'s it! Your new item will show up on the page right away.';
+  h += '</p>';
+  h += '</div>';
+
+  // How to Edit
+  h += '<div class="card" style="margin-bottom:16px">';
+  h += '<div class="card-title" style="margin-bottom:10px">How to Edit or Delete Something</div>';
+  h += '<p style="font-size:14px;color:var(--text-secondary);line-height:1.8">';
+  h += '<strong>To edit:</strong> Find the item and click the <strong>Edit</strong> button next to it. Change what you need, then click <strong>Save</strong>.<br><br>';
+  h += '<strong>To delete:</strong> Click the <strong>Del</strong> or <strong>Remove</strong> button next to the item. You will be asked "Are you sure?" — click OK to confirm.';
+  h += '</p>';
+  h += '</div>';
+
+  // Inventory Details
+  h += '<div class="card" style="margin-bottom:16px">';
+  h += '<div class="card-title" style="margin-bottom:10px">Inventory — Extra Features</div>';
+  h += '<p style="font-size:14px;color:var(--text-secondary);line-height:1.8">';
+  h += '<strong>Low Stock Alerts:</strong> If an item\'s quantity drops to or below its threshold (the minimum you want to have), a red alert will show up. The number in the red circle on the Inventory tab tells you how many items are running low.<br><br>';
+  h += '<strong>Search and Filter:</strong> At the top of the inventory list, there is a search box. Type a name to find an item fast. You can also use the dropdown to filter by category (Safety, Chemicals, etc.).<br><br>';
+  h += '<strong>Month View:</strong> Click on a month at the top to see only items added during that month. Click it again to go back to seeing everything.';
+  h += '</p>';
+  h += '</div>';
+
+  // Suppliers
+  h += '<div class="card" style="margin-bottom:16px">';
+  h += '<div class="card-title" style="margin-bottom:10px">Suppliers — What to Fill In</div>';
+  h += '<p style="font-size:14px;color:var(--text-secondary);line-height:1.8">';
+  h += '<strong>Supplier Name:</strong> The name of the company you buy from.<br>';
+  h += '<strong>Category:</strong> What kind of stuff they sell (like "Safety Equipment" or "Chemicals").<br>';
+  h += '<strong>Phone:</strong> Their phone number. You can click it to call them directly.<br>';
+  h += '<strong>Email:</strong> Their email address. You can click it to send them an email.<br>';
+  h += '<strong>Order URL:</strong> The website link where you place orders.<br>';
+  h += '<strong>Notes:</strong> Any extra info — like your account number or shipping details.';
+  h += '</p>';
+  h += '</div>';
+
+  // Budget
+  h += '<div class="card" style="margin-bottom:16px">';
+  h += '<div class="card-title" style="margin-bottom:10px">Budget — Tracking Your Money</div>';
+  h += '<p style="font-size:14px;color:var(--text-secondary);line-height:1.8">';
+  h += '<strong>Set Budget:</strong> Click "Set Budget" at the top to enter your total yearly budget.<br><br>';
+  h += '<strong>Log Expense:</strong> Every time you buy something, click "Log Expense" and fill in the date, what you bought, how many, and the cost per item. The program will calculate the total for you.<br><br>';
+  h += '<strong>The bar chart</strong> at the top shows you how much you spent each month. The progress bar shows how much of your yearly budget has been used — green means you\'re fine, yellow means watch out, and red means you\'re almost out of money.';
+  h += '</p>';
+  h += '</div>';
+
+  // Vehicles
+  h += '<div class="card" style="margin-bottom:16px">';
+  h += '<div class="card-title" style="margin-bottom:10px">Vehicles — Keeping Cars and Trucks on Track</div>';
+  h += '<p style="font-size:14px;color:var(--text-secondary);line-height:1.8">';
+  h += '<strong>Add a Vehicle:</strong> Click "+ Add Vehicle" and fill in the name, license plate, driver, odometer reading, and service dates.<br><br>';
+  h += '<strong>+ Maintenance:</strong> Click this button on a vehicle card to record an oil change, tire rotation, or any other service. Enter what was done and how much it cost.<br><br>';
+  h += '<strong>+ Fuel:</strong> Click this button to log a gas fill-up. Enter how many liters, the cost, and the current odometer reading.<br><br>';
+  h += '<strong>Color badges</strong> tell you if service is coming up soon (yellow) or overdue (red). Green means everything is good.';
+  h += '</p>';
+  h += '</div>';
+
+  // Equipment
+  h += '<div class="card" style="margin-bottom:16px">';
+  h += '<div class="card-title" style="margin-bottom:10px">Lab Equipment — Calibration Tracking</div>';
+  h += '<p style="font-size:14px;color:var(--text-secondary);line-height:1.8">';
+  h += '<strong>What is calibration?</strong> It means checking that a piece of equipment is working correctly and giving accurate results. Some equipment needs this done every month, every 3 months, or once a year.<br><br>';
+  h += '<strong>Mark Calibrated:</strong> When you finish calibrating a piece of equipment, click the green checkmark button. The program will automatically set the next due date for you based on the interval.<br><br>';
+  h += '<strong>Color badges:</strong> Red = overdue (do it now!), Yellow = due within 30 days, Green = you\'re good.';
+  h += '</p>';
+  h += '</div>';
+
+  // Reports
+  h += '<div class="card" style="margin-bottom:16px">';
+  h += '<div class="card-title" style="margin-bottom:10px">Monthly Reports</div>';
+  h += '<p style="font-size:14px;color:var(--text-secondary);line-height:1.8">';
+  h += '<strong>Step 1:</strong> Pick a month and year from the dropdowns.<br>';
+  h += '<strong>Step 2:</strong> Click "Load Report" to see the report.<br>';
+  h += '<strong>Step 3:</strong> Click "Generate PDF" to print it, or "Email Report" to send it by email.<br><br>';
+  h += 'The report shows a snapshot of all your inventory and any money spent that month.';
+  h += '</p>';
+  h += '</div>';
+
+  // Export
+  h += '<div class="card" style="margin-bottom:16px">';
+  h += '<div class="card-title" style="margin-bottom:10px">Downloading Your Data (CSV Export)</div>';
+  h += '<p style="font-size:14px;color:var(--text-secondary);line-height:1.8">';
+  h += 'On most pages you will see an <strong>"Export CSV"</strong> button at the top. Click it and a file will download to your computer. You can open this file in <strong>Excel</strong> or <strong>Google Sheets</strong> to see your data in a spreadsheet.';
+  h += '</p>';
+  h += '</div>';
+
+  // Google Drive
+  h += '<div class="card" style="margin-bottom:16px">';
+  h += '<div class="card-title" style="margin-bottom:10px">Google Drive Backup</div>';
+  h += '<p style="font-size:14px;color:var(--text-secondary);line-height:1.8">';
+  h += 'At the bottom of the left sidebar, you will see a <strong>"Connect Google Drive"</strong> button.<br><br>';
+  h += '<strong>Step 1:</strong> Click the button and sign in with your Google account.<br>';
+  h += '<strong>Step 2:</strong> That\'s it! From now on, every change you make is automatically saved to your Google Drive.<br><br>';
+  h += '<strong>Why do this?</strong> If you ever clear your browser history, switch computers, or something goes wrong, you won\'t lose your data. Just open the program again, click "Connect Google Drive", sign in, and all your data comes right back.';
+  h += '</p>';
+  h += '</div>';
+
+  // Tips
+  h += '<div class="card" style="margin-bottom:16px;border-left:4px solid var(--green)">';
+  h += '<div class="card-title" style="margin-bottom:10px">Quick Tips</div>';
+  h += '<p style="font-size:14px;color:var(--text-secondary);line-height:1.8">';
+  h += '&#10003; <strong>Everything saves automatically</strong> — you don\'t need to click a "save" button for the whole program. Just save each form when you fill it in.<br>';
+  h += '&#10003; <strong>Click any phone number</strong> to call it directly from your phone.<br>';
+  h += '&#10003; <strong>Click any email address</strong> to open a new email to that person.<br>';
+  h += '&#10003; <strong>Connect Google Drive</strong> so you never lose your data.<br>';
+  h += '&#10003; <strong>Check the Dashboard</strong> regularly to see alerts and what needs attention.';
+  h += '</p>';
+  h += '</div>';
+
+  h += '</div>';
+  document.getElementById('sec-help').innerHTML = h;
 }
 
 // ========== DELETE ==========
