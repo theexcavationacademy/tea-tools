@@ -2,142 +2,194 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>T.E.A. Truck Load Counter</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--gold:#F97316;--gold2:#e06510;--dark:#0f1117;--dark2:#1a1d27;--dark3:#242836;--border:rgba(255,255,255,0.08);--text:#f0f0f0;--muted:#8a8fa8;--muted2:#555a70;--green:#22c55e;--red:#ef4444;--blue:#3b82f6;--surface:var(--dark2);--card:var(--dark3);--bg:var(--dark);}
-.light{--dark:#f0f2f5;--dark2:#ffffff;--dark3:#e8eaef;--border:rgba(0,0,0,0.1);--text:#111827;--muted:#6b7280;--muted2:#9ca3af;--surface:#ffffff;--card:#f0f2f5;--bg:#f0f2f5;}
-*{box-sizing:border-box;margin:0;padding:0;}
-body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;min-height:100vh;padding-bottom:60px;transition:background 0.3s,color 0.3s;}
-.header{background:var(--surface);border-bottom:3px solid var(--gold);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 12px rgba(0,0,0,0.2);}
-.header-brand{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:19px;color:var(--gold);letter-spacing:0.06em;text-transform:uppercase;}
-.header-sub{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-top:1px;}
-.header-right{display:flex;gap:8px;}
-.icon-btn{background:var(--card);border:1px solid var(--border);color:var(--muted);padding:7px 12px;border-radius:8px;font-size:12px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;transition:all 0.2s;}
-.icon-btn:hover{border-color:var(--gold);color:var(--gold);}
-.warn{background:linear-gradient(135deg,#7c2d12,#92400e);border:1px solid #f97316;border-radius:10px;padding:12px 14px;margin:12px 14px;display:flex;gap:10px;align-items:flex-start;}
-.warn-icon{font-size:16px;flex-shrink:0;}
-.warn-text{font-size:11px;line-height:1.55;color:#fde68a;}
-.warn-text strong{color:#fbbf24;display:block;font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:2px;}
-.wrap{max-width:640px;margin:0 auto;padding:0 14px;}
-.date-bar{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:11px 13px;margin:10px 0;display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
-.date-inp{background:var(--card);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;padding:5px 9px;outline:none;}
-.date-inp::-webkit-calendar-picker-indicator{filter:invert(0.5);}
-.txt-inp{flex:1;min-width:140px;background:var(--card);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:'Barlow',sans-serif;font-size:13px;padding:5px 9px;outline:none;}
-.txt-inp::placeholder{color:var(--muted);}
-.txt-inp:focus,.date-inp:focus{border-color:var(--gold);}
-.sel{background:var(--card);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;padding:8px 9px;outline:none;cursor:pointer;width:100%;}
+:root{
+  --gold:#F97316;--gold2:#c2510c;--dark:#0f1117;--dark2:#1a1d27;--dark3:#242836;
+  --border:rgba(255,255,255,0.09);--text:#f0f0f0;--muted:#8a8fa8;--muted2:#444a60;
+  --green:#22c55e;--red:#ef4444;--blue:#3b82f6;
+  --bg:var(--dark);--surface:var(--dark2);--card:var(--dark3);
+}
+.light{
+  --dark:#eef0f4;--dark2:#ffffff;--dark3:#e4e6ec;
+  --border:rgba(0,0,0,0.1);--text:#111827;--muted:#6b7280;--muted2:#c0c4d0;
+  --bg:#eef0f4;--surface:#ffffff;--card:#e4e6ec;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;min-height:100vh;padding-bottom:80px;transition:background .25s,color .25s;}
+
+/* HEADER */
+.hdr{background:var(--surface);border-bottom:3px solid var(--gold);padding:11px 14px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 14px rgba(0,0,0,.25);}
+.hdr-brand{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:18px;color:var(--gold);letter-spacing:.06em;text-transform:uppercase;}
+.hdr-sub{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-top:1px;}
+.hdr-right{display:flex;gap:7px;}
+.ibtn{background:var(--card);border:1px solid var(--border);color:var(--muted);padding:6px 11px;border-radius:7px;font-size:11px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.05em;transition:all .2s;}
+.ibtn:hover,.ibtn:active{border-color:var(--gold);color:var(--gold);}
+
+/* WARN */
+.warn{background:linear-gradient(135deg,#7c2d12,#92400e);border:1px solid var(--gold);border-radius:10px;padding:11px 13px;margin:11px 13px;display:flex;gap:9px;align-items:flex-start;}
+.warn-txt{font-size:11px;line-height:1.5;color:#fde68a;}
+.warn-txt strong{color:#fbbf24;display:block;font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:2px;}
+
+/* WRAP */
+.wrap{max-width:640px;margin:0 auto;padding:0 13px;}
+
+/* INPUTS */
+.row{display:flex;gap:8px;margin:9px 0;flex-wrap:wrap;}
+.inp{background:var(--card);border:1px solid var(--border);border-radius:7px;color:var(--text);font-family:'Barlow',sans-serif;font-size:13px;padding:8px 10px;outline:none;transition:border-color .2s;}
+.inp:focus{border-color:var(--gold);}
+.inp::placeholder{color:var(--muted);}
+.inp-date{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;}
+.inp-date::-webkit-calendar-picker-indicator{filter:invert(.5);}
+.inp-job{flex:1;min-width:150px;}
+.sel{background:var(--card);border:1px solid var(--border);border-radius:7px;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;padding:8px 9px;outline:none;cursor:pointer;flex:1;min-width:140px;}
 .sel:focus{border-color:var(--gold);}
-.mat-row{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;}
-.mat-row .sel{flex:1;min-width:140px;}
-.sec-lbl{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:0.15em;color:var(--muted);margin:14px 0 7px;}
-.fleet-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:13px;margin-bottom:11px;}
-.fleet-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:11px;}
-.fleet-ttl{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);}
-.add-btn{background:var(--gold);border:none;border-radius:7px;color:#000;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:12px;padding:6px 14px;cursor:pointer;text-transform:uppercase;letter-spacing:0.06em;}
-.truck-row{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:11px 12px;margin-bottom:8px;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;}
-.truck-row:last-child{margin-bottom:0;}
-.t-name-row{display:flex;gap:6px;align-items:center;margin-bottom:7px;flex-wrap:wrap;}
-.t-name-inp{background:var(--surface);border:1px solid var(--border);border-radius:5px;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;padding:4px 7px;outline:none;width:110px;}
-.t-name-inp:focus{border-color:var(--gold);}
-.t-type-sel{background:var(--surface);border:1px solid var(--border);border-radius:5px;color:var(--text);font-family:'Barlow',sans-serif;font-size:11px;padding:4px 6px;outline:none;cursor:pointer;}
-.t-remove{background:none;border:none;color:var(--muted2);font-size:15px;cursor:pointer;padding:2px 5px;}
-.t-remove:hover{color:var(--red);}
-.t-stats{display:flex;gap:10px;font-size:11px;color:var(--muted);flex-wrap:wrap;}
-.t-stats span{color:var(--text);font-weight:600;}
-.t-controls{display:flex;flex-direction:column;align-items:center;gap:5px;}
-.t-count{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:38px;color:var(--gold);line-height:1;text-align:center;transition:transform 0.15s;}
-.t-load-btn{background:var(--gold);border:none;border-radius:8px;color:#000;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:13px;padding:10px 14px;cursor:pointer;text-transform:uppercase;letter-spacing:0.05em;white-space:nowrap;transition:all 0.15s;-webkit-tap-highlight-color:transparent;}
-.t-load-btn:active{transform:scale(0.94);background:var(--gold2);}
-.t-undo-btn{background:none;border:1px solid var(--border);border-radius:6px;color:var(--muted);font-size:11px;padding:3px 8px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-weight:700;text-transform:uppercase;}
-.t-undo-btn:hover{border-color:var(--red);color:var(--red);}
-.totals-bar{background:var(--surface);border:1px solid var(--gold);border-radius:12px;padding:14px;margin-bottom:11px;display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center;}
-.tot-val{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:26px;color:var(--gold);line-height:1;}
-.tot-lbl{font-size:9px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-top:3px;}
-.timer-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:11px;}
-.timer-display{font-family:'Barlow Condensed',sans-serif;font-size:52px;font-weight:900;text-align:center;color:var(--text);letter-spacing:0.04em;margin-bottom:10px;font-variant-numeric:tabular-nums;}
-.timer-display.running{color:var(--green);}
-.timer-display.stopped{color:var(--gold);}
-.timer-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:7px;}
-.timer-btn{padding:10px 5px;border:1px solid var(--border);border-radius:8px;background:var(--card);color:var(--text);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:0.05em;cursor:pointer;}
-.t-start{border-color:var(--green);color:var(--green);}
-.t-stop{border-color:var(--red);color:var(--red);}
-.t-lap{border-color:var(--blue);color:var(--blue);}
-.t-reset{grid-column:span 3;border-color:var(--border);color:var(--muted);}
-.lap-list{max-height:100px;overflow-y:auto;}
-.lap-item{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);font-size:12px;}
+
+/* SEC LABEL */
+.sec{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.16em;color:var(--muted);margin:14px 0 7px;}
+
+/* ADD TRUCK BAR */
+.add-bar{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:11px 13px;margin-bottom:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.add-bar .sel{flex:1;min-width:120px;}
+.add-bar .inp{flex:1;min-width:110px;font-size:12px;}
+.add-truck-btn{background:var(--gold);border:none;border-radius:8px;color:#000;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:14px;padding:9px 18px;cursor:pointer;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap;transition:all .15s;}
+.add-truck-btn:active{background:var(--gold2);transform:scale(.96);}
+
+/* TRUCK CARDS — the main clicker UI */
+#fleetList{display:flex;flex-direction:column;gap:10px;margin-bottom:10px;}
+
+.truck-card{background:var(--surface);border:2px solid var(--border);border-radius:14px;overflow:hidden;transition:border-color .2s;}
+.truck-card.active{border-color:var(--gold);}
+
+/* TOP ROW — name, type, stats, remove */
+.tc-top{display:flex;align-items:center;gap:8px;padding:10px 12px 8px;flex-wrap:wrap;}
+.tc-name-inp{background:var(--card);border:1px solid var(--border);border-radius:5px;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:15px;padding:4px 8px;outline:none;width:110px;}
+.tc-name-inp:focus{border-color:var(--gold);}
+.tc-type-sel{background:var(--card);border:1px solid var(--border);border-radius:5px;color:var(--text);font-family:'Barlow',sans-serif;font-size:11px;padding:4px 6px;outline:none;cursor:pointer;}
+.tc-vol-inp{background:var(--card);border:1px solid var(--border);border-radius:5px;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;padding:4px 6px;outline:none;width:70px;text-align:center;}
+.tc-vol-inp:focus{border-color:var(--gold);}
+.tc-hint{font-size:10px;color:var(--muted);flex:1;}
+.tc-remove{background:none;border:none;color:var(--muted2);font-size:16px;cursor:pointer;padding:3px 6px;margin-left:auto;}
+.tc-remove:hover{color:var(--red);}
+
+/* CLICKER AREA — the big button */
+.tc-clicker{display:grid;grid-template-columns:1fr 110px;min-height:90px;}
+.tc-btn{background:var(--gold);border:none;color:#000;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:22px;text-transform:uppercase;letter-spacing:.08em;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;transition:all .12s;padding:14px;}
+.tc-btn:active{background:var(--gold2);transform:scale(.97);}
+.tc-btn-sub{font-size:10px;font-weight:600;opacity:.65;letter-spacing:.04em;}
+.tc-right{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:10px;background:var(--card);border-left:1px solid var(--border);}
+.tc-count{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:52px;color:var(--gold);line-height:1;transition:transform .12s;}
+.tc-count.bump{transform:scale(1.25);}
+.tc-count-lbl{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);}
+.tc-undo{background:none;border:1px solid var(--border);border-radius:6px;color:var(--muted);font-size:10px;padding:4px 8px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-weight:700;text-transform:uppercase;width:100%;}
+.tc-undo:hover{border-color:var(--red);color:var(--red);}
+
+/* TRUCK STATS ROW */
+.tc-stats{display:flex;gap:12px;padding:7px 12px;background:var(--card);border-top:1px solid var(--border);font-size:11px;color:var(--muted);flex-wrap:wrap;}
+.tc-stats b{color:var(--text);font-weight:600;}
+
+/* TOTALS */
+.totals{background:var(--surface);border:2px solid var(--gold);border-radius:12px;padding:13px;margin-bottom:10px;display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center;}
+.tot-v{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:24px;color:var(--gold);line-height:1;}
+.tot-l{font-size:9px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-top:2px;}
+
+/* TIMER */
+.timer-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:13px;margin-bottom:10px;}
+.timer-disp{font-family:'Barlow Condensed',sans-serif;font-size:50px;font-weight:900;text-align:center;letter-spacing:.04em;margin-bottom:9px;font-variant-numeric:tabular-nums;color:var(--text);}
+.timer-disp.run{color:var(--green);}
+.timer-disp.stopped{color:var(--gold);}
+.t-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:7px;}
+.tbtn{padding:10px 4px;border:1px solid var(--border);border-radius:7px;background:var(--card);color:var(--text);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.04em;cursor:pointer;}
+.tbtn.ts{border-color:var(--green);color:var(--green);}
+.tbtn.tp{border-color:var(--red);color:var(--red);}
+.tbtn.tl{border-color:var(--blue);color:var(--blue);}
+.tbtn.tr{grid-column:span 3;color:var(--muted);}
+.lap-list{max-height:90px;overflow-y:auto;}
+.lap-item{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);font-size:11px;}
 .lap-item:last-child{border-bottom:none;}
-.lap-n{color:var(--muted);}
-.lap-t{font-family:'Barlow Condensed',sans-serif;font-weight:700;color:var(--blue);}
-.log-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:13px;margin-bottom:11px;}
-.log-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;}
-.log-ttl{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);}
-.log-clear{background:none;border:none;color:var(--red);font-size:11px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-weight:700;text-transform:uppercase;}
+.ln{color:var(--muted);}
+.lt{font-family:'Barlow Condensed',sans-serif;font-weight:700;color:var(--blue);}
+
+/* LOG */
+.log-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:13px;margin-bottom:10px;}
+.log-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.log-ttl{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);}
+.log-clr{background:none;border:none;color:var(--red);font-size:11px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-weight:700;text-transform:uppercase;}
 .log-list{max-height:220px;overflow-y:auto;}
-.log-item{display:grid;grid-template-columns:28px 52px 1fr 58px 65px;gap:5px;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);font-size:11px;}
-.log-item:last-child{border-bottom:none;}
-.log-num{font-family:'Barlow Condensed',sans-serif;font-weight:900;color:var(--gold);font-size:14px;}
-.log-time{color:var(--muted);}
-.log-truck{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px;}
-.log-vol{font-family:'Barlow Condensed',sans-serif;font-weight:700;text-align:center;}
-.w-inp{background:var(--card);border:1px solid var(--border);border-radius:5px;color:var(--text);font-size:11px;padding:3px 4px;width:100%;outline:none;text-align:center;}
-.w-inp:focus{border-color:var(--gold);}
-.log-empty{color:var(--muted);font-size:13px;text-align:center;padding:18px 0;}
-.summary-box{background:var(--surface);border:1px solid var(--gold);border-radius:12px;padding:14px;margin-bottom:11px;}
-.summary-ttl{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:14px;text-transform:uppercase;letter-spacing:0.1em;color:var(--gold);margin-bottom:12px;}
-.ptr-row{display:grid;grid-template-columns:1fr 46px 68px 68px;gap:6px;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px;align-items:center;}
-.ptr-row:last-child{border-bottom:none;}
-.ptr-name{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;}
-.ptr-val{text-align:center;font-family:'Barlow Condensed',sans-serif;font-weight:700;}
-.ptr-lbl{font-size:9px;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);text-align:center;}
-.share-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;}
-.share-btn{padding:12px;border:1px solid var(--border);border-radius:9px;background:var(--card);color:var(--text);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:0.06em;cursor:pointer;text-align:center;transition:opacity 0.2s;}
-.s-email{border-color:var(--blue);color:var(--blue);}
-.s-sms{border-color:var(--green);color:var(--green);}
-.s-csv{border-color:var(--gold);color:var(--gold);}
-.s-copy{border-color:var(--muted);color:var(--muted);}
-.share-btn:active{opacity:0.7;}
-.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--dark3);border:1px solid var(--gold);color:var(--text);padding:10px 20px;border-radius:30px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:0.07em;transition:transform 0.3s;z-index:999;white-space:nowrap;}
+.log-row{display:grid;grid-template-columns:28px 50px 1fr 56px 62px;gap:5px;align-items:center;padding:5px 0;border-bottom:1px solid var(--border);font-size:11px;}
+.log-row:last-child{border-bottom:none;}
+.ln2{font-family:'Barlow Condensed',sans-serif;font-weight:900;color:var(--gold);font-size:13px;}
+.ltm{color:var(--muted);font-size:10px;}
+.ltn{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.lvol{font-family:'Barlow Condensed',sans-serif;font-weight:700;text-align:center;}
+.winp{background:var(--card);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:10px;padding:3px 4px;width:100%;outline:none;text-align:center;}
+.winp:focus{border-color:var(--gold);}
+.log-empty{color:var(--muted);font-size:12px;text-align:center;padding:16px 0;}
+
+/* SUMMARY */
+.sum-box{background:var(--surface);border:2px solid var(--gold);border-radius:12px;padding:13px;margin-bottom:10px;}
+.sum-ttl{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:14px;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);margin-bottom:10px;}
+.sum-row{display:grid;grid-template-columns:1fr 44px 66px 66px;gap:5px;padding:6px 0;border-bottom:1px solid var(--border);font-size:11px;align-items:center;}
+.sum-row:last-child{border-bottom:none;}
+.sn{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;}
+.sv{text-align:center;font-family:'Barlow Condensed',sans-serif;font-weight:700;}
+.sl{font-size:9px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);text-align:center;}
+.share-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:11px;}
+.sbtn{padding:11px;border:1px solid var(--border);border-radius:8px;background:var(--card);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.05em;cursor:pointer;text-align:center;transition:opacity .2s;}
+.sbtn:active{opacity:.7;}
+.se{border-color:var(--blue);color:var(--blue);}
+.ss{border-color:var(--green);color:var(--green);}
+.sc{border-color:var(--gold);color:var(--gold);}
+.sk{border-color:var(--muted);color:var(--muted);}
+
+/* TOAST */
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--dark3);border:1px solid var(--gold);color:var(--text);padding:9px 20px;border-radius:28px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.06em;transition:transform .28s;z-index:999;white-space:nowrap;}
 .toast.show{transform:translateX(-50%) translateY(0);}
-.footer{text-align:center;padding:18px 16px 6px;font-size:11px;color:var(--muted);}
+
+.footer{text-align:center;padding:16px 14px 6px;font-size:10px;color:var(--muted);}
 .footer a{color:var(--gold);text-decoration:none;}
 ::-webkit-scrollbar{width:4px;}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
-@media(max-width:400px){.totals-bar{grid-template-columns:1fr 1fr;}.log-item{grid-template-columns:26px 46px 1fr 54px;}}
+@media(max-width:380px){
+  .tc-count{font-size:42px;}
+  .tc-btn{font-size:18px;}
+  .totals{grid-template-columns:1fr 1fr;}
+}
 </style>
 </head>
 <body>
 
-<div class="header">
+<div class="hdr">
   <div>
-    <div class="header-brand">T.E.A. Truck Counter</div>
-    <div class="header-sub">Field Load Tracker</div>
+    <div class="hdr-brand">T.E.A. Truck Counter</div>
+    <div class="hdr-sub">Field Load Tracker</div>
   </div>
-  <div class="header-right">
-    <button class="icon-btn" onclick="toggleTheme()" id="themeBtn">☀ Light</button>
-    <button class="icon-btn" onclick="resetDay()">↺ Reset</button>
+  <div class="hdr-right">
+    <button class="ibtn" onclick="toggleTheme()" id="themeBtn">☀ Light</button>
+    <button class="ibtn" onclick="resetDay()">↺ New Day</button>
   </div>
 </div>
 
 <div class="warn">
-  <div class="warn-icon">⚠️</div>
-  <div class="warn-text">
-    <strong>Important — Data Warning</strong>
-    Data is saved in this browser only. Clearing browser cache or cookies will permanently delete all records. Always email or export your report before closing the browser at end of day.
+  <div style="font-size:16px;flex-shrink:0;">⚠️</div>
+  <div class="warn-txt">
+    <strong>Data Warning — Read Before Use</strong>
+    Data saves in this browser only. Clearing cache or cookies will permanently delete all records. Always email or export your report before closing the browser at end of day.
   </div>
 </div>
 
 <div class="wrap">
 
-  <div class="date-bar">
-    <input type="date" class="date-inp" id="jobDate" />
-    <input type="text" class="txt-inp" id="jobName" placeholder="Job name / location" oninput="saveState()" />
+  <!-- JOB SETUP -->
+  <div class="row">
+    <input type="date" class="inp inp-date" id="jobDate" />
+    <input type="text" class="inp inp-job" id="jobName" placeholder="Job name / location" oninput="save()" />
   </div>
-
-  <div class="mat-row">
-    <select class="sel" id="materialType" onchange="onMaterialChange()">
-      <option value="">-- Select Material --</option>
+  <div class="row">
+    <select class="sel" id="matType" onchange="onMat()">
+      <option value="">-- Material Type --</option>
       <option>Common Fill</option>
       <option>Select Fill</option>
       <option>Gravel</option>
@@ -147,73 +199,88 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;min-
       <option>Asphalt</option>
       <option>Custom</option>
     </select>
-    <input type="text" class="txt-inp" id="matCustom" placeholder="Describe material..." style="display:none;flex:1;" oninput="saveState()" />
+    <input type="text" class="inp" id="matCustom" placeholder="Describe material..." style="display:none;flex:1;" oninput="save()" />
   </div>
 
-  <div class="sec-lbl">Truck Fleet</div>
-  <div class="fleet-box">
-    <div class="fleet-hdr">
-      <div class="fleet-ttl">Active Trucks on Site</div>
-      <button class="add-btn" onclick="addTruck()">+ Add Truck</button>
-    </div>
-    <div id="fleetList"></div>
+  <!-- ADD TRUCK -->
+  <div class="sec">Truck Fleet</div>
+  <div class="add-bar">
+    <input type="text" class="inp" id="newTruckName" placeholder="Truck name (e.g. T1, Red Tandem)" style="flex:1;min-width:110px;" />
+    <select class="sel" id="newTruckType" onchange="onNewType()" style="flex:1;min-width:120px;">
+      <option>Tandem</option>
+      <option>Tridem</option>
+      <option>Wagon (B-Train)</option>
+      <option>Super B</option>
+      <option>Belly Dump</option>
+      <option>Rock Truck</option>
+      <option>Custom</option>
+    </select>
+    <input type="number" class="inp" id="newTruckVol" placeholder="m³/load" style="width:80px;display:none;" />
+    <button class="add-truck-btn" onclick="addTruck()">+ Add Truck</button>
   </div>
 
-  <div class="totals-bar">
-    <div><div class="tot-val" id="totLoads">0</div><div class="tot-lbl">Total Loads</div></div>
-    <div><div class="tot-val" id="totVol">0</div><div class="tot-lbl" id="totVolLbl">Est. m³</div></div>
-    <div><div class="tot-val" id="totWt">—</div><div class="tot-lbl">Scale (t)</div></div>
-    <div><div class="tot-val" id="totAvg">—</div><div class="tot-lbl" id="totAvgLbl">Avg m³</div></div>
+  <!-- FLEET CARDS -->
+  <div id="fleetList"></div>
+
+  <!-- TOTALS -->
+  <div class="totals">
+    <div><div class="tot-v" id="tLoads">0</div><div class="tot-l">Total Loads</div></div>
+    <div><div class="tot-v" id="tVol">0</div><div class="tot-l" id="tVolLbl">Est. m³</div></div>
+    <div><div class="tot-v" id="tWt">—</div><div class="tot-l">Scale (t)</div></div>
+    <div><div class="tot-v" id="tAvg">—</div><div class="tot-l" id="tAvgLbl">Avg m³</div></div>
   </div>
 
-  <div class="sec-lbl">⏱ Load / Round Trip Timer</div>
+  <!-- TIMER -->
+  <div class="sec">⏱ Load / Round Trip Timer</div>
   <div class="timer-box">
-    <div class="timer-display" id="timerDisp">00:00:00</div>
-    <div class="timer-grid">
-      <button class="timer-btn t-start" onclick="startTimer()">Start</button>
-      <button class="timer-btn t-stop" onclick="stopTimer()">Stop</button>
-      <button class="timer-btn t-lap" onclick="lapTimer()">Lap</button>
-      <button class="timer-btn t-reset" onclick="resetTimer()">Reset Timer</button>
+    <div class="timer-disp" id="timerDisp">00:00:00</div>
+    <div class="t-grid">
+      <button class="tbtn ts" onclick="startT()">Start</button>
+      <button class="tbtn tp" onclick="stopT()">Stop</button>
+      <button class="tbtn tl" onclick="lapT()">Lap</button>
+      <button class="tbtn tr" onclick="resetT()">Reset Timer</button>
     </div>
     <div class="lap-list" id="lapList"></div>
   </div>
 
-  <div class="sec-lbl">Load Log</div>
+  <!-- LOG -->
+  <div class="sec">Load Log</div>
   <div class="log-box">
     <div class="log-hdr">
       <div class="log-ttl">All Loads Today</div>
-      <button class="log-clear" onclick="clearAll()">Clear All</button>
+      <button class="log-clr" onclick="clearAll()">Clear All</button>
     </div>
-    <div class="log-list" id="logList"><div class="log-empty">No loads logged yet</div></div>
+    <div class="log-list" id="logList"><div class="log-empty">No loads logged yet — tap a truck button above</div></div>
   </div>
 
-  <div class="sec-lbl">End of Day Summary</div>
-  <div class="summary-box">
-    <div class="summary-ttl">Daily Report</div>
-    <div class="ptr-row" style="padding-bottom:5px;margin-bottom:3px;">
-      <div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;">Truck</div>
-      <div class="ptr-lbl">Loads</div>
-      <div class="ptr-lbl">Est. Vol</div>
-      <div class="ptr-lbl">Scale (t)</div>
+  <!-- SUMMARY -->
+  <div class="sec">End of Day Summary</div>
+  <div class="sum-box">
+    <div class="sum-ttl">Daily Report</div>
+    <div class="sum-row" style="padding-bottom:4px;margin-bottom:3px;">
+      <div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;">Truck</div>
+      <div class="sl">Loads</div><div class="sl">Vol</div><div class="sl">Scale</div>
     </div>
     <div id="perTruck"></div>
     <div class="share-grid">
-      <button class="share-btn s-email" onclick="shareEmail()">📧 Email</button>
-      <button class="share-btn s-sms" onclick="shareSMS()">💬 Text</button>
-      <button class="share-btn s-csv" onclick="exportCSV()">📊 CSV</button>
-      <button class="share-btn s-copy" onclick="copyReport()">📋 Copy</button>
+      <button class="sbtn se" onclick="doEmail()">📧 Email</button>
+      <button class="sbtn ss" onclick="doSMS()">💬 Text</button>
+      <button class="sbtn sc" onclick="doCSV()">📊 CSV</button>
+      <button class="sbtn sk" onclick="doCopy()">📋 Copy</button>
     </div>
   </div>
 
 </div>
 
 <div class="footer">
-  <a href="https://theexcavationacademy.github.io/tea-tools/tea-tools-hub.html">← Back to T.E.A. Field Tools</a><br><br>theexcavationacademy.github.io
+  <a href="https://theexcavationacademy.github.io/tea-tools/tea-tools-hub.html">← Back to T.E.A. Field Tools</a><br><br>
+  theexcavationacademy.github.io
 </div>
 <div class="toast" id="toast"></div>
 
 <script>
-const PRESETS={
+// ── PRESETS ────────────────────────────────────────────────
+const P={
   'Tandem':{vol:10,payload:15},
   'Tridem':{vol:14,payload:20},
   'Wagon (B-Train)':{vol:20,payload:28},
@@ -223,261 +290,282 @@ const PRESETS={
   'Custom':{vol:0,payload:0}
 };
 
-let trucks=[], allLoads=[], loadCounter=0;
-let metric=true, darkMode=true;
-let timerInt=null, timerOn=false, timerSec=0, laps=[];
+// ── STATE ─────────────────────────────────────────────────
+let trucks=[], loads=[], lc=0;
+let dark=true, metric=true;
+let tInt=null, tOn=false, tSec=0, laps=[];
 
-// INIT
+// ── BOOT ──────────────────────────────────────────────────
 window.addEventListener('load',()=>{
   document.getElementById('jobDate').value=new Date().toISOString().split('T')[0];
-  document.getElementById('jobDate').addEventListener('change',saveState);
+  document.getElementById('jobDate').addEventListener('change',save);
   loadState();
-  if(trucks.length===0) addTruck('Truck 1','Tandem');
+  if(trucks.length===0) addTruck('Truck 1','Tandem',10);
 });
 
-function onMaterialChange(){
-  const v=document.getElementById('materialType').value;
-  document.getElementById('matCustom').style.display=v==='Custom'?'block':'none';
-  saveState();
+// ── NEW TRUCK TYPE CHANGE ──────────────────────────────────
+function onNewType(){
+  const t=document.getElementById('newTruckType').value;
+  const vi=document.getElementById('newTruckVol');
+  vi.style.display=t==='Custom'?'block':'none';
+  if(t!=='Custom') vi.value=P[t].vol;
 }
 
-// TRUCKS
-function addTruck(name,type){
+// ── ADD TRUCK ─────────────────────────────────────────────
+function addTruck(name,type,vol){
   const id=Date.now()+Math.random();
-  const t=type||'Tandem';
-  trucks.push({id,name:name||('Truck '+(trucks.length+1)),type:t,vol:PRESETS[t].vol,loads:[]});
-  renderFleet(); saveState();
+  const nm=name||document.getElementById('newTruckName').value.trim()||('Truck '+(trucks.length+1));
+  const tp=type||document.getElementById('newTruckType').value;
+  const vv=vol!==undefined?vol:(tp==='Custom'?parseFloat(document.getElementById('newTruckVol').value)||0:P[tp].vol);
+  trucks.push({id,name:nm,type:tp,vol:vv,loads:[]});
+  if(!name){ // only clear when user-triggered
+    document.getElementById('newTruckName').value='';
+    document.getElementById('newTruckVol').value='';
+    document.getElementById('newTruckVol').style.display='none';
+    document.getElementById('newTruckType').value='Tandem';
+  }
+  renderFleet(); save();
 }
 
 function removeTruck(id){
-  if(trucks.length<=1){showToast('Need at least one truck');return;}
+  if(trucks.length<=1){toast('Need at least one truck');return;}
+  if(!confirm('Remove this truck and its loads?')) return;
   trucks=trucks.filter(t=>t.id!==id);
-  allLoads=allLoads.filter(l=>l.truckId!==id);
-  renderFleet(); renderLog(); updateTotals(); saveState();
+  loads=loads.filter(l=>l.tid!==id);
+  renderFleet(); renderLog(); updateTotals(); save();
 }
 
-function changeTruckType(id,type){
-  const truck=trucks.find(t=>t.id===id);
-  if(!truck) return;
-  truck.type=type;
-  if(type!=='Custom') truck.vol=PRESETS[type].vol;
-  renderFleet(); saveState();
-}
+function changeName(id,v){const t=trucks.find(t=>t.id===id);if(t){t.name=v;loads.filter(l=>l.tid===id).forEach(l=>l.tn=v);renderLog();save();}}
+function changeType(id,v){const t=trucks.find(t=>t.id===id);if(!t)return;t.type=v;if(v!=='Custom')t.vol=P[v].vol;renderFleet();save();}
+function changeVol(id,v){const t=trucks.find(t=>t.id===id);if(t){t.vol=parseFloat(v)||0;updateTotals();save();}}
 
-function changeTruckName(id,val){
-  const truck=trucks.find(t=>t.id===id);
-  if(truck){truck.name=val;allLoads.filter(l=>l.truckId===id).forEach(l=>l.truckName=val);renderLog();saveState();}
-}
-
-function changeTruckVol(id,val){
-  const truck=trucks.find(t=>t.id===id);
-  if(truck){truck.vol=parseFloat(val)||0;updateTotals();saveState();}
-}
-
+// ── LOG LOAD ──────────────────────────────────────────────
 function logLoad(id){
-  const truck=trucks.find(t=>t.id===id);
-  if(!truck) return;
-  loadCounter++;
+  const t=trucks.find(t=>t.id===id);
+  if(!t) return;
+  lc++;
   const time=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-  truck.loads.push({time,weight:''});
-  allLoads.push({id:loadCounter,truckId:id,truckName:truck.name,type:truck.type,time,vol:truck.vol,weight:''});
-  renderFleet(); renderLog(); updateTotals(); saveState();
-  showToast(truck.name+' — Load #'+truck.loads.length);
+  t.loads.push({time,weight:''});
+  loads.push({id:lc,tid:id,tn:t.name,type:t.type,time,vol:t.vol,weight:''});
+  renderFleet(); renderLog(); updateTotals(); save();
+  toast(t.name+' — Load #'+t.loads.length+' ✓');
+  // bump animation
   const el=document.getElementById('cnt-'+id);
-  if(el){el.style.transform='scale(1.3)';setTimeout(()=>el.style.transform='scale(1)',150);}
+  if(el){el.classList.add('bump');setTimeout(()=>el.classList.remove('bump'),150);}
+  // pulse card border
+  const card=document.getElementById('card-'+id);
+  if(card){card.classList.add('active');setTimeout(()=>card.classList.remove('active'),600);}
 }
 
 function undoLoad(id){
-  const truck=trucks.find(t=>t.id===id);
-  if(!truck||truck.loads.length===0){showToast('Nothing to undo');return;}
-  truck.loads.pop();
-  for(let i=allLoads.length-1;i>=0;i--){if(allLoads[i].truckId===id){allLoads.splice(i,1);break;}}
-  renderFleet(); renderLog(); updateTotals(); saveState();
-  showToast('Undo — '+truck.name);
+  const t=trucks.find(t=>t.id===id);
+  if(!t||t.loads.length===0){toast('Nothing to undo');return;}
+  t.loads.pop();
+  for(let i=loads.length-1;i>=0;i--){if(loads[i].tid===id){loads.splice(i,1);break;}}
+  renderFleet(); renderLog(); updateTotals(); save();
+  toast('Undo — '+t.name);
 }
 
+// ── RENDER FLEET ──────────────────────────────────────────
 function renderFleet(){
-  const list=document.getElementById('fleetList');
-  if(trucks.length===0){list.innerHTML='<div style="color:var(--muted);text-align:center;padding:14px;font-size:13px;">No trucks added</div>';return;}
-  const unit=metric?'m³':'yd³';
-  list.innerHTML=trucks.map(truck=>{
-    const p=PRESETS[truck.type]||PRESETS['Custom'];
-    const typeOpts=Object.keys(PRESETS).map(k=>`<option${k===truck.type?' selected':''}>${k}</option>`).join('');
-    const tLoads=allLoads.filter(l=>l.truckId===truck.id);
-    const tVol=tLoads.reduce((s,l)=>s+(parseFloat(l.vol)||0),0).toFixed(1);
-    const tWts=tLoads.map(l=>parseFloat(l.weight)).filter(w=>!isNaN(w)&&w>0);
-    const tWt=tWts.length>0?tWts.reduce((a,b)=>a+b,0).toFixed(1)+'t':'—';
-    const hint=truck.type!=='Custom'?`~${p.vol}${unit} · ~${p.payload}t avg payload`:'';
+  const fl=document.getElementById('fleetList');
+  if(trucks.length===0){fl.innerHTML='<div style="text-align:center;color:var(--muted);padding:20px;font-size:13px;">No trucks — add one above</div>';return;}
+  const u=metric?'m³':'yd³';
+
+  fl.innerHTML=trucks.map(tr=>{
+    const tl=loads.filter(l=>l.tid===tr.id);
+    const tv=tl.reduce((s,l)=>s+(parseFloat(l.vol)||0),0).toFixed(1);
+    const tw=tl.map(l=>parseFloat(l.weight)).filter(w=>!isNaN(w)&&w>0);
+    const twt=tw.length>0?tw.reduce((a,b)=>a+b,0).toFixed(1)+'t':'—';
+    const preset=P[tr.type]||P['Custom'];
+    const hint=tr.type!=='Custom'?`Preset: ~${preset.vol}${u} · ~${preset.payload}t avg`:'Custom volume';
+    const typeOpts=Object.keys(P).map(k=>`<option${k===tr.type?' selected':''}>${k}</option>`).join('');
+
     return `
-    <div class="truck-row">
-      <div>
-        <div class="t-name-row">
-          <input class="t-name-inp" value="${truck.name}" onchange="changeTruckName(${truck.id},this.value)" />
-          <select class="t-type-sel" onchange="changeTruckType(${truck.id},this.value)">${typeOpts}</select>
-          <button class="t-remove" onclick="removeTruck(${truck.id})">✕</button>
-        </div>
-        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-          ${truck.type==='Custom'?`<input type="number" style="width:75px;background:var(--surface);border:1px solid var(--border);border-radius:5px;color:var(--text);font-size:11px;padding:3px 5px;outline:none;" placeholder="${unit}/load" value="${truck.vol||''}" oninput="changeTruckVol(${truck.id},this.value)" />`:''}
-          <div class="t-stats">${hint?`<span style="color:var(--muted2);">${hint}</span> · `:''}<span>Loads: <span>${truck.loads.length}</span></span> · <span>Vol: <span>${tVol} ${unit}</span></span> · <span>Wt: <span>${tWt}</span></span></div>
+    <div class="truck-card" id="card-${tr.id}">
+      <div class="tc-top">
+        <input class="tc-name-inp" value="${tr.name}" onchange="changeName(${tr.id},this.value)" title="Truck name" />
+        <select class="tc-type-sel" onchange="changeType(${tr.id},this.value)">${typeOpts}</select>
+        ${tr.type==='Custom'?`<input type="number" class="tc-vol-inp" value="${tr.vol||''}" placeholder="${u}/load" oninput="changeVol(${tr.id},this.value)" />`:`<span class="tc-hint">${hint}</span>`}
+        <button class="tc-remove" onclick="removeTruck(${tr.id})" title="Remove truck">✕</button>
+      </div>
+
+      <div class="tc-clicker">
+        <button class="tc-btn" onclick="logLoad(${tr.id})">
+          ✓ LOADED
+          <span class="tc-btn-sub">Tap every time this truck leaves site</span>
+        </button>
+        <div class="tc-right">
+          <div>
+            <div class="tc-count" id="cnt-${tr.id}">${tr.loads.length}</div>
+            <div class="tc-count-lbl">loads</div>
+          </div>
+          <button class="tc-undo" onclick="undoLoad(${tr.id})">↩ Undo</button>
         </div>
       </div>
-      <div class="t-controls">
-        <div class="t-count" id="cnt-${truck.id}">${truck.loads.length}</div>
-        <button class="t-load-btn" onclick="logLoad(${truck.id})">✓ Loaded</button>
-        <button class="t-undo-btn" onclick="undoLoad(${truck.id})">↩ Undo</button>
+
+      <div class="tc-stats">
+        <span>Vol: <b>${tv} ${u}</b></span>
+        <span>Scale: <b>${twt}</b></span>
+        ${tr.loads.length>0?`<span>Last: <b>${tr.loads[tr.loads.length-1].time}</b></span>`:''}
       </div>
     </div>`;
   }).join('');
 }
 
-// LOG
+// ── RENDER LOG ────────────────────────────────────────────
 function renderLog(){
-  const list=document.getElementById('logList');
-  if(allLoads.length===0){list.innerHTML='<div class="log-empty">No loads logged yet</div>';return;}
-  const unit=metric?'m³':'yd³';
-  list.innerHTML=[...allLoads].reverse().map((l,ri)=>{
-    const idx=allLoads.length-1-ri;
+  const ll=document.getElementById('logList');
+  if(loads.length===0){ll.innerHTML='<div class="log-empty">No loads logged yet — tap a truck button above</div>';return;}
+  const u=metric?'m³':'yd³';
+  ll.innerHTML=[...loads].reverse().map((l,ri)=>{
+    const idx=loads.length-1-ri;
     return `
-    <div class="log-item">
-      <div class="log-num">#${l.id}</div>
-      <div class="log-time">${l.time}</div>
-      <div class="log-truck">${l.truckName} · ${l.type}</div>
-      <div class="log-vol">${l.vol>0?l.vol+' '+unit:'—'}</div>
-      <input class="w-inp" type="number" placeholder="wt(t)" value="${l.weight}" step="0.1" oninput="updateWt(${idx},this.value)" />
+    <div class="log-row">
+      <div class="ln2">#${l.id}</div>
+      <div class="ltm">${l.time}</div>
+      <div class="ltn">${l.tn} · ${l.type}</div>
+      <div class="lvol">${l.vol>0?l.vol+' '+u:'—'}</div>
+      <input class="winp" type="number" placeholder="wt(t)" value="${l.weight}" step="0.1" oninput="setWt(${idx},this.value)" />
     </div>`;
   }).join('');
 }
 
-function updateWt(idx,val){
-  allLoads[idx].weight=val;
-  const truck=trucks.find(t=>t.id===allLoads[idx].truckId);
-  if(truck){
-    let cnt=0;
-    for(let i=0;i<=idx;i++) if(allLoads[i].truckId===allLoads[idx].truckId) cnt++;
-    if(truck.loads[cnt-1]) truck.loads[cnt-1].weight=val;
-  }
-  updateTotals(); saveState();
+function setWt(idx,v){
+  loads[idx].weight=v;
+  const t=trucks.find(t=>t.id===loads[idx].tid);
+  if(t){let c=0;for(let i=0;i<=idx;i++)if(loads[i].tid===loads[idx].tid)c++;if(t.loads[c-1])t.loads[c-1].weight=v;}
+  updateTotals(); save();
 }
 
 function clearAll(){
-  if(allLoads.length===0) return;
-  if(!confirm('Clear all load data?')) return;
-  allLoads=[]; trucks.forEach(t=>t.loads=[]);
-  renderFleet(); renderLog(); updateTotals(); saveState();
+  if(loads.length===0) return;
+  if(!confirm('Clear all load data for all trucks?')) return;
+  loads=[];lc=0;trucks.forEach(t=>t.loads=[]);
+  renderFleet();renderLog();updateTotals();save();
 }
 
-// TOTALS
+// ── TOTALS ────────────────────────────────────────────────
 function updateTotals(){
-  const unit=metric?'m³':'yd³';
-  const n=allLoads.length;
-  const vol=allLoads.reduce((s,l)=>s+(parseFloat(l.vol)||0),0).toFixed(1);
-  const wts=allLoads.map(l=>parseFloat(l.weight)).filter(w=>!isNaN(w)&&w>0);
-  const totWt=wts.length>0?wts.reduce((a,b)=>a+b,0).toFixed(1)+'t':'—';
-  const avg=n>0?(allLoads.reduce((s,l)=>s+(parseFloat(l.vol)||0),0)/n).toFixed(1)+''+unit:'—';
-  document.getElementById('totLoads').textContent=n;
-  document.getElementById('totVol').textContent=vol;
-  document.getElementById('totVolLbl').textContent='Est. '+unit;
-  document.getElementById('totWt').textContent=totWt;
-  document.getElementById('totAvg').textContent=avg;
-  document.getElementById('totAvgLbl').textContent='Avg '+unit;
+  const u=metric?'m³':'yd³';
+  const n=loads.length;
+  const vol=loads.reduce((s,l)=>s+(parseFloat(l.vol)||0),0).toFixed(1);
+  const wts=loads.map(l=>parseFloat(l.weight)).filter(w=>!isNaN(w)&&w>0);
+  const twt=wts.length>0?wts.reduce((a,b)=>a+b,0).toFixed(1)+'t':'—';
+  const avg=n>0?(loads.reduce((s,l)=>s+(parseFloat(l.vol)||0),0)/n).toFixed(1)+' '+u:'—';
+  document.getElementById('tLoads').textContent=n;
+  document.getElementById('tVol').textContent=vol;
+  document.getElementById('tVolLbl').textContent='Est. '+u;
+  document.getElementById('tWt').textContent=twt;
+  document.getElementById('tAvg').textContent=avg;
+  document.getElementById('tAvgLbl').textContent='Avg '+u;
   // per truck
-  const pt=document.getElementById('perTruck');
-  pt.innerHTML=trucks.map(truck=>{
-    const tL=allLoads.filter(l=>l.truckId===truck.id);
-    const tV=tL.reduce((s,l)=>s+(parseFloat(l.vol)||0),0).toFixed(1);
-    const tW=tL.map(l=>parseFloat(l.weight)).filter(w=>!isNaN(w)&&w>0);
-    const tWt=tW.length>0?tW.reduce((a,b)=>a+b,0).toFixed(1)+'t':'—';
-    return `<div class="ptr-row">
-      <div class="ptr-name">${truck.name}<br><span style="font-size:9px;color:var(--muted);font-weight:400;">${truck.type}</span></div>
-      <div class="ptr-val">${tL.length}</div>
-      <div class="ptr-val">${tV} ${unit}</div>
-      <div class="ptr-val">${tWt}</div>
+  document.getElementById('perTruck').innerHTML=trucks.map(t=>{
+    const tl=loads.filter(l=>l.tid===t.id);
+    const tv=tl.reduce((s,l)=>s+(parseFloat(l.vol)||0),0).toFixed(1);
+    const tw=tl.map(l=>parseFloat(l.weight)).filter(w=>!isNaN(w)&&w>0);
+    const twt2=tw.length>0?tw.reduce((a,b)=>a+b,0).toFixed(1)+'t':'—';
+    return `<div class="sum-row">
+      <div class="sn">${t.name}<br><span style="font-size:9px;color:var(--muted);font-weight:400;">${t.type}</span></div>
+      <div class="sv">${tl.length}</div>
+      <div class="sv">${tv} ${u}</div>
+      <div class="sv">${twt2}</div>
     </div>`;
   }).join('');
 }
 
-// TIMER
-function startTimer(){if(timerOn)return;timerOn=true;timerInt=setInterval(()=>{timerSec++;updTimer();},1000);document.getElementById('timerDisp').className='timer-display running';}
-function stopTimer(){if(!timerOn)return;timerOn=false;clearInterval(timerInt);document.getElementById('timerDisp').className='timer-display stopped';showToast('Stopped: '+fmtTime(timerSec));}
-function lapTimer(){const n=laps.length+1,split=laps.length>0?timerSec-laps[laps.length-1].total:timerSec;laps.push({n,split,total:timerSec});const el=document.createElement('div');el.className='lap-item';el.innerHTML=`<span class="lap-n">Lap ${n}</span><span class="lap-t">${fmtTime(split)}</span><span style="color:var(--muted2);font-size:10px;">Total ${fmtTime(timerSec)}</span>`;document.getElementById('lapList').prepend(el);showToast('Lap '+n+': '+fmtTime(split));}
-function resetTimer(){timerOn=false;clearInterval(timerInt);timerSec=0;laps=[];updTimer();document.getElementById('timerDisp').className='timer-display';document.getElementById('lapList').innerHTML='';}
-function updTimer(){document.getElementById('timerDisp').textContent=fmtTime(timerSec);}
-function fmtTime(s){return[Math.floor(s/3600),Math.floor((s%3600)/60),s%60].map(n=>n.toString().padStart(2,'0')).join(':');}
+// ── MATERIAL ──────────────────────────────────────────────
+function onMat(){
+  document.getElementById('matCustom').style.display=document.getElementById('matType').value==='Custom'?'block':'none';
+  save();
+}
 
-// REPORT
+// ── TIMER ─────────────────────────────────────────────────
+function startT(){if(tOn)return;tOn=true;tInt=setInterval(()=>{tSec++;updT();},1000);document.getElementById('timerDisp').className='timer-disp run';}
+function stopT(){if(!tOn)return;tOn=false;clearInterval(tInt);document.getElementById('timerDisp').className='timer-disp stopped';toast('Stopped: '+fmt(tSec));}
+function lapT(){const n=laps.length+1,sp=laps.length>0?tSec-laps[laps.length-1].total:tSec;laps.push({n,sp,total:tSec});const el=document.createElement('div');el.className='lap-item';el.innerHTML=`<span class="ln">Lap ${n}</span><span class="lt">${fmt(sp)}</span><span style="color:var(--muted2);font-size:10px;">Total ${fmt(tSec)}</span>`;document.getElementById('lapList').prepend(el);toast('Lap '+n+': '+fmt(sp));}
+function resetT(){tOn=false;clearInterval(tInt);tSec=0;laps=[];updT();document.getElementById('timerDisp').className='timer-disp';document.getElementById('lapList').innerHTML='';}
+function updT(){document.getElementById('timerDisp').textContent=fmt(tSec);}
+function fmt(s){return[Math.floor(s/3600),Math.floor((s%3600)/60),s%60].map(n=>n.toString().padStart(2,'0')).join(':');}
+
+// ── REPORT ────────────────────────────────────────────────
 function buildReport(){
   const date=document.getElementById('jobDate').value;
   const job=document.getElementById('jobName').value||'Job Site';
-  const mat=document.getElementById('materialType').value||'Not specified';
-  const unit=metric?'m³':'yd³';
-  const n=allLoads.length;
-  const vol=allLoads.reduce((s,l)=>s+(parseFloat(l.vol)||0),0).toFixed(1);
-  const wts=allLoads.map(l=>parseFloat(l.weight)).filter(w=>!isNaN(w)&&w>0);
-  const totWt=wts.length>0?wts.reduce((a,b)=>a+b,0).toFixed(1)+'t':'Not scaled';
-  let r=`T.E.A. TRUCK LOAD REPORT\n========================\nDate: ${date}\nJob: ${job}\nMaterial: ${mat}\n========================\nTOTALS:\nTotal Loads: ${n}\nEst. Volume: ${vol} ${unit}\nScale Weight: ${totWt}\n========================\nBY TRUCK:\n`;
-  trucks.forEach(truck=>{
-    const tL=allLoads.filter(l=>l.truckId===truck.id);
-    const tV=tL.reduce((s,l)=>s+(parseFloat(l.vol)||0),0).toFixed(1);
-    const tW=tL.map(l=>parseFloat(l.weight)).filter(w=>!isNaN(w)&&w>0);
-    const tWt=tW.length>0?tW.reduce((a,b)=>a+b,0).toFixed(1)+'t':'—';
-    r+=`${truck.name} (${truck.type}): ${tL.length} loads · ${tV} ${unit} · ${tWt}\n`;
+  const mat=document.getElementById('matType').value||'Not specified';
+  const u=metric?'m³':'yd³';
+  const n=loads.length;
+  const vol=loads.reduce((s,l)=>s+(parseFloat(l.vol)||0),0).toFixed(1);
+  const wts=loads.map(l=>parseFloat(l.weight)).filter(w=>!isNaN(w)&&w>0);
+  const twt=wts.length>0?wts.reduce((a,b)=>a+b,0).toFixed(1)+'t':'Not scaled';
+  let r=`T.E.A. TRUCK LOAD REPORT\n========================\nDate: ${date}\nJob: ${job}\nMaterial: ${mat}\n========================\nTOTALS:\nTotal Loads: ${n}\nEst. Volume: ${vol} ${u}\nScale Weight: ${twt}\n========================\nBY TRUCK:\n`;
+  trucks.forEach(t=>{
+    const tl=loads.filter(l=>l.tid===t.id);
+    const tv=tl.reduce((s,l)=>s+(parseFloat(l.vol)||0),0).toFixed(1);
+    const tw=tl.map(l=>parseFloat(l.weight)).filter(w=>!isNaN(w)&&w>0);
+    const twt2=tw.length>0?tw.reduce((a,b)=>a+b,0).toFixed(1)+'t':'—';
+    r+=`${t.name} (${t.type}): ${tl.length} loads · ${tv} ${u} · ${twt2}\n`;
   });
   r+=`========================\nLOAD LOG:\n`;
-  allLoads.forEach(l=>{r+=`#${l.id} ${l.time} — ${l.truckName} (${l.type}) — ${l.vol} ${unit}${l.weight?' — '+l.weight+'t':''}\n`;});
+  loads.forEach(l=>{r+=`#${l.id} ${l.time} — ${l.tn} (${l.type}) — ${l.vol} ${u}${l.weight?' — '+l.weight+'t':''}\n`;});
   r+=`========================\nThe Excavation Academy\ntheexcavationacademy.github.io`;
   return r;
 }
-function shareEmail(){window.location.href=`mailto:?subject=${encodeURIComponent('Truck Load Report — '+document.getElementById('jobDate').value)}&body=${encodeURIComponent(buildReport())}`;}
-function shareSMS(){window.location.href=`sms:?body=${encodeURIComponent(buildReport())}`;}
-function copyReport(){const r=buildReport();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(r).then(()=>showToast('Copied'));}else{const ta=document.createElement('textarea');ta.value=r;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);showToast('Copied');}}
-function exportCSV(){
-  const date=document.getElementById('jobDate').value;
-  const job=document.getElementById('jobName').value||'Job';
-  const unit=metric?'m3':'yd3';
-  let csv=`Load #,Time,Truck,Type,Volume (${unit}),Scale Weight (t)\n`;
-  allLoads.forEach(l=>{csv+=`${l.id},${l.time},"${l.truckName}","${l.type}",${l.vol},${l.weight||''}\n`;});
+function doEmail(){window.location.href=`mailto:?subject=${encodeURIComponent('Truck Load Report — '+document.getElementById('jobDate').value)}&body=${encodeURIComponent(buildReport())}`;}
+function doSMS(){window.location.href=`sms:?body=${encodeURIComponent(buildReport())}`;}
+function doCopy(){const r=buildReport();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(r).then(()=>toast('Copied to clipboard'));}else{const ta=document.createElement('textarea');ta.value=r;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);toast('Copied');}}
+function doCSV(){
+  const date=document.getElementById('jobDate').value,job=document.getElementById('jobName').value||'Job',u=metric?'m3':'yd3';
+  let csv=`Load #,Time,Truck,Type,Volume (${u}),Scale Weight (t)\n`;
+  loads.forEach(l=>{csv+=`${l.id},${l.time},"${l.tn}","${l.type}",${l.vol},${l.weight||''}\n`;});
   const a=document.createElement('a');
   a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
   a.download=`TEA_Trucks_${date}_${job.replace(/\s+/g,'_')}.csv`;
-  a.click();showToast('CSV exported');
+  a.click();toast('CSV exported');
 }
 
-// THEME
-function toggleTheme(){darkMode=!darkMode;document.body.classList.toggle('light',!darkMode);document.getElementById('themeBtn').textContent=darkMode?'☀ Light':'☾ Dark';saveState();}
+// ── THEME ─────────────────────────────────────────────────
+function toggleTheme(){dark=!dark;document.body.classList.toggle('light',!dark);document.getElementById('themeBtn').textContent=dark?'☀ Light':'☾ Dark';save();}
 
-// RESET
+// ── RESET ─────────────────────────────────────────────────
 function resetDay(){
   if(!confirm('Reset all data for a new day?')) return;
-  allLoads=[];loadCounter=0;trucks.forEach(t=>t.loads=[]);laps=[];resetTimer();
+  loads=[];lc=0;trucks.forEach(t=>t.loads=[]);laps=[];resetT();
   document.getElementById('jobName').value='';
   document.getElementById('jobDate').value=new Date().toISOString().split('T')[0];
-  document.getElementById('materialType').value='';
+  document.getElementById('matType').value='';
   document.getElementById('matCustom').style.display='none';
-  renderFleet();renderLog();updateTotals();saveState();showToast('Day reset — ready');
+  renderFleet();renderLog();updateTotals();save();toast('Day reset — ready');
 }
 
-// SAVE / LOAD
-function saveState(){
-  try{localStorage.setItem('tea_tlc',JSON.stringify({trucks,allLoads,loadCounter,metric,darkMode,job:document.getElementById('jobName').value,date:document.getElementById('jobDate').value,mat:document.getElementById('materialType').value,matC:document.getElementById('matCustom').value}));}catch(e){}
+// ── PERSIST ───────────────────────────────────────────────
+function save(){
+  try{localStorage.setItem('tea_tlc2',JSON.stringify({
+    trucks,loads,lc,dark,metric,
+    job:document.getElementById('jobName').value,
+    date:document.getElementById('jobDate').value,
+    mat:document.getElementById('matType').value,
+    matc:document.getElementById('matCustom').value
+  }));}catch(e){}
 }
 function loadState(){
   try{
-    const raw=localStorage.getItem('tea_tlc');if(!raw)return;
+    const raw=localStorage.getItem('tea_tlc2');if(!raw)return;
     const s=JSON.parse(raw);
-    trucks=s.trucks||[];allLoads=s.allLoads||[];loadCounter=s.loadCounter||allLoads.length;
-    metric=s.metric!==undefined?s.metric:true;darkMode=s.darkMode!==undefined?s.darkMode:true;
+    trucks=s.trucks||[];loads=s.loads||[];lc=s.lc||loads.length;
+    dark=s.dark!==undefined?s.dark:true;metric=s.metric!==undefined?s.metric:true;
     if(s.job)document.getElementById('jobName').value=s.job;
     if(s.date)document.getElementById('jobDate').value=s.date;
-    if(s.mat){document.getElementById('materialType').value=s.mat;if(s.mat==='Custom')document.getElementById('matCustom').style.display='block';}
-    if(s.matC)document.getElementById('matCustom').value=s.matC;
-    document.body.classList.toggle('light',!darkMode);
-    document.getElementById('themeBtn').textContent=darkMode?'☀ Light':'☾ Dark';
+    if(s.mat){document.getElementById('matType').value=s.mat;if(s.mat==='Custom')document.getElementById('matCustom').style.display='block';}
+    if(s.matc)document.getElementById('matCustom').value=s.matc;
+    document.body.classList.toggle('light',!dark);
+    document.getElementById('themeBtn').textContent=dark?'☀ Light':'☾ Dark';
     renderFleet();renderLog();updateTotals();
   }catch(e){}
 }
 
-// TOAST
-function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
+// ── TOAST ─────────────────────────────────────────────────
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
 </script>
 </body>
 </html>
