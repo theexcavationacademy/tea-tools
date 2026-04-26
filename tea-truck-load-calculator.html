@@ -118,7 +118,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;min-
 .log-ttl{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);}
 .log-clr{background:none;border:none;color:var(--red);font-size:11px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-weight:700;text-transform:uppercase;}
 .log-list{max-height:220px;overflow-y:auto;}
-.log-row{display:grid;grid-template-columns:28px 50px 1fr 56px 62px;gap:5px;align-items:center;padding:5px 0;border-bottom:1px solid var(--border);font-size:11px;}
+.log-row{display:grid;grid-template-columns:28px 50px 1fr 48px 52px 62px;gap:5px;align-items:center;padding:5px 0;border-bottom:1px solid var(--border);font-size:11px;}
 .log-row:last-child{border-bottom:none;}
 .ln2{font-family:'Barlow Condensed',sans-serif;font-weight:900;color:var(--gold);font-size:13px;}
 .ltm{color:var(--muted);font-size:10px;}
@@ -344,17 +344,41 @@ function logLoad(id){
   const t=trucks.find(t=>t.id===id);
   if(!t) return;
   lc++;
-  const time=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-  t.loads.push({time,weight:''});
-  loads.push({id:lc,tid:id,tn:t.name,type:t.type,time,vol:t.vol,weight:''});
+  const now=Date.now();
+  const time=new Date(now).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  t.loads.push({time,ts:now,weight:''});
+  loads.push({id:lc,tid:id,tn:t.name,type:t.type,time,ts:now,vol:t.vol,weight:''});
   renderFleet(); renderLog(); updateTotals(); save();
-  toast(t.name+' — Load #'+t.loads.length+' ✓');
-  // bump animation
+  // show cycle time in toast if 2+ loads
+  const tLoads=loads.filter(l=>l.tid===id);
+  if(tLoads.length>=2){
+    const prev=tLoads[tLoads.length-2];
+    const cycMins=Math.round((now-prev.ts)/60000);
+    toast(t.name+' — Load #'+t.loads.length+' ✓  Cycle: '+fmtCycle(cycMins));
+  } else {
+    toast(t.name+' — Load #'+t.loads.length+' ✓');
+  }
   const el=document.getElementById('cnt-'+id);
   if(el){el.classList.add('bump');setTimeout(()=>el.classList.remove('bump'),150);}
-  // pulse card border
   const card=document.getElementById('card-'+id);
   if(card){card.classList.add('active');setTimeout(()=>card.classList.remove('active'),600);}
+}
+
+// format minutes into Xm or Xh Xm
+function fmtCycle(mins){
+  if(mins<60) return mins+'m';
+  return Math.floor(mins/60)+'h '+( mins%60)+'m';
+}
+
+// get cycle times array for a truck
+function getCycles(tid){
+  const tl=loads.filter(l=>l.tid===tid).sort((a,b)=>a.ts-b.ts);
+  const cycles=[];
+  for(let i=1;i<tl.length;i++){
+    const mins=Math.round((tl[i].ts-tl[i-1].ts)/60000);
+    cycles.push(mins);
+  }
+  return cycles;
 }
 
 function undoLoad(id){
@@ -407,7 +431,8 @@ function renderFleet(){
       <div class="tc-stats">
         <span>Vol: <b>${tv} ${u}</b></span>
         <span>Scale: <b>${twt}</b></span>
-        ${tr.loads.length>0?`<span>Last: <b>${tr.loads[tr.loads.length-1].time}</b></span>`:''}
+        ${tr.loads.length>0?`<span>Last out: <b>${tr.loads[tr.loads.length-1].time}</b></span>`:''}
+        ${(()=>{const cyc=getCycles(tr.id);if(cyc.length===0)return '';const avg=Math.round(cyc.reduce((a,b)=>a+b,0)/cyc.length);return `<span>Avg cycle: <b style="color:var(--green);">${fmtCycle(avg)}</b></span>`;})()}
       </div>
     </div>`;
   }).join('');
@@ -418,13 +443,27 @@ function renderLog(){
   const ll=document.getElementById('logList');
   if(loads.length===0){ll.innerHTML='<div class="log-empty">No loads logged yet — tap a truck button above</div>';return;}
   const u=metric?'m³':'yd³';
+  // build per-truck load lists for cycle calc
+  const byTruck={};
+  loads.forEach(l=>{if(!byTruck[l.tid])byTruck[l.tid]=[];byTruck[l.tid].push(l);});
+  Object.values(byTruck).forEach(arr=>arr.sort((a,b)=>a.ts-b.ts));
+
   ll.innerHTML=[...loads].reverse().map((l,ri)=>{
     const idx=loads.length-1-ri;
+    // find cycle time = gap from previous load of same truck
+    const tArr=byTruck[l.tid]||[];
+    const pos=tArr.findIndex(x=>x.id===l.id);
+    let cycHtml='—';
+    if(pos>0 && tArr[pos-1].ts){
+      const mins=Math.round((l.ts-tArr[pos-1].ts)/60000);
+      cycHtml=`<span style="color:var(--green);font-weight:700;">${fmtCycle(mins)}</span>`;
+    }
     return `
     <div class="log-row">
       <div class="ln2">#${l.id}</div>
       <div class="ltm">${l.time}</div>
-      <div class="ltn">${l.tn} · ${l.type}</div>
+      <div class="ltn">${l.tn}</div>
+      <div class="lvol" style="font-size:10px;">${cycHtml}</div>
       <div class="lvol">${l.vol>0?l.vol+' '+u:'—'}</div>
       <input class="winp" type="number" placeholder="wt(t)" value="${l.weight}" step="0.1" oninput="setWt(${idx},this.value)" />
     </div>`;
@@ -465,8 +504,10 @@ function updateTotals(){
     const tv=tl.reduce((s,l)=>s+(parseFloat(l.vol)||0),0).toFixed(1);
     const tw=tl.map(l=>parseFloat(l.weight)).filter(w=>!isNaN(w)&&w>0);
     const twt2=tw.length>0?tw.reduce((a,b)=>a+b,0).toFixed(1)+'t':'—';
+    const cyc=getCycles(t.id);
+    const avgCyc=cyc.length>0?fmtCycle(Math.round(cyc.reduce((a,b)=>a+b,0)/cyc.length)):'—';
     return `<div class="sum-row">
-      <div class="sn">${t.name}<br><span style="font-size:9px;color:var(--muted);font-weight:400;">${t.type}</span></div>
+      <div class="sn">${t.name}<br><span style="font-size:9px;color:var(--muted);font-weight:400;">${t.type} · Avg cycle: <span style="color:var(--green);">${avgCyc}</span></span></div>
       <div class="sv">${tl.length}</div>
       <div class="sv">${tv} ${u}</div>
       <div class="sv">${twt2}</div>
@@ -504,7 +545,9 @@ function buildReport(){
     const tv=tl.reduce((s,l)=>s+(parseFloat(l.vol)||0),0).toFixed(1);
     const tw=tl.map(l=>parseFloat(l.weight)).filter(w=>!isNaN(w)&&w>0);
     const twt2=tw.length>0?tw.reduce((a,b)=>a+b,0).toFixed(1)+'t':'—';
-    r+=`${t.name} (${t.type}): ${tl.length} loads · ${tv} ${u} · ${twt2}\n`;
+    const cyc=getCycles(t.id);
+    const avgCyc=cyc.length>0?fmtCycle(Math.round(cyc.reduce((a,b)=>a+b,0)/cyc.length)):'—';
+    r+=`${t.name} (${t.type}): ${tl.length} loads · ${tv} ${u} · ${twt2} · Avg cycle: ${avgCyc}\n`;
   });
   r+=`========================\nLOAD LOG:\n`;
   loads.forEach(l=>{r+=`#${l.id} ${l.time} — ${l.tn} (${l.type}) — ${l.vol} ${u}${l.weight?' — '+l.weight+'t':''}\n`;});
