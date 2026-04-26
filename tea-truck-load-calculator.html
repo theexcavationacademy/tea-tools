@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T.E.A. Truck Load Counter</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#F97316;--gold2:#e06510;--dark:#0f1117;--dark2:#1a1d27;--dark3:#242836;--border:rgba(255,255,255,0.08);--text:#f0f0f0;--muted:#8a8fa8;--muted2:#555a70;--green:#22c55e;--red:#ef4444;--blue:#3b82f6;--surface:var(--dark2);--card:var(--dark3);--bg:var(--dark);}
+.light{--dark:#f0f2f5;--dark2:#ffffff;--dark3:#e8eaef;--border:rgba(0,0,0,0.1);--text:#111827;--muted:#6b7280;--muted2:#9ca3af;--surface:#ffffff;--card:#f0f2f5;--bg:#f0f2f5;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;min-height:100vh;padding-bottom:60px;transition:background 0.3s,color 0.3s;}
+.header{background:var(--surface);border-bottom:3px solid var(--gold);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 12px rgba(0,0,0,0.2);}
+.header-brand{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:19px;color:var(--gold);letter-spacing:0.06em;text-transform:uppercase;}
+.header-sub{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-top:1px;}
+.header-right{display:flex;gap:8px;}
+.icon-btn{background:var(--card);border:1px solid var(--border);color:var(--muted);padding:7px 12px;border-radius:8px;font-size:12px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;transition:all 0.2s;}
+.icon-btn:hover{border-color:var(--gold);color:var(--gold);}
+.warn{background:linear-gradient(135deg,#7c2d12,#92400e);border:1px solid #f97316;border-radius:10px;padding:12px 14px;margin:12px 14px;display:flex;gap:10px;align-items:flex-start;}
+.warn-icon{font-size:16px;flex-shrink:0;}
+.warn-text{font-size:11px;line-height:1.55;color:#fde68a;}
+.warn-text strong{color:#fbbf24;display:block;font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:2px;}
+.wrap{max-width:640px;margin:0 auto;padding:0 14px;}
+.date-bar{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:11px 13px;margin:10px 0;display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+.date-inp{background:var(--card);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;padding:5px 9px;outline:none;}
+.date-inp::-webkit-calendar-picker-indicator{filter:invert(0.5);}
+.txt-inp{flex:1;min-width:140px;background:var(--card);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:'Barlow',sans-serif;font-size:13px;padding:5px 9px;outline:none;}
+.txt-inp::placeholder{color:var(--muted);}
+.txt-inp:focus,.date-inp:focus{border-color:var(--gold);}
+.sel{background:var(--card);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;padding:8px 9px;outline:none;cursor:pointer;width:100%;}
+.sel:focus{border-color:var(--gold);}
+.mat-row{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;}
+.mat-row .sel{flex:1;min-width:140px;}
+.sec-lbl{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:0.15em;color:var(--muted);margin:14px 0 7px;}
+.fleet-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:13px;margin-bottom:11px;}
+.fleet-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:11px;}
+.fleet-ttl{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);}
+.add-btn{background:var(--gold);border:none;border-radius:7px;color:#000;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:12px;padding:6px 14px;cursor:pointer;text-transform:uppercase;letter-spacing:0.06em;}
+.truck-row{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:11px 12px;margin-bottom:8px;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;}
+.truck-row:last-child{margin-bottom:0;}
+.t-name-row{display:flex;gap:6px;align-items:center;margin-bottom:7px;flex-wrap:wrap;}
+.t-name-inp{background:var(--surface);border:1px solid var(--border);border-radius:5px;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;padding:4px 7px;outline:none;width:110px;}
+.t-name-inp:focus{border-color:var(--gold);}
+.t-type-sel{background:var(--surface);border:1px solid var(--border);border-radius:5px;color:var(--text);font-family:'Barlow',sans-serif;font-size:11px;padding:4px 6px;outline:none;cursor:pointer;}
+.t-remove{background:none;border:none;color:var(--muted2);font-size:15px;cursor:pointer;padding:2px 5px;}
+.t-remove:hover{color:var(--red);}
+.t-stats{display:flex;gap:10px;font-size:11px;color:var(--muted);flex-wrap:wrap;}
+.t-stats span{color:var(--text);font-weight:600;}
+.t-controls{display:flex;flex-direction:column;align-items:center;gap:5px;}
+.t-count{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:38px;color:var(--gold);line-height:1;text-align:center;transition:transform 0.15s;}
+.t-load-btn{background:var(--gold);border:none;border-radius:8px;color:#000;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:13px;padding:10px 14px;cursor:pointer;text-transform:uppercase;letter-spacing:0.05em;white-space:nowrap;transition:all 0.15s;-webkit-tap-highlight-color:transparent;}
+.t-load-btn:active{transform:scale(0.94);background:var(--gold2);}
+.t-undo-btn{background:none;border:1px solid var(--border);border-radius:6px;color:var(--muted);font-size:11px;padding:3px 8px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-weight:700;text-transform:uppercase;}
+.t-undo-btn:hover{border-color:var(--red);color:var(--red);}
+.totals-bar{background:var(--surface);border:1px solid var(--gold);border-radius:12px;padding:14px;margin-bottom:11px;display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center;}
+.tot-val{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:26px;color:var(--gold);line-height:1;}
+.tot-lbl{font-size:9px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-top:3px;}
+.timer-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:11px;}
+.timer-display{font-family:'Barlow Condensed',sans-serif;font-size:52px;font-weight:900;text-align:center;color:var(--text);letter-spacing:0.04em;margin-bottom:10px;font-variant-numeric:tabular-nums;}
+.timer-display.running{color:var(--green);}
+.timer-display.stopped{color:var(--gold);}
+.timer-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:7px;}
+.timer-btn{padding:10px 5px;border:1px solid var(--border);border-radius:8px;background:var(--card);color:var(--text);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:0.05em;cursor:pointer;}
+.t-start{border-color:var(--green);color:var(--green);}
+.t-stop{border-color:var(--red);color:var(--red);}
+.t-lap{border-color:var(--blue);color:var(--blue);}
+.t-reset{grid-column:span 3;border-color:var(--border);color:var(--muted);}
+.lap-list{max-height:100px;overflow-y:auto;}
+.lap-item{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);font-size:12px;}
+.lap-item:last-child{border-bottom:none;}
+.lap-n{color:var(--muted);}
+.lap-t{font-family:'Barlow Condensed',sans-serif;font-weight:700;color:var(--blue);}
+.log-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:13px;margin-bottom:11px;}
+.log-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;}
+.log-ttl{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);}
+.log-clear{background:none;border:none;color:var(--red);font-size:11px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-weight:700;text-transform:uppercase;}
+.log-list{max-height:220px;overflow-y:auto;}
+.log-item{display:grid;grid-template-columns:28px 52px 1fr 58px 65px;gap:5px;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);font-size:11px;}
+.log-item:last-child{border-bottom:none;}
+.log-num{font-family:'Barlow Condensed',sans-serif;font-weight:900;color:var(--gold);font-size:14px;}
+.log-time{color:var(--muted);}
+.log-truck{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px;}
+.log-vol{font-family:'Barlow Condensed',sans-serif;font-weight:700;text-align:center;}
+.w-inp{background:var(--card);border:1px solid var(--border);border-radius:5px;color:var(--text);font-size:11px;padding:3px 4px;width:100%;outline:none;text-align:center;}
+.w-inp:focus{border-color:var(--gold);}
+.log-empty{color:var(--muted);font-size:13px;text-align:center;padding:18px 0;}
+.summary-box{background:var(--surface);border:1px solid var(--gold);border-radius:12px;padding:14px;margin-bottom:11px;}
+.summary-ttl{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:14px;text-transform:uppercase;letter-spacing:0.1em;color:var(--gold);margin-bottom:12px;}
+.ptr-row{display:grid;grid-template-columns:1fr 46px 68px 68px;gap:6px;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px;align-items:center;}
+.ptr-row:last-child{border-bottom:none;}
+.ptr-name{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;}
+.ptr-val{text-align:center;font-family:'Barlow Condensed',sans-serif;font-weight:700;}
+.ptr-lbl{font-size:9px;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);text-align:center;}
+.share-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;}
+.share-btn{padding:12px;border:1px solid var(--border);border-radius:9px;background:var(--card);color:var(--text);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:0.06em;cursor:pointer;text-align:center;transition:opacity 0.2s;}
+.s-email{border-color:var(--blue);color:var(--blue);}
+.s-sms{border-color:var(--green);color:var(--green);}
+.s-csv{border-color:var(--gold);color:var(--gold);}
+.s-copy{border-color:var(--muted);color:var(--muted);}
+.share-btn:active{opacity:0.7;}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--dark3);border:1px solid var(--gold);color:var(--text);padding:10px 20px;border-radius:30px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:0.07em;transition:transform 0.3s;z-index:999;white-space:nowrap;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.footer{text-align:center;padding:18px 16px 6px;font-size:11px;color:var(--muted);}
+.footer a{color:var(--gold);text-decoration:none;}
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+@media(max-width:400px){.totals-bar{grid-template-columns:1fr 1fr;}.log-item{grid-template-columns:26px 46px 1fr 54px;}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="header-brand">T.E.A. Truck Counter</div>
+    <div class="header-sub">Field Load Tracker</div>
+  </div>
+  <div class="header-right">
+    <button class="icon-btn" onclick="toggleTheme()" id="themeBtn">☀ Light</button>
+    <button class="icon-btn" onclick="resetDay()">↺ Reset</button>
+  </div>
+</div>
+
+<div class="warn">
+  <div class="warn-icon">⚠️</div>
+  <div class="warn-text">
+    <strong>Important — Data Warning</strong>
+    Data is saved in this browser only. Clearing browser cache or cookies will permanently delete all records. Always email or export your report before closing the browser at end of day.
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="date-bar">
+    <input type="date" class="date-inp" id="jobDate" />
+    <input type="text" class="txt-inp" id="jobName" placeholder="Job name / location" oninput="saveState()" />
+  </div>
+
+  <div class="mat-row">
+    <select class="sel" id="materialType" onchange="onMaterialChange()">
+      <option value="">-- Select Material --</option>
+      <option>Common Fill</option>
+      <option>Select Fill</option>
+      <option>Gravel</option>
+      <option>Sand</option>
+      <option>Rock</option>
+      <option>Topsoil</option>
+      <option>Asphalt</option>
+      <option>Custom</option>
+    </select>
+    <input type="text" class="txt-inp" id="matCustom" placeholder="Describe material..." style="display:none;flex:1;" oninput="saveState()" />
+  </div>
+
+  <div class="sec-lbl">Truck Fleet</div>
+  <div class="fleet-box">
+    <div class="fleet-hdr">
+      <div class="fleet-ttl">Active Trucks on Site</div>
+      <button class="add-btn" onclick="addTruck()">+ Add Truck</button>
+    </div>
+    <div id="fleetList"></div>
+  </div>
+
+  <div class="totals-bar">
+    <div><div class="tot-val" id="totLoads">0</div><div class="tot-lbl">Total Loads</div></div>
+    <div><div class="tot-val" id="totVol">0</div><div class="tot-lbl" id="totVolLbl">Est. m³</div></div>
+    <div><div class="tot-val" id="totWt">—</div><div class="tot-lbl">Scale (t)</div></div>
+    <div><div class="tot-val" id="totAvg">—</div><div class="tot-lbl" id="totAvgLbl">Avg m³</div></div>
+  </div>
+
+  <div class="sec-lbl">⏱ Load / Round Trip Timer</div>
+  <div class="timer-box">
+    <div class="timer-display" id="timerDisp">00:00:00</div>
+    <div class="timer-grid">
+      <button class="timer-btn t-start" onclick="startTimer()">Start</button>
+      <button class="timer-btn t-stop" onclick="stopTimer()">Stop</button>
+      <button class="timer-btn t-lap" onclick="lapTimer()">Lap</button>
+      <button class="timer-btn t-reset" onclick="resetTimer()">Reset Timer</button>
+    </div>
+    <div class="lap-list" id="lapList"></div>
+  </div>
+
+  <div class="sec-lbl">Load Log</div>
+  <div class="log-box">
+    <div class="log-hdr">
+      <div class="log-ttl">All Loads Today</div>
+      <button class="log-clear" onclick="clearAll()">Clear All</button>
+    </div>
+    <div class="log-list" id="logList"><div class="log-empty">No loads logged yet</div></div>
+  </div>
+
+  <div class="sec-lbl">End of Day Summary</div>
+  <div class="summary-box">
+    <div class="summary-ttl">Daily Report</div>
+    <div class="ptr-row" style="padding-bottom:5px;margin-bottom:3px;">
+      <div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;">Truck</div>
+      <div class="ptr-lbl">Loads</div>
+      <div class="ptr-lbl">Est. Vol</div>
+      <div class="ptr-lbl">Scale (t)</div>
+    </div>
+    <div id="perTruck"></div>
+    <div class="share-grid">
+      <button class="share-btn s-email" onclick="shareEmail()">📧 Email</button>
+      <button class="share-btn s-sms" onclick="shareSMS()">💬 Text</button>
+      <button class="share-btn s-csv" onclick="exportCSV()">📊 CSV</button>
+      <button class="share-btn s-copy" onclick="copyReport()">📋 Copy</button>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <a href="https://theexcavationacademy.github.io/tea-tools/tea-tools-hub.html">← Back to T.E.A. Field Tools</a><br><br>theexcavationacademy.github.io
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const PRESETS={
+  'Tandem':{vol:10,payload:15},
+  'Tridem':{vol:14,payload:20},
+  'Wagon (B-Train)':{vol:20,payload:28},
+  'Super B':{vol:26,payload:34},
+  'Belly Dump':{vol:22,payload:30},
+  'Rock Truck':{vol:30,payload:40},
+  'Custom':{vol:0,payload:0}
+};
+
+let trucks=[], allLoads=[], loadCounter=0;
+let metric=true, darkMode=true;
+let timerInt=null, timerOn=false, timerSec=0, laps=[];
+
+// INIT
+window.addEventListener('load',()=>{
+  document.getElementById('jobDate').value=new Date().toISOString().split('T')[0];
+  document.getElementById('jobDate').addEventListener('change',saveState);
+  loadState();
+  if(trucks.length===0) addTruck('Truck 1','Tandem');
+});
+
+function onMaterialChange(){
+  const v=document.getElementById('materialType').value;
+  document.getElementById('matCustom').style.display=v==='Custom'?'block':'none';
+  saveState();
+}
+
+// TRUCKS
+function addTruck(name,type){
+  const id=Date.now()+Math.random();
+  const t=type||'Tandem';
+  trucks.push({id,name:name||('Truck '+(trucks.length+1)),type:t,vol:PRESETS[t].vol,loads:[]});
+  renderFleet(); saveState();
+}
+
+function removeTruck(id){
+  if(trucks.length<=1){showToast('Need at least one truck');return;}
+  trucks=trucks.filter(t=>t.id!==id);
+  allLoads=allLoads.filter(l=>l.truckId!==id);
+  renderFleet(); renderLog(); updateTotals(); saveState();
+}
+
+function changeTruckType(id,type){
+  const truck=trucks.find(t=>t.id===id);
+  if(!truck) return;
+  truck.type=type;
+  if(type!=='Custom') truck.vol=PRESETS[type].vol;
+  renderFleet(); saveState();
+}
+
+function changeTruckName(id,val){
+  const truck=trucks.find(t=>t.id===id);
+  if(truck){truck.name=val;allLoads.filter(l=>l.truckId===id).forEach(l=>l.truckName=val);renderLog();saveState();}
+}
+
+function changeTruckVol(id,val){
+  const truck=trucks.find(t=>t.id===id);
+  if(truck){truck.vol=parseFloat(val)||0;updateTotals();saveState();}
+}
+
+function logLoad(id){
+  const truck=trucks.find(t=>t.id===id);
+  if(!truck) return;
+  loadCounter++;
+  const time=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  truck.loads.push({time,weight:''});
+  allLoads.push({id:loadCounter,truckId:id,truckName:truck.name,type:truck.type,time,vol:truck.vol,weight:''});
+  renderFleet(); renderLog(); updateTotals(); saveState();
+  showToast(truck.name+' — Load #'+truck.loads.length);
+  const el=document.getElementById('cnt-'+id);
+  if(el){el.style.transform='scale(1.3)';setTimeout(()=>el.style.transform='scale(1)',150);}
+}
+
+function undoLoad(id){
+  const truck=trucks.find(t=>t.id===id);
+  if(!truck||truck.loads.length===0){showToast('Nothing to undo');return;}
+  truck.loads.pop();
+  for(let i=allLoads.length-1;i>=0;i--){if(allLoads[i].truckId===id){allLoads.splice(i,1);break;}}
+  renderFleet(); renderLog(); updateTotals(); saveState();
+  showToast('Undo — '+truck.name);
+}
+
+function renderFleet(){
+  const list=document.getElementById('fleetList');
+  if(trucks.length===0){list.innerHTML='<div style="color:var(--muted);text-align:center;padding:14px;font-size:13px;">No trucks added</div>';return;}
+  const unit=metric?'m³':'yd³';
+  list.innerHTML=trucks.map(truck=>{
+    const p=PRESETS[truck.type]||PRESETS['Custom'];
+    const typeOpts=Object.keys(PRESETS).map(k=>`<option${k===truck.type?' selected':''}>${k}</option>`).join('');
+    const tLoads=allLoads.filter(l=>l.truckId===truck.id);
+    const tVol=tLoads.reduce((s,l)=>s+(parseFloat(l.vol)||0),0).toFixed(1);
+    const tWts=tLoads.map(l=>parseFloat(l.weight)).filter(w=>!isNaN(w)&&w>0);
+    const tWt=tWts.length>0?tWts.reduce((a,b)=>a+b,0).toFixed(1)+'t':'—';
+    const hint=truck.type!=='Custom'?`~${p.vol}${unit} · ~${p.payload}t avg payload`:'';
+    return `
+    <div class="truck-row">
+      <div>
+        <div class="t-name-row">
+          <input class="t-name-inp" value="${truck.name}" onchange="changeTruckName(${truck.id},this.value)" />
+          <select class="t-type-sel" onchange="changeTruckType(${truck.id},this.value)">${typeOpts}</select>
+          <button class="t-remove" onclick="removeTruck(${truck.id})">✕</button>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+          ${truck.type==='Custom'?`<input type="number" style="width:75px;background:var(--surface);border:1px solid var(--border);border-radius:5px;color:var(--text);font-size:11px;padding:3px 5px;outline:none;" placeholder="${unit}/load" value="${truck.vol||''}" oninput="changeTruckVol(${truck.id},this.value)" />`:''}
+          <div class="t-stats">${hint?`<span style="color:var(--muted2);">${hint}</span> · `:''}<span>Loads: <span>${truck.loads.length}</span></span> · <span>Vol: <span>${tVol} ${unit}</span></span> · <span>Wt: <span>${tWt}</span></span></div>
+        </div>
+      </div>
+      <div class="t-controls">
+        <div class="t-count" id="cnt-${truck.id}">${truck.loads.length}</div>
+        <button class="t-load-btn" onclick="logLoad(${truck.id})">✓ Loaded</button>
+        <button class="t-undo-btn" onclick="undoLoad(${truck.id})">↩ Undo</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// LOG
+function renderLog(){
+  const list=document.getElementById('logList');
+  if(allLoads.length===0){list.innerHTML='<div class="log-empty">No loads logged yet</div>';return;}
+  const unit=metric?'m³':'yd³';
+  list.innerHTML=[...allLoads].reverse().map((l,ri)=>{
+    const idx=allLoads.length-1-ri;
+    return `
+    <div class="log-item">
+      <div class="log-num">#${l.id}</div>
+      <div class="log-time">${l.time}</div>
+      <div class="log-truck">${l.truckName} · ${l.type}</div>
+      <div class="log-vol">${l.vol>0?l.vol+' '+unit:'—'}</div>
+      <input class="w-inp" type="number" placeholder="wt(t)" value="${l.weight}" step="0.1" oninput="updateWt(${idx},this.value)" />
+    </div>`;
+  }).join('');
+}
+
+function updateWt(idx,val){
+  allLoads[idx].weight=val;
+  const truck=trucks.find(t=>t.id===allLoads[idx].truckId);
+  if(truck){
+    let cnt=0;
+    for(let i=0;i<=idx;i++) if(allLoads[i].truckId===allLoads[idx].truckId) cnt++;
+    if(truck.loads[cnt-1]) truck.loads[cnt-1].weight=val;
+  }
+  updateTotals(); saveState();
+}
+
+function clearAll(){
+  if(allLoads.length===0) return;
+  if(!confirm('Clear all load data?')) return;
+  allLoads=[]; trucks.forEach(t=>t.loads=[]);
+  renderFleet(); renderLog(); updateTotals(); saveState();
+}
+
+// TOTALS
+function updateTotals(){
+  const unit=metric?'m³':'yd³';
+  const n=allLoads.length;
+  const vol=allLoads.reduce((s,l)=>s+(parseFloat(l.vol)||0),0).toFixed(1);
+  const wts=allLoads.map(l=>parseFloat(l.weight)).filter(w=>!isNaN(w)&&w>0);
+  const totWt=wts.length>0?wts.reduce((a,b)=>a+b,0).toFixed(1)+'t':'—';
+  const avg=n>0?(allLoads.reduce((s,l)=>s+(parseFloat(l.vol)||0),0)/n).toFixed(1)+''+unit:'—';
+  document.getElementById('totLoads').textContent=n;
+  document.getElementById('totVol').textContent=vol;
+  document.getElementById('totVolLbl').textContent='Est. '+unit;
+  document.getElementById('totWt').textContent=totWt;
+  document.getElementById('totAvg').textContent=avg;
+  document.getElementById('totAvgLbl').textContent='Avg '+unit;
+  // per truck
+  const pt=document.getElementById('perTruck');
+  pt.innerHTML=trucks.map(truck=>{
+    const tL=allLoads.filter(l=>l.truckId===truck.id);
+    const tV=tL.reduce((s,l)=>s+(parseFloat(l.vol)||0),0).toFixed(1);
+    const tW=tL.map(l=>parseFloat(l.weight)).filter(w=>!isNaN(w)&&w>0);
+    const tWt=tW.length>0?tW.reduce((a,b)=>a+b,0).toFixed(1)+'t':'—';
+    return `<div class="ptr-row">
+      <div class="ptr-name">${truck.name}<br><span style="font-size:9px;color:var(--muted);font-weight:400;">${truck.type}</span></div>
+      <div class="ptr-val">${tL.length}</div>
+      <div class="ptr-val">${tV} ${unit}</div>
+      <div class="ptr-val">${tWt}</div>
+    </div>`;
+  }).join('');
+}
+
+// TIMER
+function startTimer(){if(timerOn)return;timerOn=true;timerInt=setInterval(()=>{timerSec++;updTimer();},1000);document.getElementById('timerDisp').className='timer-display running';}
+function stopTimer(){if(!timerOn)return;timerOn=false;clearInterval(timerInt);document.getElementById('timerDisp').className='timer-display stopped';showToast('Stopped: '+fmtTime(timerSec));}
+function lapTimer(){const n=laps.length+1,split=laps.length>0?timerSec-laps[laps.length-1].total:timerSec;laps.push({n,split,total:timerSec});const el=document.createElement('div');el.className='lap-item';el.innerHTML=`<span class="lap-n">Lap ${n}</span><span class="lap-t">${fmtTime(split)}</span><span style="color:var(--muted2);font-size:10px;">Total ${fmtTime(timerSec)}</span>`;document.getElementById('lapList').prepend(el);showToast('Lap '+n+': '+fmtTime(split));}
+function resetTimer(){timerOn=false;clearInterval(timerInt);timerSec=0;laps=[];updTimer();document.getElementById('timerDisp').className='timer-display';document.getElementById('lapList').innerHTML='';}
+function updTimer(){document.getElementById('timerDisp').textContent=fmtTime(timerSec);}
+function fmtTime(s){return[Math.floor(s/3600),Math.floor((s%3600)/60),s%60].map(n=>n.toString().padStart(2,'0')).join(':');}
+
+// REPORT
+function buildReport(){
+  const date=document.getElementById('jobDate').value;
+  const job=document.getElementById('jobName').value||'Job Site';
+  const mat=document.getElementById('materialType').value||'Not specified';
+  const unit=metric?'m³':'yd³';
+  const n=allLoads.length;
+  const vol=allLoads.reduce((s,l)=>s+(parseFloat(l.vol)||0),0).toFixed(1);
+  const wts=allLoads.map(l=>parseFloat(l.weight)).filter(w=>!isNaN(w)&&w>0);
+  const totWt=wts.length>0?wts.reduce((a,b)=>a+b,0).toFixed(1)+'t':'Not scaled';
+  let r=`T.E.A. TRUCK LOAD REPORT\n========================\nDate: ${date}\nJob: ${job}\nMaterial: ${mat}\n========================\nTOTALS:\nTotal Loads: ${n}\nEst. Volume: ${vol} ${unit}\nScale Weight: ${totWt}\n========================\nBY TRUCK:\n`;
+  trucks.forEach(truck=>{
+    const tL=allLoads.filter(l=>l.truckId===truck.id);
+    const tV=tL.reduce((s,l)=>s+(parseFloat(l.vol)||0),0).toFixed(1);
+    const tW=tL.map(l=>parseFloat(l.weight)).filter(w=>!isNaN(w)&&w>0);
+    const tWt=tW.length>0?tW.reduce((a,b)=>a+b,0).toFixed(1)+'t':'—';
+    r+=`${truck.name} (${truck.type}): ${tL.length} loads · ${tV} ${unit} · ${tWt}\n`;
+  });
+  r+=`========================\nLOAD LOG:\n`;
+  allLoads.forEach(l=>{r+=`#${l.id} ${l.time} — ${l.truckName} (${l.type}) — ${l.vol} ${unit}${l.weight?' — '+l.weight+'t':''}\n`;});
+  r+=`========================\nThe Excavation Academy\ntheexcavationacademy.github.io`;
+  return r;
+}
+function shareEmail(){window.location.href=`mailto:?subject=${encodeURIComponent('Truck Load Report — '+document.getElementById('jobDate').value)}&body=${encodeURIComponent(buildReport())}`;}
+function shareSMS(){window.location.href=`sms:?body=${encodeURIComponent(buildReport())}`;}
+function copyReport(){const r=buildReport();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(r).then(()=>showToast('Copied'));}else{const ta=document.createElement('textarea');ta.value=r;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);showToast('Copied');}}
+function exportCSV(){
+  const date=document.getElementById('jobDate').value;
+  const job=document.getElementById('jobName').value||'Job';
+  const unit=metric?'m3':'yd3';
+  let csv=`Load #,Time,Truck,Type,Volume (${unit}),Scale Weight (t)\n`;
+  allLoads.forEach(l=>{csv+=`${l.id},${l.time},"${l.truckName}","${l.type}",${l.vol},${l.weight||''}\n`;});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+  a.download=`TEA_Trucks_${date}_${job.replace(/\s+/g,'_')}.csv`;
+  a.click();showToast('CSV exported');
+}
+
+// THEME
+function toggleTheme(){darkMode=!darkMode;document.body.classList.toggle('light',!darkMode);document.getElementById('themeBtn').textContent=darkMode?'☀ Light':'☾ Dark';saveState();}
+
+// RESET
+function resetDay(){
+  if(!confirm('Reset all data for a new day?')) return;
+  allLoads=[];loadCounter=0;trucks.forEach(t=>t.loads=[]);laps=[];resetTimer();
+  document.getElementById('jobName').value='';
+  document.getElementById('jobDate').value=new Date().toISOString().split('T')[0];
+  document.getElementById('materialType').value='';
+  document.getElementById('matCustom').style.display='none';
+  renderFleet();renderLog();updateTotals();saveState();showToast('Day reset — ready');
+}
+
+// SAVE / LOAD
+function saveState(){
+  try{localStorage.setItem('tea_tlc',JSON.stringify({trucks,allLoads,loadCounter,metric,darkMode,job:document.getElementById('jobName').value,date:document.getElementById('jobDate').value,mat:document.getElementById('materialType').value,matC:document.getElementById('matCustom').value}));}catch(e){}
+}
+function loadState(){
+  try{
+    const raw=localStorage.getItem('tea_tlc');if(!raw)return;
+    const s=JSON.parse(raw);
+    trucks=s.trucks||[];allLoads=s.allLoads||[];loadCounter=s.loadCounter||allLoads.length;
+    metric=s.metric!==undefined?s.metric:true;darkMode=s.darkMode!==undefined?s.darkMode:true;
+    if(s.job)document.getElementById('jobName').value=s.job;
+    if(s.date)document.getElementById('jobDate').value=s.date;
+    if(s.mat){document.getElementById('materialType').value=s.mat;if(s.mat==='Custom')document.getElementById('matCustom').style.display='block';}
+    if(s.matC)document.getElementById('matCustom').value=s.matC;
+    document.body.classList.toggle('light',!darkMode);
+    document.getElementById('themeBtn').textContent=darkMode?'☀ Light':'☾ Dark';
+    renderFleet();renderLog();updateTotals();
+  }catch(e){}
+}
+
+// TOAST
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
+</script>
+</body>
+</html>
